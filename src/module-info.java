@@ -14,6 +14,6 @@ module itss {
 	requires javafx.controls;
 	requires java.logging;
 	requires java.sql;
-	opens itss to javafx.graphics;
+	opens views ;
 
 }
