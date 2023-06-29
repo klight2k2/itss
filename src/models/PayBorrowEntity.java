@@ -1,6 +1,8 @@
 package models;
 
+import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 enum PayBorrowStatus{
 	PENDING,
@@ -9,7 +11,7 @@ enum PayBorrowStatus{
 	
 }
 
-public class PayBorrowEntity {
+public class PayBorrowEntity extends BaseEntity {
 	private  Date fromDate;
 	private Date toDate;
 	private UserEntity borrower;
@@ -68,6 +70,30 @@ public class PayBorrowEntity {
 
 	public void setStatus(PayBorrowStatus status) {
 		this.status = status;
+	}
+
+	@Override
+	public List getAll() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void save() throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete() throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update() throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

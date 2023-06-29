@@ -3,31 +3,24 @@ package models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import models.db.DB;
 
 public class EquipmentEntity extends BaseEntity {
-	private int quantity ;
-	private int goodStatus;
+	private LocalDateTime fromDate ;
+	private LocalDateTime toDate ;
+	private LocalDateTime mfg ;
+	private String note ;
+	private int numberOfRepairs;
+	private int status;
+	private String equipmentCategory;
 
 	
-	public int getQuantity() {
-		return quantity;
-	}
 
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
 
-	public int getGoodStatus() {
-		return goodStatus;
-	}
-
-	public void setGoodStatus(int goodStatus) {
-		this.goodStatus = goodStatus;
-	}
 	@Override
 	  public void save() throws SQLException {
 	        Statement stm = DB.getConnection().createStatement();
@@ -46,6 +39,18 @@ public class EquipmentEntity extends BaseEntity {
 			medium.add(equipment);
 		}
 		return medium;
+	}
+
+	@Override
+	public void delete() throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void update() throws SQLException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

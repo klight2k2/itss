@@ -15,7 +15,10 @@ abstract class BaseEntity {
 	
 	abstract public void save() throws SQLException;
 	
-//	abstract public void delete() throws SQLException;
+	abstract public void delete() throws SQLException;
+	
+	abstract public void update() throws SQLException;
+	
 
 	public String getName() {
 		return name;
