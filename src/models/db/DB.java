@@ -18,9 +18,11 @@ public class DB {
     public static Connection getConnection() {
         if (connect != null) return connect;
         try {
-			Class.forName("org.sqlite.JDBC");
-            String url = "jdbc:sqlite:assets/db/aims.db";
-            connect = DriverManager.getConnection(url);
+        	String username="root";
+        	String password="";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/itss";
+            connect = DriverManager.getConnection(url,username,password);
             LOGGER.info("Connect database successfully");
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
