@@ -13,15 +13,14 @@ import javafx.stage.StageStyle;
 
 public class HelloApp extends Application {
 
-	private Parent createContent() {
-		return new StackPane(new Text("Hello World"));
-	}
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		
 		Parent parent = FXMLLoader.load(getClass().getResource(Links.HOMEVIEW));
 		Scene scene = new Scene(parent);
-		scene.getStylesheets().add(getClass().getResource("").toExternalForm());
+		
+//		scene.getStylesheets().add(getClass().getResource("").toExternalForm());
 		scene.setFill(Color.TRANSPARENT);
 		stage.setScene(scene);
 		stage.initStyle(StageStyle.TRANSPARENT);

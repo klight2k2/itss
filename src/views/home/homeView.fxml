@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox prefHeight="768.0" prefWidth="1024.0" styleClass="container" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.home.HomeViewController">
+   <children>
+      <VBox prefHeight="800.0" prefWidth="206.0" styleClass="sidebar">
+         <children>
+            <ImageView fitHeight="196.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/itss_logo.png" />
+               </image>
+               <VBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </VBox.margin>
+            </ImageView>
+            <Button fx:id="homeBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Trang chủ">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="roomBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Quản lý phòng học">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="equipmentBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Quản lý trang thiết bị">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="scheduleBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Quản lý lịch học">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="logoutBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Đăng xuất">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+      <VBox>
+         <children>
+            <HBox alignment="CENTER_RIGHT" prefHeight="12.0" prefWidth="784.0">
+               <children>
+                  <Text fx:id="userName" strokeType="OUTSIDE" strokeWidth="0.0" text="Minh quang">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </Text>
+                  <ImageView fx:id="avatar" fitHeight="38.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/user.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
+            <AnchorPane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="749.0" />
+         </children>
+      </VBox>
+   </children>
+</HBox>
