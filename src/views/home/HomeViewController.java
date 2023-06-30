@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
+import views.Links;
 import javafx.scene.input.MouseEvent;
 
 public class HomeViewController {
@@ -38,7 +39,22 @@ public class HomeViewController {
     
     @FXML
     void onNavagate(MouseEvent event) {
-    	System.out.println("hello"+ event.getButton().name());
+    	  Button sourceButton = (Button) event.getSource();
+    	  if(sourceButton.equals(equipmentBtn)){
+              System.out.print("equipmentBtn");
+              loadView(Links.EQUIPMENTVIEW);
+          }
+
+          else if(sourceButton == homeBtn){
+              System.out.print("homeBtn");
+              loadView(Links.HOMECONTENTVIEW);
+          }
+
+          else if(sourceButton == scheduleBtn){
+              System.out.print("scheduleBtn");
+              loadView(Links.SCHEDULEVIEW);
+          }
+
     }
     
     public void loadView(String viewName) {

@@ -16,5 +16,7 @@ module itss {
 	requires java.sql;
 	opens views ;
 	opens views.home;
+	opens views.equipment;
+	opens views.schedule;
 
 }
