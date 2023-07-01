@@ -10,9 +10,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox prefHeight="768.0" prefWidth="1024.0" styleClass="container" stylesheets="@style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.home.HomeViewController">
+<HBox prefHeight="768.0" prefWidth="1024.0" styleClass="container" stylesheets="@style.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.home.HomeViewController">
    <children>
-      <VBox prefHeight="800.0" prefWidth="206.0" styleClass="sidebar">
+      <VBox fillWidth="false" prefHeight="800.0" prefWidth="240.0" styleClass="sidebar">
          <children>
             <ImageView fitHeight="196.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -42,6 +42,16 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Button>
+            <Button fx:id="borrowBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Mượn trả thiết bị">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="reportBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Báo cáo">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Button>
             <Button fx:id="logoutBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Đăng xuất">
                <VBox.margin>
                   <Insets top="20.0" />
@@ -49,11 +59,11 @@
             </Button>
          </children>
       </VBox>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane prefHeight="200.0" prefWidth="784.0">
          <children>
-            <VBox>
+            <VBox prefHeight="140.0" prefWidth="784.0">
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="12.0" prefWidth="784.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="784.0">
                      <children>
                         <Text fx:id="userName" strokeType="OUTSIDE" strokeWidth="0.0" text="Minh quang">
                            <font>
@@ -73,7 +83,7 @@
                         <Insets bottom="10.0" right="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <AnchorPane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="749.0" />
+                  <AnchorPane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="760.0" />
                </children>
             </VBox>
          </children>

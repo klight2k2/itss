@@ -35,6 +35,12 @@ public class HomeViewController {
 	private Button scheduleBtn;
 
 	@FXML
+	private Button borrowBtn;
+
+	@FXML
+	private Button reportBtn;
+
+	@FXML
 	private Text userName;
 
 	@FXML
@@ -58,6 +64,16 @@ public class HomeViewController {
 		else if (sourceButton == roomBtn) {
 			System.out.print("roomBtn");
 			loadView(Links.ROOMVIEW);
+		}
+
+		else if (sourceButton == borrowBtn) {
+			System.out.print("borrowBtn");
+
+		}
+
+		else if (sourceButton == reportBtn) {
+			System.out.print("reportBtn");
+
 		}
 
 	}
