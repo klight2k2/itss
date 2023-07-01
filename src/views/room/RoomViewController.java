@@ -1,5 +1,6 @@
 package views.room;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,6 +21,12 @@ public class RoomViewController {
 
 	@FXML
 	private AnchorPane addModal;
+
+	@FXML
+	private AnchorPane detailModal;
+
+	@FXML
+	private AnchorPane addEquipmentModal;
 
 	@FXML
 	private Label modalTitle;
@@ -55,6 +62,36 @@ public class RoomViewController {
 
 	private Boolean[] status = { true, false };
 
+	@FXML
+	private Label detailRoomName;
+
+	@FXML
+	private Label detailRoomStatus;
+
+	@FXML
+	private TableView<Equipment> equipments;
+
+	@FXML
+	private TableColumn<Equipment, String> equipId;
+
+	@FXML
+	private TableColumn<Equipment, Date> equipMfg;
+
+	@FXML
+	private TableColumn<Equipment, String> equipName;
+
+	@FXML
+	private TableColumn<Equipment, String> equipNote;
+
+	@FXML
+	private TableColumn<Equipment, Integer> equipRepairTime;
+
+	@FXML
+	private TableColumn<Equipment, String> equipStatus;
+
+	@FXML
+	private TableColumn<Equipment, Date> equipTimeUse;
+
 	void openModal(String title) {
 		String displayTitle = title == null ? "Thêm phòng mới" : title;
 		modalTitle.setText(displayTitle);
@@ -64,14 +101,25 @@ public class RoomViewController {
 	@FXML
 	void closeModal() {
 		addModal.setVisible(false);
-		inputId = null;
-		inputRoomName.setText(null);
-		inputRoomStatus.setValue(null);
+	}
+
+	@FXML
+	void closeDetailModal() {
+		detailModal.setVisible(false);
+		equipments.getItems().clear();
 	}
 
 	@FXML
 	void handleOpenModal(ActionEvent event) {
 		openModal(null);
+	}
+
+	String convertRoomStatus(Boolean status) {
+		return status ? "Đang sử dụng" : "Không sử dụng";
+	}
+
+	Boolean convertRoomStatus(String status) {
+		return status == "Đang sử dụng" ? true : false;
 	}
 
 	@FXML
@@ -80,6 +128,9 @@ public class RoomViewController {
 		Boolean status = inputRoomStatus.getValue();
 
 		System.out.println("Edit id: " + inputId);
+
+		detailRoomName.setText(name);
+		detailRoomStatus.setText(convertRoomStatus(status));
 
 		if (inputId != null) {
 			try {
@@ -155,16 +206,58 @@ public class RoomViewController {
 		updateTable();
 	}
 
+	void initEquipTable() {
+		equipId.setCellValueFactory(new PropertyValueFactory<Equipment, String>("displayId"));
+		equipName.setCellValueFactory(new PropertyValueFactory<Equipment, String>("displayName"));
+		equipStatus.setCellValueFactory(new PropertyValueFactory<Equipment, String>("displayStatus"));
+		equipTimeUse.setCellValueFactory(new PropertyValueFactory<Equipment, Date>("displayTimeUse"));
+		equipMfg.setCellValueFactory(new PropertyValueFactory<Equipment, Date>("displayMfg"));
+		equipRepairTime.setCellValueFactory(new PropertyValueFactory<Equipment, Integer>("displayTimeRepair"));
+		equipNote.setCellValueFactory(new PropertyValueFactory<Equipment, String>("displayNote"));
+	}
+
+	void updateEquipTable(int roomId) {
+		try {
+			List<EquipmentEntity> equipmentsEntity = new EquipmentEntity().getAllEquipmentInRoom(roomId);
+			for (EquipmentEntity equip : equipmentsEntity) {
+				Equipment newEquip = new Equipment();
+				newEquip.setDisplayId(equip.getId());
+				newEquip.setDisplayName(equip.getName());
+				int status = equip.getStatus();
+				newEquip.setDisplayStatus("nah");
+				newEquip.setDisplayMfg(equip.getMfg());
+				newEquip.setDisplayTimeUse(equip.getYearOfUse());
+				newEquip.setDisplayTimeRepair(equip.getNumberOfRepairs());
+				newEquip.setDisplayNote(equip.getNote());
+				equipments.getItems().add(newEquip);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void editRoom(ActionEvent event) {
+		openModal("Chỉnh sửa phòng");
+	}
+
 	@FXML
 	void rowClicked(MouseEvent event) {
 		Room clickedRoom = rooms.getSelectionModel().getSelectedItem();
 		if (clickedRoom == null)
 			return;
+
 		inputId = Integer.valueOf(clickedRoom.getDisplayId());
-		System.out.println("Clicked id: " + inputId);
 		inputRoomName.setText(String.valueOf(clickedRoom.getDisplayName()));
 		inputRoomStatus.setValue(Boolean.valueOf(clickedRoom.isStatus()));
-		openModal("Chỉnh sửa phòng");
+
+		detailRoomName.setText(String.valueOf(clickedRoom.getDisplayName()));
+		detailRoomStatus.setText(String.valueOf(clickedRoom.getDisplayStatus()));
+
+		updateEquipTable(Integer.valueOf(clickedRoom.getDisplayId()).intValue());
+
+		detailModal.setVisible(true);
 	}
 
 	private void updateTable() {
@@ -195,12 +288,14 @@ public class RoomViewController {
 	public void initialize() {
 		inputRoomStatus.getItems().addAll(status);
 		addModal.setVisible(false);
+		detailModal.setVisible(false);
 
 		roomId.setCellValueFactory(new PropertyValueFactory<Room, Integer>("displayId"));
 		roomName.setCellValueFactory(new PropertyValueFactory<Room, String>("displayName"));
 		roomStatus.setCellValueFactory(new PropertyValueFactory<Room, String>("displayStatus"));
 		roomEquipments.setCellValueFactory(new PropertyValueFactory<Room, Integer>("numsOfEquipments"));
 //		roomReports.setCellValueFactory(new PropertyValueFactory<Room, Integer>("numsOfReports"));
+		initEquipTable();
 		updateTable();
 	}
 }
