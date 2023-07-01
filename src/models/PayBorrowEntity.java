@@ -1,45 +1,140 @@
 package models;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import models.db.DB;
 
-enum PayBorrowStatus{
+enum PayBorrowStatus {
 	PENDING,
 	BORROWING,
-	PAID	
-	
+	PAID
+
 }
 
 public class PayBorrowEntity extends BaseEntity {
-	private  Date fromDate;
-	private Date toDate;
-	private UserEntity borrower;
-	private String borrowReason ;
+	private int id;
+	private java.sql.Date fromDate;
+	private java.sql.Date toDate;
+	private String status;
+	private String borrowReason;
 	private String refuseReason;
-	private  PayBorrowStatus status;
-	public Date getFromDate() {
+	private int borrowerId;
+
+	public PayBorrowEntity(int id, java.sql.Date fromDate, java.sql.Date toDate, String status,
+			String borrowReason, String refuseReason, int borrowerId) {
+		this.id = id;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.status = status;
+		this.borrowReason = borrowReason;
+		this.refuseReason = refuseReason;
+		this.borrowerId = borrowerId;
+	}
+
+	public PayBorrowEntity() {
+		// Default constructor
+	}
+
+	@Override
+	public List<PayBorrowEntity> getAll() throws SQLException {
+		try {
+			Statement stm = DB.getConnection().createStatement();
+			ResultSet res = stm.executeQuery("SELECT * FROM pay_borrow");
+			ArrayList<PayBorrowEntity> payBorrows = new ArrayList<>();
+			while (res.next()) {
+				PayBorrowEntity payBorrow = new PayBorrowEntity(
+						res.getInt("id"),
+						res.getDate("fromDate"),
+						res.getDate("toDate"),
+						res.getString("status"),
+						res.getString("borrowReason"),
+						res.getString("refuseReason"),
+						res.getInt("borrowerId"));
+				payBorrows.add(payBorrow);
+			}
+			return payBorrows;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public boolean save() throws SQLException {
+		try {
+			String insertSql = "INSERT INTO pay_borrow (id, fromDate, toDate, status, borrowReason, refuseReason, borrowerId) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
+			preparedStmt.setInt(1, this.id);
+			preparedStmt.setDate(2, this.fromDate);
+			preparedStmt.setDate(3, this.toDate);
+			preparedStmt.setString(4, this.status);
+			preparedStmt.setString(5, this.borrowReason);
+			preparedStmt.setString(6, this.refuseReason);
+			preparedStmt.setInt(7, this.borrowerId);
+			preparedStmt.execute();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean delete() throws SQLException {
+		try {
+			String deleteSql = "DELETE FROM pay_borrow WHERE id = ?";
+			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(deleteSql);
+			preparedStmt.setInt(1, this.id);
+			preparedStmt.execute();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean update() throws SQLException {
+		// Update operation may not be applicable for this table structure
+		return false;
+	}
+
+	// Getters and setters
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public java.sql.Date getFromDate() {
 		return fromDate;
 	}
 
-	public void setFromDate(Date fromDate) {
+	public void setFromDate(java.sql.Date fromDate) {
 		this.fromDate = fromDate;
 	}
 
-	public Date getToDate() {
+	public java.sql.Date getToDate() {
 		return toDate;
 	}
 
-	public void setToDate(Date toDate) {
+	public void setToDate(java.sql.Date toDate) {
 		this.toDate = toDate;
 	}
 
-	public UserEntity getBorrower() {
-		return borrower;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setBorrower(UserEntity borrower) {
-		this.borrower = borrower;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getBorrowReason() {
@@ -58,42 +153,11 @@ public class PayBorrowEntity extends BaseEntity {
 		this.refuseReason = refuseReason;
 	}
 
-	
-	
-	public PayBorrowEntity() {
-		// TODO Auto-generated constructor stub
+	public int getBorrowerId() {
+		return borrowerId;
 	}
 
-	public PayBorrowStatus getStatus() {
-		return status;
+	public void setBorrowerId(int borrowerId) {
+		this.borrowerId = borrowerId;
 	}
-
-	public void setStatus(PayBorrowStatus status) {
-		this.status = status;
-	}
-
-	@Override
-	public List getAll() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void save() throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void delete() throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update() throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

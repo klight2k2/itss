@@ -16,8 +16,8 @@ public class LoginController {
 	        }
 	        while (rs.next()) {                
 	            if (rs.getString("password") == null ? password == null : rs.getString("password").equals(password)) {
-	                LoginController.currentUser.setID(rs.getInt("id"));
-	                LoginController.currentUser.setUserName(rs.getString("userName"));
+	                LoginController.currentUser.setId(rs.getInt("id"));
+	                LoginController.currentUser.setName(rs.getString("userName"));
 	                return true;
 	            }
 	        }
