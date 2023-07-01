@@ -224,7 +224,7 @@ public class EquipmentEntity extends BaseEntity {
 	}
 	public static void main(String[] args) {
 		try {
-			System.out.println(new EquipmentEntity().getAllEquipmentInRoom(1).size());;
+			System.out.println(new EquipmentEntity().getAllEquipmentInRoom(3).size());;
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
