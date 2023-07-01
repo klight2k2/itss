@@ -29,6 +29,31 @@ public class RoomScheduleEntity extends BaseEntity {
     public RoomScheduleEntity() {
         // Default constructor
     }
+    public List<RoomScheduleEntity> getAllRoomScheduleByRoomId(int roomId) throws SQLException {
+        try {
+            String query = "SELECT * FROM room_schedule WHERE roomId = ?";
+            PreparedStatement preparedStmt = DB.getConnection().prepareStatement(query);
+            preparedStmt.setInt(1, roomId);
+            ResultSet res = preparedStmt.executeQuery();
+
+            List<RoomScheduleEntity> roomSchedules = new ArrayList<>();
+            while (res.next()) {
+                RoomScheduleEntity roomSchedule = new RoomScheduleEntity(
+                    res.getInt("id"),
+                    res.getInt("teacherId"),
+                    res.getInt("roomId"),
+                    res.getDate("startTime"),
+                    res.getDate("endTime"),
+                    res.getString("reason")
+                );
+                roomSchedules.add(roomSchedule);
+            }
+            return roomSchedules;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public List<RoomScheduleEntity> getAll() throws SQLException {

@@ -15,6 +15,16 @@ public class RoomEntity extends BaseEntity {
 	private String name;
 	private List<EquipmentEntity> listEquipment;
 	private List<RoomScheduleEntity> listRoomSchedule;
+	
+	public List<RoomReportEntity> getListRoomReport() {
+		return listRoomReport;
+	}
+
+	public void setListRoomReport(List<RoomReportEntity> listRoomReport) {
+		this.listRoomReport = listRoomReport;
+	}
+
+	private List<RoomReportEntity> listRoomReport;
 
 	public List<RoomScheduleEntity> getListRoomSchedule() {
 		return listRoomSchedule;
@@ -43,6 +53,8 @@ public class RoomEntity extends BaseEntity {
 			while (res.next()) {
 				RoomEntity room = new RoomEntity(res.getInt("id"), res.getBoolean("status"), res.getString("name"));
 				room.setListEquipment(new EquipmentEntity().getAllEquipmentInRoom(room.getId()));
+				room.setListRoomSchedule(new RoomScheduleEntity().getAllRoomScheduleByRoomId(room.getId()));
+				room.setListRoomReport(new RoomReportEntity().getAllRoomReportByRoomId(room.getId()));
 				medium.add(room);
 			}
 			return medium;
