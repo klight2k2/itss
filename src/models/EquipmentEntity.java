@@ -1,13 +1,12 @@
 package models;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Stroke;
-import java.sql.Date;
 
 import models.db.DB;
 
@@ -25,8 +24,8 @@ public class EquipmentEntity extends BaseEntity {
 		super();
 	}
 
-	public EquipmentEntity(int equipmentCategoryId, String id, String name, int status, Date mfg,
-			Date yearOfUse, int numberOfRepairs, String note) {
+	public EquipmentEntity(int equipmentCategoryId, String id, String name, int status, Date mfg, Date yearOfUse,
+			int numberOfRepairs, String note) {
 		super();
 		this.equipmentCategoryId = equipmentCategoryId;
 		this.id = id;
@@ -61,6 +60,7 @@ public class EquipmentEntity extends BaseEntity {
 			return false;
 		}
 	}
+
 	public List<EquipmentEntity> getAllEquipmentInRoom(int roomId) throws SQLException {
 		try {
 			Statement stm = DB.getConnection().createStatement();
@@ -69,22 +69,20 @@ public class EquipmentEntity extends BaseEntity {
 			preparedStmt.setInt(1, roomId);
 			ResultSet res = preparedStmt.executeQuery();
 			String sql = "SELECT * FROM equipment WHERE id IN  (";
-            while (res.next()) {
-                sql += "'" + res.getString("equipmentId") + "'";
-                if (res.next()) {
-                    sql += ",";
-                }
-            }
-            sql += ")";
+			while (res.next()) {
+				sql += "'" + res.getString("equipmentId") + "'";
+				if (res.next()) {
+					sql += ",";
+				}
+			}
+			sql += ")";
 //            System.out.println(sql);
-            res = stm.executeQuery(sql);
+			res = stm.executeQuery(sql);
 			ArrayList<EquipmentEntity> medium = new ArrayList<>();
 			while (res.next()) {
 				EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
-						res.getString("name"),
-						res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
-						res.getInt("numberOfRepairs"),
-						res.getString("note"));
+						res.getString("name"), res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
+						res.getInt("numberOfRepairs"), res.getString("note"));
 				medium.add(equipment);
 			}
 			return medium;
@@ -95,6 +93,7 @@ public class EquipmentEntity extends BaseEntity {
 		}
 
 	}
+
 	public int getEquipmentCategoryId() {
 		return equipmentCategoryId;
 	}
@@ -167,10 +166,8 @@ public class EquipmentEntity extends BaseEntity {
 			ArrayList<EquipmentEntity> medium = new ArrayList<>();
 			while (res.next()) {
 				EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
-						res.getString("name"),
-						res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
-						res.getInt("numberOfRepairs"),
-						res.getString("note"));
+						res.getString("name"), res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
+						res.getInt("numberOfRepairs"), res.getString("note"));
 				medium.add(equipment);
 			}
 			return medium;
@@ -220,9 +217,10 @@ public class EquipmentEntity extends BaseEntity {
 		}
 
 	}
+
 	public static void main(String[] args) {
 		try {
-			System.out.println(new EquipmentEntity().getAllEquipmentInRoom(1).size());;
+			System.out.println(new EquipmentEntity().getAllEquipmentInRoom(1).size());
 		} catch (Exception e) {
 			// TODO: handle exception
 		}

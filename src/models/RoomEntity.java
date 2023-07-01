@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import models.db.DB;
 
 public class RoomEntity extends BaseEntity {
@@ -40,8 +41,7 @@ public class RoomEntity extends BaseEntity {
 			ResultSet res = stm.executeQuery("select * from room");
 			ArrayList<RoomEntity> medium = new ArrayList<>();
 			while (res.next()) {
-				RoomEntity room = new RoomEntity(res.getInt("id"), res.getBoolean("status"),
-						res.getString("name"));
+				RoomEntity room = new RoomEntity(res.getInt("id"), res.getBoolean("status"), res.getString("name"));
 				room.setListEquipment(new EquipmentEntity().getAllEquipmentInRoom(room.getId()));
 				medium.add(room);
 			}
@@ -56,8 +56,7 @@ public class RoomEntity extends BaseEntity {
 	public boolean save() throws SQLException {
 		// TODO Auto-generated method stub
 		try {
-			String insert_sqlString = " insert into room (id, name, status)"
-					+ " values (?, ?, ?)";
+			String insert_sqlString = " insert into room (id, name, status)" + " values (?, ?, ?)";
 			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
 			preparedStmt.setInt(1, this.id);
 			preparedStmt.setString(2, this.name);
@@ -105,7 +104,6 @@ public class RoomEntity extends BaseEntity {
 			return false;
 		}
 	}
-	
 
 	public boolean isStatus() {
 		return status;
@@ -115,7 +113,6 @@ public class RoomEntity extends BaseEntity {
 		this.status = status;
 	}
 
-	
 	public int getId() {
 		return id;
 	}
@@ -139,12 +136,14 @@ public class RoomEntity extends BaseEntity {
 	public void setListEquipment(List<EquipmentEntity> listEquipment) {
 		this.listEquipment = listEquipment;
 	}
-	
+
 	public static void main(String[] args) {
 		RoomEntity room = new RoomEntity();
 		List<RoomEntity> a = new ArrayList<RoomEntity>();
 		try {
-			System.out.println(room.getAll().get(0).getListEquipment().get(1).getId());
+			RoomEntity customRoom = room.getAll().get(0);
+			customRoom.setName("TEST");
+			customRoom.update();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
