@@ -61,6 +61,8 @@ public class EquipmentEntity extends BaseEntity {
 			return false;
 		}
 	}
+	
+	
 	public List<EquipmentEntity> getAllEquipmentInRoom(int roomId) throws SQLException {
 		try {
 			Statement stm = DB.getConnection().createStatement();
