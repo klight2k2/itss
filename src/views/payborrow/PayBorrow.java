@@ -13,6 +13,10 @@ public class PayBorrow extends PayBorrowEntity {
 	private String displayBorrowReason;
 	private String displayRefuseReason;
 
+	public PayBorrow() {
+
+	}
+
 	public Integer getDisplayId() {
 		return displayId;
 	}

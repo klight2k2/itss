@@ -49,8 +49,8 @@ public class PayBorrowViewController {
 	@FXML
 	private TableColumn<PayBorrow, String> pbBorrowUser;
 
-	@FXML
-	private TableColumn<PayBorrow, ?> pbEquipId;
+//	@FXML
+//	private TableColumn<PayBorrow, ?> pbEquipId;
 
 	@FXML
 	private TableColumn<PayBorrow, Integer> pbId;
@@ -67,6 +67,8 @@ public class PayBorrowViewController {
 	@FXML
 	private ChoiceBox<String> status;
 
+	private String[] statusValues = { "PENDING", "BORROWING", "PAID" };
+
 	@FXML
 	private TextArea refuseReason;
 
@@ -75,21 +77,21 @@ public class PayBorrowViewController {
 
 	@FXML
 	void closeModal(ActionEvent event) {
-
+		System.out.println("Close");
 	}
 
 	@FXML
 	void submit(ActionEvent event) {
-
+		System.out.println("Submit");
 	}
 
 	public void updateTable() {
 		try {
 			pbEquipments.getItems().clear();
-			PayBorrow pbs = new PayBorrow();
+			PayBorrowEntity pbs = new PayBorrow();
 			for (PayBorrowEntity pb : pbs.getAll()) {
 				PayBorrow newPb = new PayBorrow();
-				newPb.setDisplayId(pb.getId());
+				newPb.setDisplayId(Integer.valueOf(pb.getId()));
 				newPb.setDisplayStatus(pb.getStatus());
 				newPb.setDisplayFromDate(pb.getFromDate());
 				newPb.setDisplayToDate(pb.getToDate());
@@ -112,7 +114,8 @@ public class PayBorrowViewController {
 
 	public void initialize() {
 		try {
-			pbDetailModal.setVisible(false);
+			System.out.println("Init");
+			status.getItems().addAll(statusValues);
 
 			pbId.setCellValueFactory(new PropertyValueFactory<PayBorrow, Integer>("displayId"));
 			pbBorrowUser.setCellValueFactory(new PropertyValueFactory<PayBorrow, String>("displayUsername"));
