@@ -6,6 +6,7 @@ import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -27,6 +28,12 @@ public class RoomViewController {
 
 	@FXML
 	private AnchorPane addEquipmentModal;
+
+	@FXML
+	private AnchorPane confirmDeleteModal;
+
+	@FXML
+	private Button deleteEquipmentBtn;
 
 	@FXML
 	private Label modalTitle;
@@ -59,6 +66,8 @@ public class RoomViewController {
 	private ChoiceBox<Boolean> inputRoomStatus;
 
 	private Integer inputId;
+
+	private String inputEquipId;
 
 	private Boolean[] status = { true, false };
 
@@ -111,6 +120,8 @@ public class RoomViewController {
 
 	@FXML
 	void handleOpenModal(ActionEvent event) {
+		inputId = null;
+		inputRoomName.clear();
 		openModal(null);
 	}
 
@@ -216,9 +227,13 @@ public class RoomViewController {
 		equipNote.setCellValueFactory(new PropertyValueFactory<Equipment, String>("displayNote"));
 	}
 
-	void updateEquipTable(int roomId) {
+	void updateEquipTable() {
 		try {
+			int roomId = inputId.intValue();
 			List<EquipmentEntity> equipmentsEntity = new EquipmentEntity().getAllEquipmentInRoom(roomId);
+			if (equipmentsEntity == null)
+				return;
+			equipments.getItems().clear();
 			for (EquipmentEntity equip : equipmentsEntity) {
 				Equipment newEquip = new Equipment();
 				newEquip.setDisplayId(equip.getId());
@@ -242,6 +257,64 @@ public class RoomViewController {
 		openModal("Chỉnh sửa phòng");
 	}
 
+	// Delete room modal
+	@FXML
+	void confirmDeleteRoom(ActionEvent event) {
+		try {
+			Room room = new Room();
+			for (RoomEntity delRoom : room.getAll()) {
+				if (delRoom.getId() == inputId.intValue()) {
+					delRoom.delete();
+					confirmDeleteModal.setVisible(false);
+					closeDetailModal();
+					updateTable();
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void cancelDeleteRoom(ActionEvent event) {
+		confirmDeleteModal.setVisible(false);
+	}
+
+	@FXML
+	void deleteRoom(ActionEvent event) {
+		confirmDeleteModal.setVisible(true);
+	}
+
+	@FXML
+	void deleteEquipment(ActionEvent event) {
+		try {
+			Equipment equip = new Equipment();
+			for (EquipmentEntity e : equip.getAll()) {
+				if (e.getId().equals(inputEquipId)) {
+					e.delete();
+					break;
+				}
+			}
+			deleteEquipmentBtn.setVisible(false);
+//			updateEquipTable();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void rowEquipmentClicked(MouseEvent event) {
+		Equipment clickedEquip = equipments.getSelectionModel().getSelectedItem();
+		if (clickedEquip == null)
+			return;
+
+		inputEquipId = String.valueOf(clickedEquip.getDisplayId());
+
+		deleteEquipmentBtn.setVisible(true);
+	}
+
 	@FXML
 	void rowClicked(MouseEvent event) {
 		Room clickedRoom = rooms.getSelectionModel().getSelectedItem();
@@ -255,7 +328,7 @@ public class RoomViewController {
 		detailRoomName.setText(String.valueOf(clickedRoom.getDisplayName()));
 		detailRoomStatus.setText(String.valueOf(clickedRoom.getDisplayStatus()));
 
-		updateEquipTable(Integer.valueOf(clickedRoom.getDisplayId()).intValue());
+		updateEquipTable();
 
 		detailModal.setVisible(true);
 	}
@@ -289,6 +362,9 @@ public class RoomViewController {
 		inputRoomStatus.getItems().addAll(status);
 		addModal.setVisible(false);
 		detailModal.setVisible(false);
+		addEquipmentModal.setVisible(false);
+		confirmDeleteModal.setVisible(false);
+		deleteEquipmentBtn.setVisible(false);
 
 		roomId.setCellValueFactory(new PropertyValueFactory<Room, Integer>("displayId"));
 		roomName.setCellValueFactory(new PropertyValueFactory<Room, String>("displayName"));
