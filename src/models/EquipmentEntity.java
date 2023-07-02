@@ -41,7 +41,7 @@ public class EquipmentEntity extends BaseEntity {
 	@Override
 	public boolean save() throws SQLException {
 		try {
-			String insert_sqlString = " insert into equipment (equipmentCategoryId, id, name, status, mfg, yearOfUse, numberOfRepairs, note)"
+			String insert_sqlString = " INSERT IGNORE INTO equipment (equipmentCategoryId, id, name, status, mfg, yearOfUse, numberOfRepairs, note)"
 					+ " values (?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
 			preparedStmt.setInt(1, this.equipmentCategoryId);
@@ -52,7 +52,7 @@ public class EquipmentEntity extends BaseEntity {
 			preparedStmt.setDate(6, this.yearOfUse);
 			preparedStmt.setInt(7, this.numberOfRepairs);
 			preparedStmt.setString(8, this.note);
-			preparedStmt.execute();
+			preparedStmt.executeUpdate();
 			return true;
 
 		} catch (SQLException e) {

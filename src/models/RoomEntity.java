@@ -1,5 +1,6 @@
 package models;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ public class RoomEntity extends BaseEntity {
 	private int id;
 	private boolean status;
 	private String name;
-	private List<EquipmentEntity> listEquipment;
+	public List<EquipmentEntity> listEquipment;
 	private List<RoomScheduleEntity> listRoomSchedule;
 	
 	public List<RoomReportEntity> getListRoomReport() {
@@ -86,18 +87,23 @@ public class RoomEntity extends BaseEntity {
 	}
 	public boolean saveListEquipment() throws SQLException {
 		// TODO Auto-generated method stub
+//		System.out.println(this.listEquipment.size());
 		try {
 			Statement stm = DB.getConnection().createStatement();
-			List<EquipmentEntity> roomEquipment = this.getListEquipment();
+			List<EquipmentEntity> roomEquipment = this.listEquipment;
+			System.out.println(this.getName());
 			if (roomEquipment == null) {
 				return true;
 			}
-            for (int i = 0; i < roomEquipment.size(); i++) {
+			
+            for (int i = 0; i < this.listEquipment.size(); i++) {
             	String sqlRoomEquipment = "INSERT IGNORE INTO room_equipment (roomId, equipmentId) VALUES (";
             	roomEquipment.get(i).save();
             	sqlRoomEquipment += this.getId() + ",";
             	sqlRoomEquipment += "'" + roomEquipment.get(i).getId() + "'" + ")";
-            	stm.executeQuery(sqlRoomEquipment);
+            	System.out.println(sqlRoomEquipment);
+            	stm.executeUpdate(sqlRoomEquipment);
+//            	System.out.println(stm.executeUpdate(sqlRoomEquipment));
             }
 			return true;
 
@@ -177,10 +183,13 @@ public class RoomEntity extends BaseEntity {
 	
 	public static void main(String[] args) {
 		RoomEntity room = new RoomEntity();
-		List<RoomEntity> a = new ArrayList<RoomEntity>();
+		
 		try {
-			System.out.println(room.getAll().get(2).getListEquipment().get(1).getName());
-//			room.saveListEquipment();
+			List<RoomEntity> a = room.getAll();
+//			System.out.println(a.get(2).getListEquipment().size());
+			System.out.println(a.get(0).listEquipment.add(new EquipmentEntity(6, "B011", "Ban", 1, new Date(2022-01-01), new Date(2022-01-01), 2, "Note 1")));
+//			System.out.println(a.get(2).getListEquipment().size());
+			a.get(0).saveListEquipment();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
