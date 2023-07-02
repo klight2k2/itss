@@ -297,7 +297,8 @@ public class RoomViewController {
 				}
 			}
 			deleteEquipmentBtn.setVisible(false);
-//			updateEquipTable();
+			updateEquipTable();
+			updateTable();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

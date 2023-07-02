@@ -68,12 +68,12 @@ public class HomeViewController {
 
 		else if (sourceButton == borrowBtn) {
 			System.out.print("borrowBtn");
-
+			loadView(Links.PAYBORROWVIEW);
 		}
 
 		else if (sourceButton == reportBtn) {
 			System.out.print("reportBtn");
-
+			loadView(Links.REPORTVIEW);
 		}
 
 	}

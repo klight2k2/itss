@@ -29,7 +29,7 @@
       <TextField fx:id="inputSearch" layoutX="53.0" layoutY="77.0" />
       <Button layoutX="219.0" layoutY="77.0" mnemonicParsing="false" onAction="#search" text="Tìm kiếm" />
       <Button layoutX="295.0" layoutY="77.0" mnemonicParsing="false" onAction="#clearSearch" text="Làm mới" />
-      <AnchorPane fx:id="detailModal" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
+      <AnchorPane fx:id="detailModal" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
          <children>
             <AnchorPane layoutX="42.0" layoutY="78.0" prefHeight="449.0" prefWidth="699.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
                <children>
@@ -100,7 +100,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="addEquipmentModal" layoutX="2.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
+      <AnchorPane fx:id="addEquipmentModal" layoutX="2.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
          <children>
             <AnchorPane layoutX="211.0" layoutY="86.0" prefHeight="455.0" prefWidth="362.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
                <children>
