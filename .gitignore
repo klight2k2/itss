@@ -2,4 +2,5 @@
 Main.java
 .gitignore
 .classpath
+*.class
 settings.json
