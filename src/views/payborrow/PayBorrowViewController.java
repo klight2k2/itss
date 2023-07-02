@@ -7,12 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import models.PayBorrowEntity;
 import models.UserEntity;
@@ -29,7 +29,7 @@ public class PayBorrowViewController {
 	private TextField borrowUser;
 
 	@FXML
-	private TextField euipId;
+	private TextField equipId;
 
 	@FXML
 	private DatePicker payDate;
@@ -72,17 +72,70 @@ public class PayBorrowViewController {
 	@FXML
 	private TextArea refuseReason;
 
-	@FXML
-	private Label roomId;
+	private int pbCurId;
 
 	@FXML
 	void closeModal(ActionEvent event) {
-		System.out.println("Close");
+		pbDetailModal.setVisible(false);
 	}
 
 	@FXML
 	void submit(ActionEvent event) {
-		System.out.println("Submit");
+		try {
+			PayBorrowEntity pbs = new PayBorrow();
+			for (PayBorrowEntity pb : pbs.getAll()) {
+				if (pb.getId() == pbCurId) {
+					pb.setStatus(status.getValue());
+					pb.setFromDate(Date.valueOf(borrowDate.getValue()));
+					pb.setToDate(Date.valueOf(payDate.getValue()));
+					pb.setBorrowReason(borrowReason.getText());
+					pb.setRefuseReason(refuseReason.getText());
+					pb.update();
+					break;
+				}
+			}
+			updateTable();
+			pbDetailModal.setVisible(false);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void delete(ActionEvent event) {
+		try {
+			PayBorrowEntity pbs = new PayBorrow();
+			for (PayBorrowEntity pb : pbs.getAll()) {
+				if (pb.getId() == pbCurId) {
+					pb.delete();
+					break;
+				}
+			}
+			updateTable();
+			pbDetailModal.setVisible(false);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void rowClicked(MouseEvent event) {
+		PayBorrow clickedRow = pbEquipments.getSelectionModel().getSelectedItem();
+		if (clickedRow == null)
+			return;
+
+		pbCurId = clickedRow.getDisplayId().intValue();
+		equipId.setText("BD001");
+		borrowUser.setText(clickedRow.getDisplayUsername());
+		status.setValue(clickedRow.getDisplayStatus());
+		borrowDate.setValue(clickedRow.getDisplayFromDate().toLocalDate());
+		payDate.setValue(clickedRow.getDisplayToDate().toLocalDate());
+		borrowReason.setText(clickedRow.getDisplayBorrowReason());
+		refuseReason.setText(clickedRow.getDisplayRefuseReason());
+
+		pbDetailModal.setVisible(true);
 	}
 
 	public void updateTable() {
@@ -114,7 +167,7 @@ public class PayBorrowViewController {
 
 	public void initialize() {
 		try {
-			System.out.println("Init");
+			pbDetailModal.setVisible(false);
 			status.getItems().addAll(statusValues);
 
 			pbId.setCellValueFactory(new PropertyValueFactory<PayBorrow, Integer>("displayId"));

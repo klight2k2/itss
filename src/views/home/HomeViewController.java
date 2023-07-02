@@ -83,7 +83,7 @@ public class HomeViewController {
 			AnchorPane pane = FXMLLoader.load(getClass().getResource(viewName));
 			content.getChildren().setAll(pane);
 		} catch (IOException ex) {
-
+			ex.printStackTrace();
 		}
 
 	}

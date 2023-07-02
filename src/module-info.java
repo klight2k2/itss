@@ -20,5 +20,7 @@ module itss {
 	opens views.equipment;
 	opens views.schedule;
 	opens views.room;
+	opens views.payborrow;
+	opens views.report;
 
 }
