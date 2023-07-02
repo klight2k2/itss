@@ -16,6 +16,8 @@ public class RoomScheduleEntity extends BaseEntity {
     private Date startTime;
     private Date endTime;
     private String reason;
+    
+    
 
     public RoomScheduleEntity(int id, int teacherId, int roomId, Date startTime, Date endTime, String reason) {
         this.id = id;
