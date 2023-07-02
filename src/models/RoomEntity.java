@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import models.db.DB;
@@ -15,7 +16,7 @@ public class RoomEntity extends BaseEntity {
 	private String name;
 	private List<EquipmentEntity> listEquipment;
 	private List<RoomScheduleEntity> listRoomSchedule;
-	
+
 	public List<RoomReportEntity> getListRoomReport() {
 		return listRoomReport;
 	}
@@ -53,8 +54,10 @@ public class RoomEntity extends BaseEntity {
 			while (res.next()) {
 				RoomEntity room = new RoomEntity(res.getInt("id"), res.getBoolean("status"), res.getString("name"));
 				room.setListEquipment(new EquipmentEntity().getAllEquipmentInRoom(room.getId()));
-				room.setListRoomSchedule(new RoomScheduleEntity().getAllRoomScheduleByRoomId(room.getId()));
-				room.setListRoomReport(new RoomReportEntity().getAllRoomReportByRoomId(room.getId()));
+				// room.setListRoomSchedule(new
+				// RoomScheduleEntity().getAllRoomScheduleByRoomId(room.getId()));
+				// room.setListRoomReport(new
+				// RoomReportEntity().getAllRoomReportByRoomId(room.getId()));
 				medium.add(room);
 			}
 			return medium;
@@ -74,6 +77,30 @@ public class RoomEntity extends BaseEntity {
 			preparedStmt.setString(2, this.name);
 			preparedStmt.setBoolean(3, this.status);
 			preparedStmt.execute();
+			return true;
+
+		} catch (SQLException e) {
+			System.err.println("Got an exception!");
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+
+	public boolean saveListEquipment() throws SQLException {
+		// TODO Auto-generated method stub
+		try {
+			Statement stm = DB.getConnection().createStatement();
+			List<EquipmentEntity> roomEquipment = this.getListEquipment();
+			if (roomEquipment == null) {
+				return true;
+			}
+			for (int i = 0; i < roomEquipment.size(); i++) {
+				String sqlRoomEquipment = "INSERT IGNORE INTO room_equipment (roomId, equipmentId) VALUES (";
+				roomEquipment.get(i).save();
+				sqlRoomEquipment += this.getId() + ",";
+				sqlRoomEquipment += "'" + roomEquipment.get(i).getId() + "'" + ")";
+				stm.executeQuery(sqlRoomEquipment);
+			}
 			return true;
 
 		} catch (SQLException e) {
@@ -153,9 +180,8 @@ public class RoomEntity extends BaseEntity {
 		RoomEntity room = new RoomEntity();
 		List<RoomEntity> a = new ArrayList<RoomEntity>();
 		try {
-			RoomEntity customRoom = room.getAll().get(0);
-			customRoom.setName("TEST");
-			customRoom.update();
+			System.out.println(room.getAll().get(2).getListEquipment().get(1).getName());
+			// room.saveListEquipment();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

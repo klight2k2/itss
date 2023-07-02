@@ -64,20 +64,23 @@ public class EquipmentEntity extends BaseEntity {
 	public List<EquipmentEntity> getAllEquipmentInRoom(int roomId) throws SQLException {
 		try {
 			Statement stm = DB.getConnection().createStatement();
-			String insert_sqlString = "select equipmentId from room_equipment where roomId = ?";
-			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
-			preparedStmt.setInt(1, roomId);
-			ResultSet res = preparedStmt.executeQuery();
-			String sql = "SELECT * FROM equipment WHERE id IN  (";
+			String insert_sqlString = "select * from room_equipment where roomId = " + roomId + ";";
+			ResultSet res = stm.executeQuery(insert_sqlString);
+			String sql = "SELECT * FROM equipment WHERE id IN (";
 			while (res.next()) {
+				// System.out.println(roomId + "-" + res.getString("equipmentId"));
 				sql += "'" + res.getString("equipmentId") + "'";
-				if (res.next()) {
-					sql += ",";
-				}
+				sql += ",";
+			}
+			// System.out.println(sql.charAt(1));
+			if (sql.charAt(sql.length() - 1) == ',') {
+				sql = sql.substring(0, sql.length() - 1);
 			}
 			sql += ")";
 			// System.out.println(sql);
-			res = stm.executeQuery(sql);
+			if (sql.charAt(sql.length() - 2) != '(') {
+				res = stm.executeQuery(sql);
+			}
 			ArrayList<EquipmentEntity> medium = new ArrayList<>();
 			while (res.next()) {
 				EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
@@ -88,7 +91,7 @@ public class EquipmentEntity extends BaseEntity {
 			return medium;
 		} catch (SQLException e) {
 			// TODO: handle exception
-			System.out.println(e);
+			e.printStackTrace();
 			return null;
 		}
 
@@ -220,10 +223,11 @@ public class EquipmentEntity extends BaseEntity {
 
 	public static void main(String[] args) {
 		try {
-			System.out.println(new EquipmentEntity().getAllEquipmentInRoom(3).size());
-			;
+			// System.out.println(new
+			// EquipmentEntity().getAllEquipmentInRoom(2).get(0).getName());
+			System.out.println(new RoomEntity().getAll().size());
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 
