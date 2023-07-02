@@ -27,9 +27,6 @@ public class RoomViewController {
 	private AnchorPane detailModal;
 
 	@FXML
-	private AnchorPane addEquipmentModal;
-
-	@FXML
 	private AnchorPane confirmDeleteModal;
 
 	@FXML
@@ -363,7 +360,6 @@ public class RoomViewController {
 		inputRoomStatus.getItems().addAll(status);
 		addModal.setVisible(false);
 		detailModal.setVisible(false);
-		addEquipmentModal.setVisible(false);
 		confirmDeleteModal.setVisible(false);
 		deleteEquipmentBtn.setVisible(false);
 
