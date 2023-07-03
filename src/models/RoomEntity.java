@@ -145,6 +145,30 @@ public class RoomEntity extends BaseEntity {
 			return false;
 		}
 	}
+	
+	public RoomEntity getRoomById(int roomId) {
+	    String sql = "SELECT * FROM room WHERE id = ?";
+
+	    try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
+	        statement.setInt(1, roomId);
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            RoomEntity room = new RoomEntity(
+	                    resultSet.getInt("id"),
+	                    resultSet.getBoolean("status"),
+	                    resultSet.getString("name")
+	            );
+	            return room;
+	        } else {
+	            return null; // Phòng không tồn tại
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Got an exception!");
+	        System.err.println(e.getMessage());
+	        return null;
+	    }
+	}
 
 	public boolean isStatus() {
 		return status;
@@ -183,8 +207,9 @@ public class RoomEntity extends BaseEntity {
 
 		try {
 			List<RoomEntity> a = room.getAll();
+			System.out.println(a.get(3).getListRoomSchedule().get(0).getTeacher().getName());
 //			System.out.println(a.get(2).getListEquipment().size());
-			System.out.println(a.get(1).getListRoomReport().get(0).getId());
+//			System.out.println(a.get(1).getListRoomReport().get(0).getId());
 //			System.out.println(a.get(2).getListEquipment().size());
 //			a.get(0).saveListEquipment();
 		} catch (SQLException e) {
@@ -193,5 +218,7 @@ public class RoomEntity extends BaseEntity {
 		}
 
 	}
+	
+	
 
 }

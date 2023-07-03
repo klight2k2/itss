@@ -101,6 +101,35 @@ public class EquipmentEntity extends BaseEntity {
 
 	}
 	
+	public EquipmentEntity getEquipmentById(String equipmentId) {
+	    String sql = "SELECT * FROM equipment WHERE id = ?";
+
+	    try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
+	        statement.setString(1, equipmentId);
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            EquipmentEntity equipment = new EquipmentEntity(
+	                    resultSet.getInt("equipmentCategoryId"),
+	                    resultSet.getString("id"),
+	                    resultSet.getString("name"),
+	                    resultSet.getInt("status"),
+	                    resultSet.getDate("mfg"),
+	                    resultSet.getDate("yearOfUse"),
+	                    resultSet.getInt("numberOfRepairs"),
+	                    resultSet.getString("note")
+	            );
+	            return equipment;
+	        } else {
+	            return null; // Thiết bị không tồn tại
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Got an exception!");
+	        System.err.println(e.getMessage());
+	        return null;
+	    }
+	}
+	
 	public List<EquipmentEntity> getAllEquipmentNoUse() throws SQLException {
 		try {
 			Statement stm = DB.getConnection().createStatement();
