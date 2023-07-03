@@ -263,6 +263,11 @@ public class EquipmentEntity extends BaseEntity {
 		}
 
 	}
+	public void displayEquipment() {
+		System.out.print(this.getEquipmentCategoryId());
+		System.out.print(this.getId());
+		System.out.print(this.getName());
+	}
 	public static void main(String[] args) {
 		try {
 //			System.out.println(new EquipmentEntity().getAllEquipmentInRoom(2).get(0).getName());

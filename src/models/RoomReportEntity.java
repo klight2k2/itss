@@ -15,8 +15,18 @@ public class RoomReportEntity extends BaseEntity {
     private java.sql.Date createdAt;
     private int reporterId;
     private int approverId;
+    
+    private List<EquipmentEntity> listEquipmentReport;
+    
+    public List<EquipmentEntity> getListEquipmentReport() {
+		return listEquipmentReport;
+	}
 
-    public RoomReportEntity(int id, int roomId, String status, java.sql.Date createdAt, int reporterId, int approverId) {
+	public void setListEquipmentReport(List<EquipmentEntity> listEquipmentReport) {
+		this.listEquipmentReport = listEquipmentReport;
+	}
+
+	public RoomReportEntity(int id, int roomId, String status, java.sql.Date createdAt, int reporterId, int approverId) {
         this.id = id;
         this.roomId = roomId;
         this.status = status;
@@ -30,13 +40,35 @@ public class RoomReportEntity extends BaseEntity {
     }
     public List<RoomReportEntity> getAllRoomReportByRoomId(int roomId) throws SQLException {
         try {
-            String query = "SELECT * FROM room_report WHERE roomId = ?";
-            PreparedStatement preparedStmt = DB.getConnection().prepareStatement(query);
+        	Statement stm = DB.getConnection().createStatement();
+            String queryRoom_report = "SELECT * FROM room_report WHERE roomId = ?";
+            PreparedStatement preparedStmt = DB.getConnection().prepareStatement(queryRoom_report);
             preparedStmt.setInt(1, roomId);
             ResultSet res = preparedStmt.executeQuery();
-
             List<RoomReportEntity> roomReports = new ArrayList<>();
             while (res.next()) {
+            	String sql_room_equipment_report = "SELECT e.* FROM equipment e "+
+            			"join room_equipment_report rer ON e.id = rer.equipmentId "+
+            			"JOIN room_report rr ON rer.roomReportId = rr.roomId "+
+            			"WHERE rr.roomId = " + res.getInt("roomId");
+//            	System.out.println(sql_room_equipment_report);
+            	List<EquipmentEntity> tpmEntities = new ArrayList<>();
+            	ResultSet res_sql_room_equipment_report = stm.executeQuery(sql_room_equipment_report);
+            	while (res_sql_room_equipment_report.next()) {
+//            		System.out.println(res_sql_room_equipment_report.getString("name"));
+            		EquipmentEntity aEntity = new EquipmentEntity(
+            				res_sql_room_equipment_report.getInt("equipmentCategoryId"), 
+            				res_sql_room_equipment_report.getString("id"),
+            				res_sql_room_equipment_report.getString("name"),
+            				res_sql_room_equipment_report.getInt("status"), 
+            				res_sql_room_equipment_report.getDate("mfg"), 
+            				res_sql_room_equipment_report.getDate("yearOfUse"),
+            				res_sql_room_equipment_report.getInt("numberOfRepairs"),
+            				res_sql_room_equipment_report.getString("note"));
+//            		aEntity.displayEquipment();
+            		tpmEntities.add(aEntity);
+            		this.setListEquipmentReport(tpmEntities);
+				}
                 RoomReportEntity roomReport = new RoomReportEntity(
                     res.getInt("id"),
                     res.getInt("roomId"),

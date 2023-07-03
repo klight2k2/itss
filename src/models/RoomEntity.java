@@ -15,8 +15,9 @@ public class RoomEntity extends BaseEntity {
 	private boolean status;
 	private String name;
 	public List<EquipmentEntity> listEquipment;
-	private List<RoomScheduleEntity> listRoomSchedule;
-	
+	public List<RoomScheduleEntity> listRoomSchedule;
+	public List<RoomReportEntity> listRoomReport;
+
 	public List<RoomReportEntity> getListRoomReport() {
 		return listRoomReport;
 	}
@@ -24,8 +25,6 @@ public class RoomEntity extends BaseEntity {
 	public void setListRoomReport(List<RoomReportEntity> listRoomReport) {
 		this.listRoomReport = listRoomReport;
 	}
-
-	private List<RoomReportEntity> listRoomReport;
 
 	public List<RoomScheduleEntity> getListRoomSchedule() {
 		return listRoomSchedule;
@@ -52,11 +51,10 @@ public class RoomEntity extends BaseEntity {
 			ResultSet res = stm.executeQuery("select * from room");
 			ArrayList<RoomEntity> medium = new ArrayList<>();
 			while (res.next()) {
-				RoomEntity room = new RoomEntity(res.getInt("id"), res.getBoolean("status"),
-						res.getString("name"));
+				RoomEntity room = new RoomEntity(res.getInt("id"), res.getBoolean("status"), res.getString("name"));
 				room.setListEquipment(new EquipmentEntity().getAllEquipmentInRoom(room.getId()));
-//				room.setListRoomSchedule(new RoomScheduleEntity().getAllRoomScheduleByRoomId(room.getId()));
-//				room.setListRoomReport(new RoomReportEntity().getAllRoomReportByRoomId(room.getId()));
+				room.setListRoomSchedule(new RoomScheduleEntity().getAllRoomScheduleByRoomId(room.getId()));
+				room.setListRoomReport(new RoomReportEntity().getAllRoomReportByRoomId(room.getId()));
 				medium.add(room);
 			}
 			return medium;
@@ -70,8 +68,7 @@ public class RoomEntity extends BaseEntity {
 	public boolean save() throws SQLException {
 		// TODO Auto-generated method stub
 		try {
-			String insert_sqlString = " insert into room (id, name, status)"
-					+ " values (?, ?, ?)";
+			String insert_sqlString = " insert into room (id, name, status)" + " values (?, ?, ?)";
 			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
 			preparedStmt.setInt(1, this.id);
 			preparedStmt.setString(2, this.name);
@@ -85,6 +82,7 @@ public class RoomEntity extends BaseEntity {
 			return false;
 		}
 	}
+
 	public boolean saveListEquipment() throws SQLException {
 		// TODO Auto-generated method stub
 //		System.out.println(this.listEquipment.size());
@@ -95,16 +93,16 @@ public class RoomEntity extends BaseEntity {
 			if (roomEquipment == null) {
 				return true;
 			}
-			
-            for (int i = 0; i < this.listEquipment.size(); i++) {
-            	String sqlRoomEquipment = "INSERT IGNORE INTO room_equipment (roomId, equipmentId) VALUES (";
-            	roomEquipment.get(i).save();
-            	sqlRoomEquipment += this.getId() + ",";
-            	sqlRoomEquipment += "'" + roomEquipment.get(i).getId() + "'" + ")";
-            	System.out.println(sqlRoomEquipment);
-            	stm.executeUpdate(sqlRoomEquipment);
+
+			for (int i = 0; i < this.listEquipment.size(); i++) {
+				String sqlRoomEquipment = "INSERT IGNORE INTO room_equipment (roomId, equipmentId) VALUES (";
+				roomEquipment.get(i).save();
+				sqlRoomEquipment += this.getId() + ",";
+				sqlRoomEquipment += "'" + roomEquipment.get(i).getId() + "'" + ")";
+				System.out.println(sqlRoomEquipment);
+				stm.executeUpdate(sqlRoomEquipment);
 //            	System.out.println(stm.executeUpdate(sqlRoomEquipment));
-            }
+			}
 			return true;
 
 		} catch (SQLException e) {
@@ -113,6 +111,7 @@ public class RoomEntity extends BaseEntity {
 			return false;
 		}
 	}
+
 	@Override
 	public boolean delete() throws SQLException {
 		// TODO Auto-generated method stub
@@ -146,7 +145,6 @@ public class RoomEntity extends BaseEntity {
 			return false;
 		}
 	}
-	
 
 	public boolean isStatus() {
 		return status;
@@ -156,7 +154,6 @@ public class RoomEntity extends BaseEntity {
 		this.status = status;
 	}
 
-	
 	public int getId() {
 		return id;
 	}
@@ -180,16 +177,16 @@ public class RoomEntity extends BaseEntity {
 	public void setListEquipment(List<EquipmentEntity> listEquipment) {
 		this.listEquipment = listEquipment;
 	}
-	
+
 	public static void main(String[] args) {
 		RoomEntity room = new RoomEntity();
-		
+
 		try {
 			List<RoomEntity> a = room.getAll();
 //			System.out.println(a.get(2).getListEquipment().size());
-			System.out.println(a.get(0).listEquipment.add(new EquipmentEntity(6, "B011", "Ban", 1, new Date(2022-01-01), new Date(2022-01-01), 2, "Note 1")));
+			System.out.println(a.get(1).getListRoomReport().get(0).getId());
 //			System.out.println(a.get(2).getListEquipment().size());
-			a.get(0).saveListEquipment();
+//			a.get(0).saveListEquipment();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
