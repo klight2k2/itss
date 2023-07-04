@@ -23,7 +23,7 @@ public class CategoryEquipment extends BaseEntity {
         // Default constructor
     }
 
-    @Override
+    
     public List<CategoryEquipment> getAll() throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
@@ -43,7 +43,7 @@ public class CategoryEquipment extends BaseEntity {
         }
     }
 
-    @Override
+    
     public boolean save() throws SQLException {
         try {
             String insertSql = "INSERT INTO equipment_category (id, name, code) VALUES (?, ?, ?)";
@@ -59,7 +59,6 @@ public class CategoryEquipment extends BaseEntity {
         }
     }
 
-    @Override
     public boolean delete() throws SQLException {
         try {
             String deleteSql = "DELETE FROM equipment_category WHERE id = ?";
@@ -73,7 +72,7 @@ public class CategoryEquipment extends BaseEntity {
         }
     }
 
-    @Override
+    
     public boolean update() throws SQLException {
         // Update operation may not be applicable for this table structure
         return false;
