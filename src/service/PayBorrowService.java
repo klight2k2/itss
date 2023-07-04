@@ -11,6 +11,16 @@ import models.PayBorrowEntity;
 import models.db.DB;
 
 public class PayBorrowService {
+    private static PayBorrowService repo;
+
+    public static PayBorrowService getRepo() {
+        if (repo != null) {
+            return repo;
+        } else {
+            return new PayBorrowService();
+        }
+    };
+
     public List<PayBorrowEntity> getAll() throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();

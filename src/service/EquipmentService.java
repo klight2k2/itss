@@ -8,10 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.EquipmentEntity;
-import models.RoomEntity;
 import models.db.DB;
 
 public class EquipmentService {
+    private static EquipmentService repo;
+
+    public static EquipmentService getRepo() {
+        if (repo != null) {
+            return repo;
+        } else {
+            return new EquipmentService();
+        }
+    };
+
     public List<EquipmentEntity> getAll() throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
@@ -94,10 +103,10 @@ public class EquipmentService {
 
     }
 
-    public List<EquipmentEntity> getAllEquipmentInRoom(RoomEntity room) throws SQLException {
+    public List<EquipmentEntity> getAllEquipmentInRoom(int roomId) throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
-            String insert_sqlString = "select * from room_equipment where roomId = " + room.getId() + ";";
+            String insert_sqlString = "select * from room_equipment where roomId = " + roomId + ";";
             ResultSet res = stm.executeQuery(insert_sqlString);
             String sql = "SELECT * FROM equipment WHERE id IN (";
             while (res.next()) {
