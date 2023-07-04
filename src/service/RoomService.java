@@ -9,11 +9,19 @@ import java.util.List;
 
 import models.EquipmentEntity;
 import models.RoomEntity;
-import models.RoomReportEntity;
-import models.RoomScheduleEntity;
 import models.db.DB;
 
 public class RoomService {
+    private static RoomService repo;
+
+    public static RoomService getRepo() {
+        if (repo != null) {
+            return repo;
+        } else {
+            return new RoomService();
+        }
+    };
+
     public List<RoomEntity> getAll() throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
@@ -21,9 +29,9 @@ public class RoomService {
             ArrayList<RoomEntity> medium = new ArrayList<>();
             while (res.next()) {
                 RoomEntity room = new RoomEntity(res.getInt("id"), res.getBoolean("status"), res.getString("name"));
-                room.setListEquipment(new EquipmentService().getAllEquipmentInRoom(room));
-                room.setListRoomSchedule(new RoomScheduleService().getAllRoomScheduleByRoomId(room));
-                room.setListRoomReport(new RoomReportService().getAllRoomReportByRoomId(room));
+                room.setListEquipment(new EquipmentService().getAllEquipmentInRoom(room.getId()));
+                room.setListRoomSchedule(new RoomScheduleService().getAllRoomScheduleByRoomId(room.getId()));
+                room.setListRoomReport(new RoomReportService().getAllRoomReportByRoomId(room.getId()));
                 medium.add(room);
             }
             return medium;

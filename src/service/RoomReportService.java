@@ -8,11 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.EquipmentEntity;
-import models.RoomEntity;
 import models.RoomReportEntity;
 import models.db.DB;
 
 public class RoomReportService {
+    private static RoomReportService repo;
+
+    public static RoomReportService getRepo() {
+        if (repo != null) {
+            return repo;
+        } else {
+            return new RoomReportService();
+        }
+    };
+
     public RoomReportEntity getRoomReportById(int reportId) {
         String sql = "SELECT * FROM room_report WHERE id = ?";
 
@@ -39,10 +48,10 @@ public class RoomReportService {
         }
     }
 
-    public List<RoomReportEntity> getAllRoomReportByRoomId(RoomEntity room) throws SQLException {
+    public List<RoomReportEntity> getAllRoomReportByRoomId(int roomId) throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
-            String queryRoom_report = "SELECT * FROM room_report WHERE roomId = " + room.getId();
+            String queryRoom_report = "SELECT * FROM room_report WHERE roomId = " + roomId;
             // System.out.println(queryRoom_report);
             ResultSet res = stm.executeQuery(queryRoom_report);
             ArrayList<RoomReportEntity> roomReports = new ArrayList<>();
