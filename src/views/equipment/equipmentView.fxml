@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628" prefWidth="784" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.equipment.EquipmentViewController">
+   <children>
+      <TableView fx:id="equipments" layoutX="22.0" layoutY="135.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="471.0" prefWidth="739.0">
+         <columns>
+            <TableColumn fx:id="equipId" prefWidth="40.000030517578125" text="ID" />
+            <TableColumn fx:id="equipName" prefWidth="96.79995727539062" text="Tên thiết bị" />
+            <TableColumn fx:id="equipCategory" prefWidth="90.39996337890625" text="Loại" />
+            <TableColumn fx:id="equipRoom" prefWidth="61.60003662109375" text="Phòng" />
+            <TableColumn fx:id="equipStatus" prefWidth="115.20001220703125" text="Trạng thái" />
+            <TableColumn prefWidth="188.79998779296875" text="Thời gian">
+               <columns>
+                  <TableColumn fx:id="equipTimeUse" prefWidth="79.20001220703125" text="Sử dụng" />
+                  <TableColumn fx:id="equipMfg" prefWidth="91.20001220703125" text="Xuất xưởng" />
+               </columns>
+            </TableColumn>
+            <TableColumn fx:id="equipRepairTime" prefWidth="82.4000244140625" text="  Số lần&#10;sửa chữa" />
+            <TableColumn fx:id="equipNote" prefWidth="116.7999267578125" text="Note" />
+         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <TextField fx:id="inputSearch" layoutX="22.0" layoutY="83.0" />
+      <Button layoutX="190.0" layoutY="83.0" mnemonicParsing="false" onAction="#search" text="Tìm kiếm" />
+      <Button layoutX="268.0" layoutY="83.0" mnemonicParsing="false" onAction="#reset" text="Làm mới" />
+      <Text layoutX="308.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thiết bị" textAlignment="CENTER" wrappingWidth="167.9794921875">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Text>
+      <Button layoutX="668.0" layoutY="83.0" mnemonicParsing="false" onAction="#openModal" text="Thêm thiết bị" />
+      <AnchorPane fx:id="addEquipmentModal" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
+         <children>
+            <AnchorPane layoutX="210.0" layoutY="73.0" prefHeight="481.0" prefWidth="362.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
+               <children>
+                  <Label alignment="CENTER" layoutX="113.0" layoutY="14.0" prefHeight="27.0" prefWidth="136.0" style="-fx-font-weight: bold; -fx-font-size: 16;" styleClass="title" text="Thêm thiết bị" />
+                  <Label layoutX="52.0" layoutY="54.0" prefHeight="19.0" prefWidth="86.0" text="Tên phòng" />
+                  <Label layoutX="52.0" layoutY="171.0" prefHeight="19.0" prefWidth="86.0" text="Trạng thái" />
+                  <ChoiceBox fx:id="inputEquipStatus" layoutX="162.0" layoutY="167.0" prefHeight="27.0" prefWidth="147.0" />
+                  <Button layoutX="164.0" layoutY="438.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="86.0" text="Xác nhận" />
+                  <Button layoutX="119.0" layoutY="438.0" mnemonicParsing="false" onAction="#closeModal" text="Hủy" />
+                  <Label layoutX="52.0" layoutY="133.0" prefHeight="19.0" prefWidth="86.0" text="Loại thiết bị" />
+                  <Label layoutX="52.0" layoutY="208.0" prefHeight="38.0" prefWidth="80.0" text="Ngày xuất&#10;xưởng" />
+                  <Label layoutX="52.0" layoutY="253.0" prefHeight="38.0" prefWidth="80.0" text="Số năm&#10;sử dụng" />
+                  <Label layoutX="52.0" layoutY="306.0" prefHeight="38.0" prefWidth="80.0" text="Số lần&#10;sửa chữa" />
+                  <Label layoutX="52.0" layoutY="356.0" prefHeight="19.0" prefWidth="86.0" text="Ghi chú" />
+                  <DatePicker fx:id="inputEquipMfg" layoutX="162.0" layoutY="213.0" prefHeight="27.0" prefWidth="147.0" />
+                  <TextField fx:id="inputEquipRepairTime" layoutX="162.0" layoutY="311.0" prefHeight="27.0" prefWidth="147.0" />
+                  <TextArea fx:id="inputEquipNote" layoutX="162.0" layoutY="356.0" prefHeight="60.0" prefWidth="147.0" />
+                  <DatePicker fx:id="inputEquipYearUse" layoutX="162.0" layoutY="258.0" prefHeight="27.0" prefWidth="147.0" />
+                  <ChoiceBox fx:id="inputEquipCategory" layoutX="162.0" layoutY="129.0" prefHeight="27.0" prefWidth="147.0" />
+                  <Label layoutX="52.0" layoutY="93.0" prefHeight="19.0" prefWidth="86.0" text="Tên thiết bị" />
+                  <TextField layoutX="162.0" layoutY="89.0" prefHeight="27.0" prefWidth="147.0" />
+                  <ChoiceBox fx:id="inputEquipRoom" layoutX="162.0" layoutY="50.0" prefHeight="27.0" prefWidth="147.0" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

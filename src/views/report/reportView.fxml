@@ -15,7 +15,7 @@
          <font>
             <Font size="38.0" />
          </font></Text>
-      <TableView fx:id="reports" layoutX="36.0" layoutY="115.0" prefHeight="461.0" prefWidth="711.0">
+      <TableView fx:id="reports" layoutX="36.0" layoutY="115.0" onMouseClicked="#onRowClicked" prefHeight="481.0" prefWidth="711.0">
         <columns>
           <TableColumn fx:id="reportId" prefWidth="57.600006103515625" text="ID" />
           <TableColumn fx:id="reportRoom" prefWidth="125.5999755859375" text="Phòng " />
@@ -32,5 +32,6 @@
       <TextField fx:id="inputRoomName" layoutX="118.0" layoutY="66.0" prefHeight="27.0" prefWidth="122.0" />
       <Button layoutX="328.0" layoutY="66.0" mnemonicParsing="false" onAction="#reset" text="Làm mới" />
       <Button layoutX="250.0" layoutY="66.0" mnemonicParsing="false" onAction="#search" text="Tìm kiếm" />
+      <Button layoutX="659.0" layoutY="66.0" mnemonicParsing="false" onAction="#delete" text="Xóa báo cáo" />
    </children>
 </AnchorPane>

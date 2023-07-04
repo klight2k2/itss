@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import models.EquipmentEntity;
 import models.RoomEntity;
+import models.RoomReportEntity;
 
 public class RoomViewController {
 
@@ -53,8 +54,8 @@ public class RoomViewController {
 	@FXML
 	private TableColumn<Room, Integer> roomEquipments;
 
-//	@FXML
-//	private TableColumn<Room, Integer> roomReports;
+	@FXML
+	private TableColumn<Room, Integer> roomReports;
 
 	@FXML
 	private TextField inputRoomName;
@@ -97,6 +98,10 @@ public class RoomViewController {
 
 	@FXML
 	private TableColumn<Equipment, Date> equipTimeUse;
+
+	public String convertStatus(int status) {
+		return status == 0 ? "Hỏng" : status == 1 ? "Tốt" : "Đang sửa";
+	}
 
 	void openModal(String title) {
 		String displayTitle = title == null ? "Thêm phòng mới" : title;
@@ -197,7 +202,8 @@ public class RoomViewController {
 					newRoom.setStatus(roomEntity.isStatus());
 					newRoom.setDisplayStatus();
 					newRoom.setNumsOfEquipments(roomEntity.getListEquipment().size());
-					// newRoom.setNumsOfReports(roomEntity.get);
+					newRoom.setNumsOfReports(
+							new RoomReportEntity().getAllRoomReportByRoomId(roomEntity.getId()).size());
 
 					rooms.getItems().add(newRoom);
 				}
@@ -235,8 +241,7 @@ public class RoomViewController {
 				Equipment newEquip = new Equipment();
 				newEquip.setDisplayId(equip.getId());
 				newEquip.setDisplayName(equip.getName());
-				int status = equip.getStatus();
-				newEquip.setDisplayStatus("nah");
+				newEquip.setDisplayStatus(convertStatus(equip.getStatus()));
 				newEquip.setDisplayMfg(equip.getMfg());
 				newEquip.setDisplayTimeUse(equip.getYearOfUse());
 				newEquip.setDisplayTimeRepair(equip.getNumberOfRepairs());
@@ -346,7 +351,7 @@ public class RoomViewController {
 				newRoom.setDisplayStatus();
 				List<EquipmentEntity> equipments = roomEntity.getListEquipment();
 				newRoom.setNumsOfEquipments(equipments != null ? equipments.size() : 0);
-//				newRoom.setNumsOfReports(roomEntity.get);
+				newRoom.setNumsOfReports(new RoomReportEntity().getAllRoomReportByRoomId(roomEntity.getId()).size());
 
 				rooms.getItems().add(newRoom);
 			}
@@ -367,7 +372,7 @@ public class RoomViewController {
 		roomName.setCellValueFactory(new PropertyValueFactory<Room, String>("displayName"));
 		roomStatus.setCellValueFactory(new PropertyValueFactory<Room, String>("displayStatus"));
 		roomEquipments.setCellValueFactory(new PropertyValueFactory<Room, Integer>("numsOfEquipments"));
-//		roomReports.setCellValueFactory(new PropertyValueFactory<Room, Integer>("numsOfReports"));
+		roomReports.setCellValueFactory(new PropertyValueFactory<Room, Integer>("numsOfReports"));
 		initEquipTable();
 		updateTable();
 	}
