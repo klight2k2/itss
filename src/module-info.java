@@ -22,5 +22,6 @@ module itss {
 	opens views.room;
 	opens views.payborrow;
 	opens views.report;
-
+	opens views.login;
+	opens controllers;
 }

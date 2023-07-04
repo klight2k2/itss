@@ -1,9 +1,12 @@
 package views.home;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -11,7 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import views.Links;
 
-public class HomeViewController {
+public class HomeViewController implements Initializable {
 
 	@FXML
 	private ImageView avatar;
@@ -42,10 +45,15 @@ public class HomeViewController {
 
 	@FXML
 	private Text userName;
+	
+	private Button selectedBtn;
 
 	@FXML
 	void onNavagate(MouseEvent event) {
+		selectedBtn.getStyleClass().remove("active");
 		Button sourceButton = (Button) event.getSource();
+		selectedBtn=sourceButton;
+		selectedBtn.getStyleClass().add("active");
 		if (sourceButton.equals(equipmentBtn)) {
 			System.out.print("equipmentBtn");
 			loadView(Links.EQUIPMENTVIEW);
@@ -86,6 +94,14 @@ public class HomeViewController {
 			ex.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		this.selectedBtn=homeBtn;
+		selectedBtn.getStyleClass().add("active");
+		
 	}
 
 }
