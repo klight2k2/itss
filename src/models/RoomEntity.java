@@ -16,7 +16,8 @@ public class RoomEntity extends BaseEntity {
 	private boolean status;
 	private String name;
 	public List<EquipmentEntity> listEquipment;
-	private List<RoomScheduleEntity> listRoomSchedule;
+	public List<RoomScheduleEntity> listRoomSchedule;
+	public List<RoomReportEntity> listRoomReport;
 
 	public List<RoomReportEntity> getListRoomReport() {
 		return listRoomReport;
@@ -25,8 +26,6 @@ public class RoomEntity extends BaseEntity {
 	public void setListRoomReport(List<RoomReportEntity> listRoomReport) {
 		this.listRoomReport = listRoomReport;
 	}
-
-	private List<RoomReportEntity> listRoomReport;
 
 	public List<RoomScheduleEntity> getListRoomSchedule() {
 		return listRoomSchedule;
@@ -55,10 +54,8 @@ public class RoomEntity extends BaseEntity {
 			while (res.next()) {
 				RoomEntity room = new RoomEntity(res.getInt("id"), res.getBoolean("status"), res.getString("name"));
 				room.setListEquipment(new EquipmentEntity().getAllEquipmentInRoom(room.getId()));
-				// room.setListRoomSchedule(new
-				// RoomScheduleEntity().getAllRoomScheduleByRoomId(room.getId()));
-				// room.setListRoomReport(new
-				// RoomReportEntity().getAllRoomReportByRoomId(room.getId()));
+				room.setListRoomSchedule(new RoomScheduleEntity().getAllRoomScheduleByRoomId(room.getId()));
+				room.setListRoomReport(new RoomReportEntity().getAllRoomReportByRoomId(room.getId()));
 				medium.add(room);
 			}
 			return medium;
@@ -150,6 +147,29 @@ public class RoomEntity extends BaseEntity {
 		}
 	}
 
+	public RoomEntity getRoomById(int roomId) {
+		String sql = "SELECT * FROM room WHERE id = ?";
+
+		try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
+			statement.setInt(1, roomId);
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				RoomEntity room = new RoomEntity(
+						resultSet.getInt("id"),
+						resultSet.getBoolean("status"),
+						resultSet.getString("name"));
+				return room;
+			} else {
+				return null; // Phòng không tồn tại
+			}
+		} catch (SQLException e) {
+			System.err.println("Got an exception!");
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
+
 	public boolean isStatus() {
 		return status;
 	}
@@ -187,11 +207,11 @@ public class RoomEntity extends BaseEntity {
 
 		try {
 			List<RoomEntity> a = room.getAll();
+			System.out.println(a.get(3).getListRoomSchedule().get(0).getTeacher().getName());
 			// System.out.println(a.get(2).getListEquipment().size());
-			System.out.println(a.get(0).listEquipment.add(
-					new EquipmentEntity(6, "B011", "Ban", 1, new Date(2022 - 01 - 01), new Date(2022 - 01 - 01), 2, "Note 1")));
+			// System.out.println(a.get(1).getListRoomReport().get(0).getId());
 			// System.out.println(a.get(2).getListEquipment().size());
-			a.get(0).saveListEquipment();
+			// a.get(0).saveListEquipment();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

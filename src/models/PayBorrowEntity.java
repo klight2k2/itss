@@ -100,7 +100,25 @@ public class PayBorrowEntity extends BaseEntity {
 	@Override
 	public boolean update() throws SQLException {
 		// Update operation may not be applicable for this table structure
-		return false;
+		String sql = "UPDATE pay_borrow " +
+                "SET fromDate = ?, toDate = ?, status = ?, borrowReason = ?, refuseReason = ?, borrowerId = ? " +
+                "WHERE id = ?";
+	   try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
+	       statement.setDate(1, this.fromDate);
+	       statement.setDate(2, this.toDate);
+	       statement.setString(3, this.status);
+	       statement.setString(4, this.borrowReason);
+	       statement.setString(5, this.refuseReason);
+	       statement.setInt(6, this.borrowerId);
+	       statement.setInt(7, this.id);
+	
+	       int rowsAffected = statement.executeUpdate();
+	       return rowsAffected > 0;
+	   } catch (SQLException e) {
+	       System.err.println("Got an exception!");
+	       System.err.println(e.getMessage());
+	       return false;
+	   }
 	}
 
 	// Getters and setters

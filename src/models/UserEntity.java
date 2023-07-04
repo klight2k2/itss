@@ -26,7 +26,34 @@ public class UserEntity extends BaseEntity {
     public UserEntity() {
         // Default constructor
     }
+    
+    public UserEntity getUserById(int userId) {
+        String sql = "SELECT * FROM user WHERE id = ?";
 
+        try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                UserEntity user = new UserEntity(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("role")
+                );
+                return user;
+            } else {
+                return null; // Người dùng không tồn tại
+            }
+        } catch (SQLException e) {
+            System.err.println("Got an exception!");
+            System.err.println(e.getMessage());
+            return null;
+        }
+    }
+
+    
     @Override
     public List<UserEntity> getAll() throws SQLException {
         try {
@@ -138,5 +165,19 @@ public class UserEntity extends BaseEntity {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	public static void main(String[] args) {
+		try {
+			String sql_user = "SELECT * FROM user WHERE id = " + 1;
+            System.out.println(sql_user);
+            Statement stm = DB.getConnection().createStatement();
+            ResultSet res_user = stm.executeQuery(sql_user);
+            if (res_user.next()) {
+				
+            	System.out.println(res_user.getInt("id"));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 }

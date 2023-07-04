@@ -97,6 +97,72 @@ public class EquipmentEntity extends BaseEntity {
 
 	}
 
+	public EquipmentEntity getEquipmentById(String equipmentId) {
+		String sql = "SELECT * FROM equipment WHERE id = ?";
+
+		try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
+			statement.setString(1, equipmentId);
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				EquipmentEntity equipment = new EquipmentEntity(
+						resultSet.getInt("equipmentCategoryId"),
+						resultSet.getString("id"),
+						resultSet.getString("name"),
+						resultSet.getInt("status"),
+						resultSet.getDate("mfg"),
+						resultSet.getDate("yearOfUse"),
+						resultSet.getInt("numberOfRepairs"),
+						resultSet.getString("note"));
+				return equipment;
+			} else {
+				return null; // Thiết bị không tồn tại
+			}
+		} catch (SQLException e) {
+			System.err.println("Got an exception!");
+			System.err.println(e.getMessage());
+			return null;
+		}
+	}
+
+	public List<EquipmentEntity> getAllEquipmentNoUse() throws SQLException {
+		try {
+			Statement stm = DB.getConnection().createStatement();
+			String insert_sqlString = "select equipmentId from room_equipment";
+			ResultSet res = stm.executeQuery(insert_sqlString);
+			String sql = "SELECT * FROM equipment WHERE id NOT IN (";
+			while (res.next()) {
+				// System.out.println(roomId + "-" + res.getString("equipmentId"));
+				sql += "'" + res.getString("equipmentId") + "'";
+				sql += ",";
+			}
+			// System.out.println(sql.charAt(1));
+			if (sql.charAt(sql.length() - 1) == ',') {
+				sql = sql.substring(0, sql.length() - 1);
+			}
+			sql += ")";
+			// System.out.println(sql);
+			if (sql.charAt(sql.length() - 2) != '(') {
+				res = stm.executeQuery(sql);
+			}
+			ArrayList<EquipmentEntity> medium = new ArrayList<>();
+			while (res.next()) {
+				EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
+						res.getString("name"),
+						res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
+						res.getInt("numberOfRepairs"),
+						res.getString("note"));
+				medium.add(equipment);
+			}
+			return medium;
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
 	public int getEquipmentCategoryId() {
 		return equipmentCategoryId;
 	}
@@ -221,11 +287,17 @@ public class EquipmentEntity extends BaseEntity {
 
 	}
 
+	public void displayEquipment() {
+		System.out.print(this.getEquipmentCategoryId());
+		System.out.print(this.getId());
+		System.out.print(this.getName());
+	}
+
 	public static void main(String[] args) {
 		try {
 			// System.out.println(new
 			// EquipmentEntity().getAllEquipmentInRoom(2).get(0).getName());
-			System.out.println(new RoomEntity().getAll().size());
+			System.out.println(new EquipmentEntity().getAllEquipmentNoUse().size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
