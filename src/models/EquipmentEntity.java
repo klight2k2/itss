@@ -16,6 +16,18 @@ public class EquipmentEntity extends BaseEntity {
 		super();
 	}
 
+	public EquipmentEntity(int equipmentCategoryId, String name, int status, Date mfg, Date yearOfUse,
+			int numberOfRepairs, String note) {
+		super();
+		this.equipmentCategoryId = equipmentCategoryId;
+		this.name = name;
+		this.status = status;
+		this.mfg = mfg;
+		this.yearOfUse = yearOfUse;
+		this.numberOfRepairs = numberOfRepairs;
+		this.note = note;
+	}
+
 	public EquipmentEntity(int equipmentCategoryId, String id, String name, int status, Date mfg,
 			Date yearOfUse, int numberOfRepairs, String note) {
 		super();
