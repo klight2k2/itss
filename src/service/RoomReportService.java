@@ -109,6 +109,11 @@ public class RoomReportService {
 
     public boolean save(RoomReportEntity room_report) throws SQLException {
         try {
+        	Statement stm = DB.getConnection().createStatement();
+        	ResultSet resultSet = stm.executeQuery("select count(*) as count from room_report");
+        	if (resultSet.next()) {
+        		room_report.setId(resultSet.getInt("count")+1);
+			}
             String insertSql = "INSERT INTO room_report (id, roomId, status, createdAt, reporterId, approverId) "
                     + "VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);

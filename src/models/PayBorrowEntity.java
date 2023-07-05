@@ -1,5 +1,7 @@
 package models;
 
+import java.sql.Date;
+
 enum PayBorrowStatus {
 	PENDING,
 	BORROWING,
@@ -19,6 +21,17 @@ public class PayBorrowEntity extends BaseEntity {
 	public PayBorrowEntity(int id, java.sql.Date fromDate, java.sql.Date toDate, String status,
 			String borrowReason, String refuseReason, int borrowerId) {
 		this.id = id;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.status = status;
+		this.borrowReason = borrowReason;
+		this.refuseReason = refuseReason;
+		this.borrowerId = borrowerId;
+	}
+
+	public PayBorrowEntity(Date fromDate, Date toDate, String status, String borrowReason, String refuseReason,
+			int borrowerId) {
+		super();
 		this.fromDate = fromDate;
 		this.toDate = toDate;
 		this.status = status;

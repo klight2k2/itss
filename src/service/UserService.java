@@ -59,6 +59,11 @@ public class UserService {
     }
     public boolean save(UserEntity user) throws SQLException {
         try {
+        	Statement stm = DB.getConnection().createStatement();
+        	ResultSet resultSet = stm.executeQuery("select count(*) as count from user");
+        	if (resultSet.next()) {
+        		user.setId(resultSet.getInt("count")+1);
+			}
             String insertSql = "INSERT INTO user (id, name, username, password, role) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
             preparedStmt.setInt(1, user.getId());

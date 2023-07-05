@@ -20,6 +20,17 @@ public class RoomScheduleEntity extends BaseEntity {
 		this.teacher = teacher;
 	}
 
+	public RoomScheduleEntity(int teacherId, int roomId, Date startTime, Date endTime, String reason,
+			UserEntity teacher) {
+		super();
+		this.teacherId = teacherId;
+		this.roomId = roomId;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.reason = reason;
+		this.teacher = teacher;
+	}
+
 	public RoomScheduleEntity(int id, int teacherId, int roomId, Date startTime, Date endTime, String reason) {
 		this.id = id;
 		this.teacherId = teacherId;
