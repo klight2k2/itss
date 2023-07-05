@@ -92,6 +92,7 @@ public class PayBorrowViewController {
 	@FXML
 	void openModal(ActionEvent event) {
 		pbCurId = -1;
+		deleteBtn.setVisible(false);
 		equipId.setText("BD001");
 		borrowUser.clear();
 		status.setValue(null);
@@ -107,19 +108,21 @@ public class PayBorrowViewController {
 	void submit(ActionEvent event) {
 		try {
 
-			PayBorrowEntity pbs = new PayBorrow();
+			PayBorrowEntity pb = new PayBorrowEntity();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
-			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
-				if (pb.getId() == pbCurId) {
-					pb.setStatus(status.getValue());
-					pb.setFromDate(Date.valueOf(borrowDate.getValue()));
-					pb.setToDate(Date.valueOf(payDate.getValue()));
-					pb.setBorrowReason(borrowReason.getText());
-					pb.setRefuseReason(refuseReason.getText());
-					payBorrowRepo.update(pb);
-					break;
-				}
+			pb.setStatus(status.getValue());
+			pb.setFromDate(Date.valueOf(borrowDate.getValue()));
+			pb.setToDate(Date.valueOf(payDate.getValue()));
+			pb.setBorrowReason(borrowReason.getText());
+			pb.setRefuseReason(refuseReason.getText());
+			if (pbCurId > 0) {
+				pb.setId(pbCurId);
+				payBorrowRepo.update(pb);
+			} else {
+				pb.setId(payBorrowRepo.getAll().size() + 1);
+				payBorrowRepo.save(pb);
 			}
+
 			updateTable();
 			pbDetailModal.setVisible(false);
 		} catch (SQLException e) {
@@ -154,6 +157,7 @@ public class PayBorrowViewController {
 			return;
 
 		pbCurId = clickedRow.getDisplayId().intValue();
+		deleteBtn.setVisible(true);
 		equipId.setText("BD001");
 		borrowUser.setText(clickedRow.getDisplayUsername());
 		status.setValue(clickedRow.getDisplayStatus());
