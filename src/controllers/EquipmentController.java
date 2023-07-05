@@ -11,8 +11,5 @@ public class EquipmentController {
 		// TODO Auto-generated constructor stub
 	}
 	
-//	public List<EquipmentEntity> getAllEquipment() throws SQLException {
-//		return new EquipmentEntity().getAll();
-//	}
 
 }

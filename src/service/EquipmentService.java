@@ -1,5 +1,6 @@
 package service;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.EquipmentEntity;
+import models.RoomEntity;
 import models.db.DB;
 
 public class EquipmentService {
@@ -44,9 +46,19 @@ public class EquipmentService {
 
     public boolean save(EquipmentEntity equipment) throws SQLException {
         try {
-            String insert_sqlString = " INSERT IGNORE INTO equipment (equipmentCategoryId, id, name, status, mfg, yearOfUse, numberOfRepairs, note)"
+            String insert_sqlString = "INSERT IGNORE INTO equipment (equipmentCategoryId, id, name, status, mfg, yearOfUse, numberOfRepairs, note)"
                     + " values (?, ?, ?, ?, ?, ?, ?, ?)";
+            Statement statement = DB.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery("select count(e.equipmentCategoryId) as count, ec.code from equipment e, equipment_category ec "+
+            		"where e.equipmentCategoryId = ec.id and e.equipmentCategoryId = " + equipment.getEquipmentCategoryId() +
+            		" group by ec.code");
+            resultSet.next();
+            int count = resultSet.getInt("count")+1;
+            equipment.setId(resultSet.getString("code") + String.format("%03d", count));
+            System.out.println(equipment.getId());
+            System.out.println(resultSet.getInt("count"));
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
+            System.out.println(preparedStmt);
             preparedStmt.setInt(1, equipment.getEquipmentCategoryId());
             preparedStmt.setString(2, equipment.getId());
             preparedStmt.setString(3, equipment.getName());
@@ -200,4 +212,34 @@ public class EquipmentService {
         }
 
     }
+    public RoomEntity getRoomByEquipment(String equipmentId) {
+		try {				
+			Statement stm = DB.getConnection().createStatement();
+			ResultSet resultSet = stm.executeQuery("SELECT r.* FROM room r, room_equipment re where r.id = re.roomId and re.equipmentId = " + equipmentId);
+			if (resultSet.next()) {
+				return new RoomEntity(
+						resultSet.getInt("id"),
+                        resultSet.getBoolean("status"),
+                        resultSet.getString("name")
+                        );
+			}
+			else {
+				return null;
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+		
+	}
+    
+//    public static void main(String[] args) {
+//		EquipmentService aEquipmentService = new EquipmentService();
+//		try {
+//			aEquipmentService.save(new EquipmentEntity(6,"Ban",1,Date.valueOf("2023-07-03"),Date.valueOf("2023-07-03"),0,"note1"));
+//		} catch (Exception e) {
+//			// TODO: handle exception
+//		}
+//	}
 }

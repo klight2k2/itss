@@ -26,6 +26,17 @@ public class RoomReportEntity extends BaseEntity {
 		// Default constructor
 	}
 
+	public RoomReportEntity(int roomId, String status, Date createdAt, int reporterId, int approverId,
+			List<EquipmentEntity> listEquipmentReport) {
+		super();
+		this.roomId = roomId;
+		this.status = status;
+		this.createdAt = createdAt;
+		this.reporterId = reporterId;
+		this.approverId = approverId;
+		this.listEquipmentReport = listEquipmentReport;
+	}
+
 	public RoomReportEntity(int id, int roomId, String status, Date createdAt, int reporterId, int approverId,
 			List<EquipmentEntity> listEquipmentReport) {
 		super();
