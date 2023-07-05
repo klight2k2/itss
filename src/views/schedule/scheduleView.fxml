@@ -16,7 +16,7 @@
             <Font size="38.0" />
          </font>
       </Text>
-      <TableView fx:id="schedules" layoutX="46.0" layoutY="145.0" prefHeight="442.0" prefWidth="711.0">
+      <TableView fx:id="schedules" layoutX="36.0" layoutY="145.0" prefHeight="442.0" prefWidth="711.0">
          <columns>
             <TableColumn fx:id="scheduleId" prefWidth="57.600006103515625" text="ID" />
             <TableColumn fx:id="scheduleRoom" prefWidth="125.5999755859375" text="Phòng " />
@@ -29,9 +29,9 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="46.0" layoutY="102.0" prefHeight="19.0" prefWidth="82.0" text="Phòng học" />
-      <TextField fx:id="inputRoomName" layoutX="128.0" layoutY="98.0" prefHeight="27.0" prefWidth="122.0" />
-      <Button layoutX="338.0" layoutY="98.0" mnemonicParsing="false" onAction="#reset" text="Làm mới" />
-      <Button layoutX="260.0" layoutY="98.0" mnemonicParsing="false" onAction="#search" text="Tìm kiếm" />
+      <Label layoutX="36.0" layoutY="102.0" prefHeight="19.0" prefWidth="82.0" text="Phòng học" />
+      <TextField fx:id="inputRoomName" layoutX="118.0" layoutY="98.0" prefHeight="27.0" prefWidth="122.0" />
+      <Button layoutX="328.0" layoutY="98.0" mnemonicParsing="false" onAction="#reset" text="Làm mới" />
+      <Button layoutX="250.0" layoutY="98.0" mnemonicParsing="false" onAction="#search" text="Tìm kiếm" />
    </children>
 </AnchorPane>
