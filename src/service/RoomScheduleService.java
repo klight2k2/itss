@@ -6,13 +6,21 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-
-import models.RoomEntity;
 import models.RoomScheduleEntity;
 import models.UserEntity;
 import models.db.DB;
 
 public class RoomScheduleService {
+    private static RoomScheduleService repo;
+
+    public static RoomScheduleService getRepo() {
+        if (repo != null) {
+            return repo;
+        } else {
+            return new RoomScheduleService();
+        }
+    };
+
     public RoomScheduleEntity getRoomScheduleById(int scheduleId) {
         String sql = "SELECT * FROM room_schedule WHERE id = ?";
 
@@ -35,11 +43,11 @@ public class RoomScheduleService {
         }
     }
 
-    public List<RoomScheduleEntity> getAllRoomScheduleByRoomId(RoomEntity room) throws SQLException {
+    public List<RoomScheduleEntity> getAllRoomScheduleByRoomId(int roomId) throws SQLException {
         try {
             String query = "SELECT * FROM room_schedule WHERE roomId = ?";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(query);
-            preparedStmt.setInt(1, room.getId());
+            preparedStmt.setInt(1, roomId);
             ResultSet res = preparedStmt.executeQuery();
 
             List<RoomScheduleEntity> roomSchedules = new ArrayList<>();
