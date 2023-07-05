@@ -2,20 +2,30 @@ package views.payborrow;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import models.EquipmentEntity;
 import models.PayBorrowEntity;
 import models.UserEntity;
+import service.EquipmentService;
 import service.PayBorrowService;
 import service.UserService;
 
@@ -40,6 +50,9 @@ public class PayBorrowViewController {
 	private AnchorPane pbDetailModal;
 
 	@FXML
+	private AnchorPane addEquipModal;
+
+	@FXML
 	private TableView<PayBorrow> pbEquipments;
 
 	@FXML
@@ -51,8 +64,8 @@ public class PayBorrowViewController {
 	@FXML
 	private TableColumn<PayBorrow, String> pbBorrowUser;
 
-//	@FXML
-//	private TableColumn<PayBorrow, ?> pbEquipId;
+	// @FXML
+	// private TableColumn<PayBorrow, ?> pbEquipId;
 
 	@FXML
 	private TableColumn<PayBorrow, Integer> pbId;
@@ -76,6 +89,38 @@ public class PayBorrowViewController {
 
 	private int pbCurId;
 
+	@FXML
+	private TableColumn<EquipmentEntity, String> borrowNoteColumn;
+
+	@FXML
+	private TableColumn<EquipmentEntity, String> borrowEquipNameColumn;
+
+	@FXML
+	private TableColumn<EquipmentEntity, String> borrowIdColumn;
+
+	@FXML
+	private TableColumn<EquipmentEntity, String> borrowedIdColumn;
+
+	@FXML
+	private TableColumn<EquipmentEntity, String> borrowedEquipNameColumn;
+
+	@FXML
+	private TableColumn<EquipmentEntity, String> borrowedNoteColumn;
+
+	@FXML
+	private TableView<EquipmentEntity> tableViewBorrow;
+
+	@FXML
+	private TableView<EquipmentEntity> tableViewBorrowed;
+
+	@FXML
+	void addEquipment(ActionEvent event) {
+		addEquipModal.setVisible(true);
+
+	}
+
+	private ObservableList<EquipmentEntity> listBorrowed = FXCollections.observableArrayList();
+	private ObservableList<EquipmentEntity> listBorrow = FXCollections.observableArrayList();
 
 	@FXML
 	void closeModal(ActionEvent event) {
@@ -85,9 +130,9 @@ public class PayBorrowViewController {
 	@FXML
 	void submit(ActionEvent event) {
 		try {
-			
+
 			PayBorrowEntity pbs = new PayBorrow();
-			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
+			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				if (pb.getId() == pbCurId) {
 					pb.setStatus(status.getValue());
@@ -110,7 +155,7 @@ public class PayBorrowViewController {
 	@FXML
 	void delete(ActionEvent event) {
 		try {
-			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
+			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			PayBorrowEntity pbs = new PayBorrow();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				if (pb.getId() == pbCurId) {
@@ -140,6 +185,23 @@ public class PayBorrowViewController {
 		payDate.setValue(clickedRow.getDisplayToDate().toLocalDate());
 		borrowReason.setText(clickedRow.getDisplayBorrowReason());
 		refuseReason.setText(clickedRow.getDisplayRefuseReason());
+		try {
+
+			listBorrowed.setAll(EquipmentService.getRepo().getEquipmentBorrowed(pbCurId));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("loi o day");
+			e.printStackTrace();
+		}
+		tableViewBorrowed.setItems(listBorrowed);
+		try {
+			listBorrow.setAll(EquipmentService.getRepo().getAllEquipmentNoUse());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		tableViewBorrow.setItems(listBorrow);
 
 		pbDetailModal.setVisible(true);
 	}
@@ -148,8 +210,8 @@ public class PayBorrowViewController {
 		try {
 			pbEquipments.getItems().clear();
 			PayBorrowEntity pbs = new PayBorrow();
-			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
-			UserService userRepo= UserService.getRepo();
+			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
+			UserService userRepo = UserService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				PayBorrow newPb = new PayBorrow();
 				newPb.setDisplayId(Integer.valueOf(pb.getId()));
@@ -173,9 +235,14 @@ public class PayBorrowViewController {
 		}
 	}
 
+	public void hiddenAddEquipModal() {
+		addEquipModal.setVisible(false);
+	}
+
 	public void initialize() {
 		try {
 			pbDetailModal.setVisible(false);
+			addEquipModal.setVisible(false);
 			status.getItems().addAll(statusValues);
 
 			pbId.setCellValueFactory(new PropertyValueFactory<PayBorrow, Integer>("displayId"));
@@ -185,6 +252,28 @@ public class PayBorrowViewController {
 			pbPayDate.setCellValueFactory(new PropertyValueFactory<PayBorrow, Date>("displayToDate"));
 			pbBorrowReason.setCellValueFactory(new PropertyValueFactory<PayBorrow, String>("displayBorrowReason"));
 			pbRefuseReason.setCellValueFactory(new PropertyValueFactory<PayBorrow, String>("displayRefuseReason"));
+
+			borrowedIdColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("id"));
+			borrowedEquipNameColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("name"));
+			borrowedNoteColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("note"));
+
+			borrowIdColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("id"));
+			borrowEquipNameColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("name"));
+			borrowNoteColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("note"));
+
+			tableViewBorrow.setRowFactory(tv -> {
+				TableRow<EquipmentEntity> row = new TableRow<>();
+				row.setOnMouseClicked(event -> {
+					if (event.getClickCount() == 2 && (!row.isEmpty())) {
+						EquipmentEntity eqip = tableViewBorrow.getSelectionModel().getSelectedItem();
+						listBorrowed.add(eqip);
+						listBorrow.remove(eqip);
+						hiddenAddEquipModal();
+
+					}
+				});
+				return row;
+			});
 
 			updateTable();
 		} catch (Exception e) {

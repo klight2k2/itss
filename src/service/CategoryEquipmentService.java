@@ -11,6 +11,15 @@ import models.CategoryEquipment;
 import models.db.DB;
 
 public class CategoryEquipmentService {
+	  private static CategoryEquipmentService repo;
+
+	    public static CategoryEquipmentService getRepo() {
+	        if (repo != null) {
+	            return repo;
+	        } else {
+	            return new CategoryEquipmentService();
+	        }
+	    };
 	public List<CategoryEquipment> getAll() throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();

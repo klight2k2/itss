@@ -11,6 +11,15 @@ public class EquipmentEntity extends BaseEntity {
 	private Date yearOfUse;
 	private int numberOfRepairs;
 	private String note;
+	private String belongto;
+
+	public String getBelongto() {
+		return belongto;
+	}
+
+	public void setBelongto(String belongto) {
+		this.belongto = belongto;
+	}
 
 	public EquipmentEntity() {
 		super();
@@ -109,6 +118,13 @@ public class EquipmentEntity extends BaseEntity {
 		System.out.print(this.getEquipmentCategoryId());
 		System.out.print(this.getId());
 		System.out.print(this.getName());
+	}
+
+	@Override
+	public boolean equals(Object obj){
+		EquipmentEntity entity =(EquipmentEntity) obj;
+		if(entity.id==this.id) return true;
+		return false;
 	}
 
 }

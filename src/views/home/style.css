@@ -21,3 +21,7 @@
     -fx-text-fill: #0284c7 ;
      -fx-background-color: #bae6fd ;
  }
+
+ .popupBorrowEquip{
+    -fx-background-color: red;
+ }

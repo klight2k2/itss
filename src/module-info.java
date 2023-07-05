@@ -15,6 +15,7 @@ module itss {
 	requires java.logging;
 	requires java.sql;
 
+	opens models;
 	opens views;
 	opens views.home;
 	opens views.equipment;
