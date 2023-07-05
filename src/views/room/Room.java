@@ -19,7 +19,7 @@ public class Room extends RoomEntity {
 	}
 
 	public void setDisplayStatus() {
-		this.displayStatus = this.isStatus() ? "Đang sử dụng" : "Không sử dụng";
+		this.displayStatus = this.getStatus() ? "Đang sử dụng" : "Không sử dụng";
 	}
 
 	public Integer getNumsOfEquipments() {

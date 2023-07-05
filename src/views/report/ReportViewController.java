@@ -13,6 +13,10 @@ import javafx.scene.input.MouseEvent;
 import models.RoomEntity;
 import models.RoomReportEntity;
 import models.UserEntity;
+import service.PayBorrowService;
+import service.RoomReportService;
+import service.RoomService;
+import service.UserService;
 
 public class ReportViewController {
 
@@ -53,9 +57,10 @@ public class ReportViewController {
 	@FXML
 	void delete(ActionEvent event) {
 		try {
+			RoomReportService roomRepo= RoomReportService.getRepo();
 			if (delId > -1) {
-				RoomReportEntity report = new RoomReportEntity().getRoomReportById(delId);
-				report.delete();
+				RoomReportEntity report =  roomRepo.getRoomReportById(delId);
+				roomRepo.delete(report);
 				updateTable();
 			}
 			delId = -1;
@@ -81,15 +86,19 @@ public class ReportViewController {
 
 		try {
 			RoomReportEntity report = new RoomReportEntity();
+			RoomReportService roomReportRepo= RoomReportService.getRepo();
+			UserService userRepo= UserService.getRepo();
+			RoomService roomRepo= RoomService.getRepo();
+			
 			reports.getItems().clear();
-			for (RoomReportEntity rp : report.getAll()) {
-				if (new RoomEntity().getRoomById(rp.getRoomId()).getName().contains(filter)) {
+			for (RoomReportEntity rp : roomReportRepo.getAll()) {
+				if (roomRepo.getRoomById(rp.getRoomId()).getName().contains(filter)) {
 					Report newRp = new Report();
 					newRp.setDisplayId(Integer.valueOf(rp.getId()));
-					newRp.setDisplayRoom(new RoomEntity().getRoomById(rp.getRoomId()).getName());
+					newRp.setDisplayRoom(roomRepo.getRoomById(rp.getRoomId()).getName());
 					newRp.setDisplayEquipment("MT009");
 					newRp.setDisplayStatus(rp.getStatus());
-					newRp.setDisplayReporter(new UserEntity().getUserById(rp.getReporterId()).getName());
+					newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
 					newRp.setDisplayTimestamp(rp.getCreatedAt());
 					reports.getItems().add(newRp);
 				}
@@ -103,14 +112,18 @@ public class ReportViewController {
 	public void updateTable() {
 		try {
 			RoomReportEntity report = new RoomReportEntity();
+			RoomReportService roomReportRepo= RoomReportService.getRepo();
+			UserService userRepo= UserService.getRepo();
+			RoomService roomRepo= RoomService.getRepo();
+			
 			reports.getItems().clear();
-			for (RoomReportEntity rp : report.getAll()) {
+			for (RoomReportEntity rp : roomReportRepo.getAll()) {
 				Report newRp = new Report();
 				newRp.setDisplayId(Integer.valueOf(rp.getId()));
-				newRp.setDisplayRoom(new RoomEntity().getRoomById(rp.getRoomId()).getName());
+				newRp.setDisplayRoom(roomRepo.getRoomById(rp.getRoomId()).getName());
 				newRp.setDisplayEquipment("MT009");
 				newRp.setDisplayStatus(rp.getStatus());
-				newRp.setDisplayReporter(new UserEntity().getUserById(rp.getReporterId()).getName());
+				newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
 				newRp.setDisplayTimestamp(rp.getCreatedAt());
 				reports.getItems().add(newRp);
 			}
