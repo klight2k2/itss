@@ -5,8 +5,10 @@ import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -69,13 +71,18 @@ public class PayBorrowViewController {
 	@FXML
 	private ChoiceBox<String> status;
 
+	@FXML
+	private Button deleteBtn;
+
 	private String[] statusValues = { "PENDING", "BORROWING", "PAID" };
 
 	@FXML
 	private TextArea refuseReason;
 
-	private int pbCurId;
+	@FXML
+	private Label modalTitle;
 
+	private int pbCurId;
 
 	@FXML
 	void closeModal(ActionEvent event) {
@@ -83,11 +90,25 @@ public class PayBorrowViewController {
 	}
 
 	@FXML
+	void openModal(ActionEvent event) {
+		pbCurId = -1;
+		equipId.setText("BD001");
+		borrowUser.clear();
+		status.setValue(null);
+		borrowDate.setValue(null);
+		payDate.setValue(null);
+		borrowReason.clear();
+		refuseReason.clear();
+
+		pbDetailModal.setVisible(true);
+	}
+
+	@FXML
 	void submit(ActionEvent event) {
 		try {
-			
+
 			PayBorrowEntity pbs = new PayBorrow();
-			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
+			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				if (pb.getId() == pbCurId) {
 					pb.setStatus(status.getValue());
@@ -110,7 +131,7 @@ public class PayBorrowViewController {
 	@FXML
 	void delete(ActionEvent event) {
 		try {
-			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
+			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			PayBorrowEntity pbs = new PayBorrow();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				if (pb.getId() == pbCurId) {
@@ -148,8 +169,8 @@ public class PayBorrowViewController {
 		try {
 			pbEquipments.getItems().clear();
 			PayBorrowEntity pbs = new PayBorrow();
-			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
-			UserService userRepo= UserService.getRepo();
+			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
+			UserService userRepo = UserService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				PayBorrow newPb = new PayBorrow();
 				newPb.setDisplayId(Integer.valueOf(pb.getId()));
