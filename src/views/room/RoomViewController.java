@@ -17,11 +17,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import models.EquipmentEntity;
 import models.RoomEntity;
-import models.RoomReportEntity;
 import service.EquipmentService;
 import service.RoomReportService;
 import service.RoomService;
-import service.UserService;
 
 public class RoomViewController {
 
@@ -149,7 +147,7 @@ public class RoomViewController {
 		detailRoomName.setText(name);
 		detailRoomStatus.setText(convertRoomStatus(status));
 
-			RoomService roomRepo= RoomService.getRepo();
+		RoomService roomRepo = RoomService.getRepo();
 
 		if (inputId != null) {
 			try {
@@ -195,8 +193,8 @@ public class RoomViewController {
 		String filter = String.valueOf(name).trim();
 
 		try {
-			RoomService roomRepo= RoomService.getRepo();
-			RoomReportService roomReportRepo= RoomReportService.getRepo();
+			RoomService roomRepo = RoomService.getRepo();
+			RoomReportService roomReportRepo = RoomReportService.getRepo();
 
 			List<RoomEntity> roomsEntity = roomRepo.getAll();
 
@@ -210,8 +208,7 @@ public class RoomViewController {
 					newRoom.setStatus(roomEntity.getStatus());
 					newRoom.setDisplayStatus();
 					newRoom.setNumsOfEquipments(roomEntity.getListEquipment().size());
-					newRoom.setNumsOfReports(
-							roomReportRepo.getAllRoomReportByRoomId(roomEntity.getId()).size());
+					newRoom.setNumsOfReports(roomReportRepo.getAllRoomReportByRoomId(roomEntity.getId()).size());
 
 					rooms.getItems().add(newRoom);
 				}
@@ -271,7 +268,7 @@ public class RoomViewController {
 	@FXML
 	void confirmDeleteRoom(ActionEvent event) {
 		try {
-			RoomService roomRepo= RoomService.getRepo();
+			RoomService roomRepo = RoomService.getRepo();
 
 			for (RoomEntity delRoom : roomRepo.getAll()) {
 				if (delRoom.getId() == inputId.intValue()) {
@@ -300,7 +297,7 @@ public class RoomViewController {
 	@FXML
 	void deleteEquipment(ActionEvent event) {
 		try {
-			EquipmentService equipService =  EquipmentService.getRepo();
+			EquipmentService equipService = EquipmentService.getRepo();
 			for (EquipmentEntity e : equipService.getAll()) {
 				if (e.getId().equals(inputEquipId)) {
 					equipService.delete(e);
@@ -347,8 +344,8 @@ public class RoomViewController {
 
 	private void updateTable() {
 		try {
-		RoomReportService roomReportRepo= RoomReportService.getRepo();
-			RoomService roomRepo= RoomService.getRepo();
+			RoomReportService roomReportRepo = RoomReportService.getRepo();
+			RoomService roomRepo = RoomService.getRepo();
 
 			rooms.getItems().clear();
 
