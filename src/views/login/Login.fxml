@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="login-page" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="login-page" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
    <right>
       <AnchorPane prefHeight="400.0" prefWidth="293.0" styleClass="login-content" BorderPane.alignment="CENTER">
          <children>
@@ -28,14 +29,14 @@
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <TextField fx:id="passwordField" promptText="password">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
+                  <PasswordField fx:id="passwordField" promptText="password">
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </TextField>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </PasswordField>
                   <Button fx:id="loginBtn" mnemonicParsing="false" onMouseClicked="#onSubmit" prefHeight="25.0" prefWidth="171.0" styleClass="btn" text="Đăng nhập">
                      <VBox.margin>
                         <Insets top="10.0" />
@@ -46,19 +47,19 @@
                   </Button>
                </children>
             </VBox>
-            <Text fill="WHITE" layoutX="46.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hệ thống quản lý cơ sở vật chất" textAlignment="CENTER" wrappingWidth="201.869140625">
+            <Text fill="WHITE" layoutX="35.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hệ thống quản lý cơ sở vật chất" textAlignment="CENTER" wrappingWidth="223.9453125">
                <font>
                   <Font name="Verdana Bold" size="20.0" />
                </font>
                <effect>
-                  <DropShadow height="255.0" radius="127.0" spread="0.61" width="255.0">
+                  <DropShadow radius="9.2675" width="18.07">
                      <color>
-                        <Color red="0.054901961237192154" green="0.6470588445663452" blue="0.9137254953384399" />
+                        <Color green="0.6745098233222961" blue="1.0" />
                      </color>
                      <input>
-                        <InnerShadow>
+                        <InnerShadow choke="0.07" height="29.8" radius="16.5975" width="38.59">
                            <color>
-                              <Color green="0.6761904954910278" blue="1.0" />
+                              <Color green="0.6745098233222961" blue="1.0" />
                            </color>
                         </InnerShadow>
                      </input>

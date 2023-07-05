@@ -16,6 +16,11 @@ import javafx.scene.layout.AnchorPane;
 import models.CategoryEquipment;
 import models.EquipmentEntity;
 import models.RoomEntity;
+import service.CategoryEquipmentService;
+import service.EquipmentService;
+import service.PayBorrowService;
+import service.RoomReportService;
+import service.RoomService;
 
 public class EquipmentViewController {
 
@@ -104,13 +109,17 @@ public class EquipmentViewController {
 	@FXML
 	void submit(ActionEvent event) {
 		try {
+			EquipmentService equipmentRepo = EquipmentService.getRepo();
+			RoomService roomRepo = RoomService.getRepo();
+			CategoryEquipmentService categoryEquipmentService= CategoryEquipmentService.getRepo();
 			EquipmentEntity newEq = new EquipmentEntity();
-			for (RoomEntity room : new RoomEntity().getAll()) {
+
+			for (RoomEntity room : roomRepo.getAll()) {
 				if (room.getName().equals(inputEquipRoom.getValue())) {
 
 				}
 			}
-			for (CategoryEquipment ce : new CategoryEquipment().getAll()) {
+			for (CategoryEquipment ce : categoryEquipmentService.getAll()) {
 				if (ce.getName().equals(inputEquipCategory.getValue())) {
 					newEq.setEquipmentCategoryId(ce.getId());
 				}
@@ -121,7 +130,7 @@ public class EquipmentViewController {
 			newEq.setNumberOfRepairs(Integer.valueOf(inputEquipRepairTime.getText()).intValue());
 			newEq.setNote(inputEquipNote.getText());
 			newEq.setId("BD001");
-			newEq.save();
+			equipmentRepo.save(newEq);
 
 			addEquipmentModal.setVisible(false);
 			updateTable();
@@ -146,14 +155,17 @@ public class EquipmentViewController {
 		String filter = String.valueOf(name).trim().toLowerCase();
 
 		equipments.getItems().clear();
+		EquipmentService equipmentRepo = EquipmentService.getRepo();
+			CategoryEquipmentService categoryEquipmentService= CategoryEquipmentService.getRepo();
+
 		EquipmentEntity eqs = new EquipmentEntity();
 		try {
-			for (EquipmentEntity eq : eqs.getAll()) {
+			for (EquipmentEntity eq : equipmentRepo.getAll()) {
 				if (eq.getName().toLowerCase().contains(filter)) {
 					Equipment newEq = new Equipment();
 					newEq.setDisplayId(eq.getId());
 					newEq.setDisplayRoom("NAH");
-					for (CategoryEquipment ce : new CategoryEquipment().getAll()) {
+					for (CategoryEquipment ce :categoryEquipmentService.getAll()) {
 						if (ce.getId() == eq.getEquipmentCategoryId()) {
 							newEq.setDisplayCategory(ce.getName());
 						}
@@ -177,11 +189,13 @@ public class EquipmentViewController {
 		try {
 			equipments.getItems().clear();
 			EquipmentEntity eqs = new EquipmentEntity();
-			for (EquipmentEntity eq : eqs.getAll()) {
+					EquipmentService equipmentRepo = EquipmentService.getRepo();
+			CategoryEquipmentService categoryEquipmentService = CategoryEquipmentService.getRepo();
+			for (EquipmentEntity eq : equipmentRepo.getAll()) {
 				Equipment newEq = new Equipment();
 				newEq.setDisplayId(eq.getId());
 				newEq.setDisplayRoom("NAH");
-				for (CategoryEquipment ce : new CategoryEquipment().getAll()) {
+				for (CategoryEquipment ce : categoryEquipmentService.getAll()) {
 					if (ce.getId() == eq.getEquipmentCategoryId()) {
 						newEq.setDisplayCategory(ce.getName());
 					}
@@ -202,12 +216,13 @@ public class EquipmentViewController {
 
 	public void initialize() {
 		addEquipmentModal.setVisible(false);
-
+			CategoryEquipmentService categoryEquipmentRepo = CategoryEquipmentService.getRepo();
+			RoomService roomRepo = RoomService.getRepo();
 		try {
-			for (RoomEntity room : new RoomEntity().getAll()) {
+			for (RoomEntity room :roomRepo.getAll()) {
 				inputEquipRoom.getItems().add(room.getName());
 			}
-			for (CategoryEquipment ce : new CategoryEquipment().getAll()) {
+			for (CategoryEquipment ce : categoryEquipmentRepo.getAll()) {
 				inputEquipCategory.getItems().add(ce.getName());
 			}
 			inputEquipStatus.getItems().addAll("Hỏng", "Tốt", "Đang sửa");

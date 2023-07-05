@@ -23,60 +23,9 @@ public class CategoryEquipment extends BaseEntity {
         // Default constructor
     }
 
-    
-    public List<CategoryEquipment> getAll() throws SQLException {
-        try {
-            Statement stm = DB.getConnection().createStatement();
-            ResultSet res = stm.executeQuery("SELECT * FROM equipment_category");
-            ArrayList<CategoryEquipment> equipmentCategories = new ArrayList<>();
-            while (res.next()) {
-                CategoryEquipment categoryEquipment = new CategoryEquipment(
-                        res.getInt("id"),
-                        res.getString("name"),
-                        res.getString("code"));
-                equipmentCategories.add(categoryEquipment);
-            }
-            return equipmentCategories;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+  
 
-    
-    public boolean save() throws SQLException {
-        try {
-            String insertSql = "INSERT INTO equipment_category (id, name, code) VALUES (?, ?, ?)";
-            PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
-            preparedStmt.setInt(1, this.id);
-            preparedStmt.setString(2, this.name);
-            preparedStmt.setString(3, this.code);
-            preparedStmt.execute();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
-    public boolean delete() throws SQLException {
-        try {
-            String deleteSql = "DELETE FROM equipment_category WHERE id = ?";
-            PreparedStatement preparedStmt = DB.getConnection().prepareStatement(deleteSql);
-            preparedStmt.setInt(1, this.id);
-            preparedStmt.execute();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    
-    public boolean update() throws SQLException {
-        // Update operation may not be applicable for this table structure
-        return false;
-    }
 
     // Getters and setters
 

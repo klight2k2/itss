@@ -16,6 +16,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import models.PayBorrowEntity;
 import models.UserEntity;
+import service.PayBorrowService;
+import service.UserService;
 
 public class PayBorrowViewController {
 
@@ -74,6 +76,7 @@ public class PayBorrowViewController {
 
 	private int pbCurId;
 
+
 	@FXML
 	void closeModal(ActionEvent event) {
 		pbDetailModal.setVisible(false);
@@ -82,15 +85,17 @@ public class PayBorrowViewController {
 	@FXML
 	void submit(ActionEvent event) {
 		try {
+			
 			PayBorrowEntity pbs = new PayBorrow();
-			for (PayBorrowEntity pb : pbs.getAll()) {
+			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
+			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				if (pb.getId() == pbCurId) {
 					pb.setStatus(status.getValue());
 					pb.setFromDate(Date.valueOf(borrowDate.getValue()));
 					pb.setToDate(Date.valueOf(payDate.getValue()));
 					pb.setBorrowReason(borrowReason.getText());
 					pb.setRefuseReason(refuseReason.getText());
-					pb.update();
+					payBorrowRepo.update(pb);
 					break;
 				}
 			}
@@ -105,10 +110,11 @@ public class PayBorrowViewController {
 	@FXML
 	void delete(ActionEvent event) {
 		try {
+			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
 			PayBorrowEntity pbs = new PayBorrow();
-			for (PayBorrowEntity pb : pbs.getAll()) {
+			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				if (pb.getId() == pbCurId) {
-					pb.delete();
+					payBorrowRepo.delete(pb);
 					break;
 				}
 			}
@@ -142,7 +148,9 @@ public class PayBorrowViewController {
 		try {
 			pbEquipments.getItems().clear();
 			PayBorrowEntity pbs = new PayBorrow();
-			for (PayBorrowEntity pb : pbs.getAll()) {
+			PayBorrowService payBorrowRepo= PayBorrowService.getRepo();
+			UserService userRepo= UserService.getRepo();
+			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				PayBorrow newPb = new PayBorrow();
 				newPb.setDisplayId(Integer.valueOf(pb.getId()));
 				newPb.setDisplayStatus(pb.getStatus());
@@ -151,7 +159,7 @@ public class PayBorrowViewController {
 				newPb.setDisplayBorrowReason(pb.getBorrowReason());
 				newPb.setDisplayRefuseReason(pb.getRefuseReason());
 				UserEntity user = new UserEntity();
-				for (UserEntity curUser : user.getAll()) {
+				for (UserEntity curUser : userRepo.getAll()) {
 					if (curUser.getId() == pb.getBorrowerId()) {
 						newPb.setDisplayUsername(curUser.getName());
 						break;

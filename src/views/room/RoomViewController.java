@@ -18,6 +18,10 @@ import javafx.scene.layout.AnchorPane;
 import models.EquipmentEntity;
 import models.RoomEntity;
 import models.RoomReportEntity;
+import service.EquipmentService;
+import service.RoomReportService;
+import service.RoomService;
+import service.UserService;
 
 public class RoomViewController {
 
@@ -145,14 +149,16 @@ public class RoomViewController {
 		detailRoomName.setText(name);
 		detailRoomStatus.setText(convertRoomStatus(status));
 
+			RoomService roomRepo= RoomService.getRepo();
+
 		if (inputId != null) {
 			try {
-				List<RoomEntity> roometts = new RoomEntity().getAll();
+				List<RoomEntity> roometts = roomRepo.getAll();
 				for (RoomEntity room : roometts) {
 					if (room.getId() == inputId.intValue()) {
 						room.setName(name);
 						room.setStatus(status);
-						room.update();
+						roomRepo.update(room);
 					}
 				}
 			} catch (SQLException e) {
@@ -169,7 +175,7 @@ public class RoomViewController {
 //			newRoom.setNumsOfReports(5);
 
 			try {
-				newRoom.save();
+				roomRepo.save(newRoom);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -189,8 +195,10 @@ public class RoomViewController {
 		String filter = String.valueOf(name).trim();
 
 		try {
-			Room room = new Room();
-			List<RoomEntity> roomsEntity = room.getAll();
+			RoomService roomRepo= RoomService.getRepo();
+			RoomReportService roomReportRepo= RoomReportService.getRepo();
+
+			List<RoomEntity> roomsEntity = roomRepo.getAll();
 
 			rooms.getItems().clear();
 
@@ -199,11 +207,11 @@ public class RoomViewController {
 					Room newRoom = new Room();
 					newRoom.setDisplayId(roomEntity.getId());
 					newRoom.setDisplayName(roomEntity.getName());
-					newRoom.setStatus(roomEntity.isStatus());
+					newRoom.setStatus(roomEntity.getStatus());
 					newRoom.setDisplayStatus();
 					newRoom.setNumsOfEquipments(roomEntity.getListEquipment().size());
 					newRoom.setNumsOfReports(
-							new RoomReportEntity().getAllRoomReportByRoomId(roomEntity.getId()).size());
+							roomReportRepo.getAllRoomReportByRoomId(roomEntity.getId()).size());
 
 					rooms.getItems().add(newRoom);
 				}
@@ -233,7 +241,7 @@ public class RoomViewController {
 	void updateEquipTable() {
 		try {
 			int roomId = inputId.intValue();
-			List<EquipmentEntity> equipmentsEntity = new EquipmentEntity().getAllEquipmentInRoom(roomId);
+			List<EquipmentEntity> equipmentsEntity = EquipmentService.getRepo().getAllEquipmentInRoom(roomId);
 			if (equipmentsEntity == null)
 				return;
 			equipments.getItems().clear();
@@ -263,10 +271,11 @@ public class RoomViewController {
 	@FXML
 	void confirmDeleteRoom(ActionEvent event) {
 		try {
-			Room room = new Room();
-			for (RoomEntity delRoom : room.getAll()) {
+			RoomService roomRepo= RoomService.getRepo();
+
+			for (RoomEntity delRoom : roomRepo.getAll()) {
 				if (delRoom.getId() == inputId.intValue()) {
-					delRoom.delete();
+					roomRepo.delete(delRoom);
 					confirmDeleteModal.setVisible(false);
 					closeDetailModal();
 					updateTable();
@@ -291,10 +300,10 @@ public class RoomViewController {
 	@FXML
 	void deleteEquipment(ActionEvent event) {
 		try {
-			Equipment equip = new Equipment();
-			for (EquipmentEntity e : equip.getAll()) {
+			EquipmentService equipService =  EquipmentService.getRepo();
+			for (EquipmentEntity e : equipService.getAll()) {
 				if (e.getId().equals(inputEquipId)) {
-					e.delete();
+					equipService.delete(e);
 					break;
 				}
 			}
@@ -326,7 +335,7 @@ public class RoomViewController {
 
 		inputId = Integer.valueOf(clickedRoom.getDisplayId());
 		inputRoomName.setText(String.valueOf(clickedRoom.getDisplayName()));
-		inputRoomStatus.setValue(Boolean.valueOf(clickedRoom.isStatus()));
+		inputRoomStatus.setValue(Boolean.valueOf(clickedRoom.getStatus()));
 
 		detailRoomName.setText(String.valueOf(clickedRoom.getDisplayName()));
 		detailRoomStatus.setText(String.valueOf(clickedRoom.getDisplayStatus()));
@@ -338,21 +347,20 @@ public class RoomViewController {
 
 	private void updateTable() {
 		try {
-			Room room = new Room();
-			List<RoomEntity> roomsEntity = room.getAll();
+		RoomReportService roomReportRepo= RoomReportService.getRepo();
+			RoomService roomRepo= RoomService.getRepo();
 
 			rooms.getItems().clear();
 
-			for (RoomEntity roomEntity : roomsEntity) {
+			for (RoomEntity roomEntity : roomRepo.getAll()) {
 				Room newRoom = new Room();
 				newRoom.setDisplayId(roomEntity.getId());
 				newRoom.setDisplayName(roomEntity.getName());
-				newRoom.setStatus(roomEntity.isStatus());
+				newRoom.setStatus(roomEntity.getStatus());
 				newRoom.setDisplayStatus();
 				List<EquipmentEntity> equipments = roomEntity.getListEquipment();
 				newRoom.setNumsOfEquipments(equipments != null ? equipments.size() : 0);
-				newRoom.setNumsOfReports(new RoomReportEntity().getAllRoomReportByRoomId(roomEntity.getId()).size());
-
+				newRoom.setNumsOfReports(roomReportRepo.getAllRoomReportByRoomId(roomEntity.getId()).size());
 				rooms.getItems().add(newRoom);
 			}
 		} catch (SQLException e) {

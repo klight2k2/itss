@@ -8,11 +8,21 @@
 }
 
 .btn{
+    -fx-border-radius: 4px;
+    -fx-border-width: 1px;
+    -fx-border-color: #0284c7;
+    -fx-text-fill: #0284c7;
+    
+}
+
+
+
+.btn_primary{
     -fx-background-color: #0ea5e9;
     -fx-text-fill: #fff;
 }
 
-.btn:hover{
+.btn_primary:hover{
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-background-insets: 0 0 -1 0, 0, 1, 2;
     -fx-background-radius: 3px, 3px, 2px, 1px;
@@ -21,3 +31,4 @@
     -fx-alignment: CENTER;
     -fx-content-display: LEFT;
 }
+
