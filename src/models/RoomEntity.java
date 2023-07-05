@@ -30,6 +30,16 @@ public class RoomEntity extends BaseEntity {
 		this.listRoomSchedule = listRoomSchedule;
 	}
 
+	public RoomEntity(boolean status, String name, List<EquipmentEntity> listEquipment,
+			List<RoomScheduleEntity> listRoomSchedule, List<RoomReportEntity> listRoomReport) {
+		super();
+		this.status = status;
+		this.name = name;
+		this.listEquipment = listEquipment;
+		this.listRoomSchedule = listRoomSchedule;
+		this.listRoomReport = listRoomReport;
+	}
+
 	public RoomEntity(int id, boolean status, String name) {
 		this.id = id;
 		this.name = name;

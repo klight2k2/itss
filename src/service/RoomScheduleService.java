@@ -94,6 +94,11 @@ public class RoomScheduleService {
 
     public boolean save(RoomScheduleEntity roomSchedule) throws SQLException {
         try {
+        	Statement stm = DB.getConnection().createStatement();
+        	ResultSet resultSet = stm.executeQuery("select count(*) as count from room_schedule");
+        	if (resultSet.next()) {
+        		roomSchedule.setId(resultSet.getInt("count")+1);
+			}
             String insertSql = "INSERT INTO room_schedule (id, teacherId, roomId, startTime, endTime, reason) "
                     + "VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);

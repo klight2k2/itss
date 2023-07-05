@@ -46,6 +46,11 @@ public class PayBorrowService {
 
     public boolean save(PayBorrowEntity pay_borrow) throws SQLException {
         try {
+        	Statement stm = DB.getConnection().createStatement();
+        	ResultSet resultSet = stm.executeQuery("select count(*) as count from tablde_name");
+        	if (resultSet.next()) {
+				pay_borrow.setId(resultSet.getInt("count")+1);
+			}
             String insertSql = "INSERT INTO pay_borrow (id, fromDate, toDate, status, borrowReason, refuseReason, borrowerId) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
             preparedStmt.setInt(1, pay_borrow.getId());
@@ -77,10 +82,12 @@ public class PayBorrowService {
     }
 
     public boolean update(PayBorrowEntity pay_borrow) throws SQLException {
+    	
         // Update operation may not be applicable for pay_borrow getTable() structure
         String sql = "UPDATE pay_borrow " +
                 "SET fromDate = ?, toDate = ?, status = ?, borrowReason = ?, refuseReason = ?, borrowerId = ? " +
                 "WHERE id = ?";
+        
         try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
             statement.setDate(1, pay_borrow.getFromDate());
             statement.setDate(2, pay_borrow.getToDate());

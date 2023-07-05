@@ -13,6 +13,12 @@ public class CategoryEquipment extends BaseEntity {
     private String name;
     private String code;
 
+    public CategoryEquipment(String name, String code) {
+        super();
+        this.name = name;
+        this.code = code;
+    }
+
     public CategoryEquipment(int id, String name, String code) {
         this.id = id;
         this.name = name;
@@ -22,10 +28,6 @@ public class CategoryEquipment extends BaseEntity {
     public CategoryEquipment() {
         // Default constructor
     }
-
-  
-
-
 
     // Getters and setters
 
@@ -52,4 +54,5 @@ public class CategoryEquipment extends BaseEntity {
     public void setCode(String code) {
         this.code = code;
     }
+
 }

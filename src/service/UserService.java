@@ -51,8 +51,12 @@ public class UserService {
 			ResultSet res = stm.executeQuery("SELECT * FROM user");
 			ArrayList<UserEntity> users = new ArrayList<>();
 			while (res.next()) {
-				UserEntity user = new UserEntity(res.getInt("id"), res.getString("name"), res.getString("username"),
-						res.getString("password"), res.getString("role"));
+				UserEntity user = new UserEntity(
+						res.getInt("id"),
+						res.getString("name"),
+						res.getString("username"),
+						res.getString("password"),
+						res.getString("role"));
 				users.add(user);
 			}
 			return users;
@@ -64,6 +68,11 @@ public class UserService {
 
 	public boolean save(UserEntity user) throws SQLException {
 		try {
+			Statement stm = DB.getConnection().createStatement();
+			ResultSet resultSet = stm.executeQuery("select count(*) as count from user");
+			if (resultSet.next()) {
+				user.setId(resultSet.getInt("count") + 1);
+			}
 			String insertSql = "INSERT INTO user (id, name, username, password, role) VALUES (?, ?, ?, ?, ?)";
 			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
 			preparedStmt.setInt(1, user.getId());
@@ -107,24 +116,5 @@ public class UserService {
 			e.printStackTrace();
 			return false;
 		}
-	}
-
-	public boolean checkLogin(String userName, String password) throws SQLException {
-
-		Connection connection = DB.getConnection();
-
-		Statement st = connection.createStatement();
-		ResultSet rs = st.executeQuery("SELECT * FROM user WHERE userName = '" + userName + "'");
-		if (rs == null) {
-			return false;
-		}
-		while (rs.next()) {
-			if (rs.getString("password") == null ? password == null : rs.getString("password").equals(password)) {
-				LoginController.currentUser.setId(rs.getInt("id"));
-				LoginController.currentUser.setName(rs.getString("userName"));
-				return true;
-			}
-		}
-		return false;
 	}
 }

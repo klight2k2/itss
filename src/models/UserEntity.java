@@ -1,13 +1,5 @@
 package models;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import models.db.DB;
-
 public class UserEntity extends BaseEntity {
 	private int id;
 	private String name;
@@ -15,6 +7,14 @@ public class UserEntity extends BaseEntity {
 	private String password;
 	private String role;
 
+	
+	public UserEntity(String name, String username, String password, String role) {
+		super();
+		this.name = name;
+		this.username = username;
+		this.password = password;
+		this.role = role;
+	}
 	public UserEntity(int id, String name, String username, String password, String role) {
 		this.id = id;
 		this.name = name;
