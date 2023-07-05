@@ -1,6 +1,6 @@
 package models;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class RoomScheduleEntity extends BaseEntity {
 	private int id;

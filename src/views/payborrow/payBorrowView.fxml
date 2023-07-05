@@ -15,10 +15,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="784.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.payborrow.PayBorrowViewController">
    <children>
-      <Text layoutX="294.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mượn trả thiết bị" textAlignment="CENTER">
+      <Text layoutX="250.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mượn trả thiết bị" textAlignment="CENTER">
          <font>
-            <Font size="26.0" />
+            <Font size="38.0" />
          </font></Text>
+      <Label layoutX="16.0" layoutY="89.0" text="* Nhấn để xem chi tiết" />
       <TableView fx:id="pbEquipments" layoutX="16.0" layoutY="116.0" onMouseClicked="#rowClicked" prefHeight="457.0" prefWidth="753.0">
         <columns>
           <TableColumn fx:id="pbId" prefWidth="54.0" text="ID" />
@@ -34,7 +35,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
+      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
          <children>
             <AnchorPane layoutX="62.0" layoutY="142.0" prefHeight="343.0" prefWidth="660.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
                <children>

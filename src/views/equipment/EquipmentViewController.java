@@ -5,21 +5,22 @@ import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import models.CategoryEquipment;
 import models.EquipmentEntity;
 import models.RoomEntity;
 import service.CategoryEquipmentService;
 import service.EquipmentService;
-import service.PayBorrowService;
-import service.RoomReportService;
 import service.RoomService;
 
 public class EquipmentViewController {
@@ -79,7 +80,18 @@ public class EquipmentViewController {
 	private TextField inputSearch;
 
 	@FXML
+	private TextField inputEquipName;
+
+	@FXML
+	private Label inputTitle;
+
+	@FXML
+	private Button deleteBtn;
+
+	@FXML
 	private ChoiceBox<String> inputEquipRoom;
+
+	private String curId;
 
 	public String convertStatus(int status) {
 		return status == 0 ? "Hỏng" : status == 1 ? "Tốt" : "Đang sửa";
@@ -90,13 +102,52 @@ public class EquipmentViewController {
 	}
 
 	@FXML
+	void onRowClick(MouseEvent event) {
+		Equipment clickedRow = equipments.getSelectionModel().getSelectedItem();
+		if (clickedRow == null)
+			return;
+		curId = clickedRow.getDisplayId();
+		deleteBtn.setVisible(true);
+		inputTitle.setText("Chỉnh sửa");
+		inputEquipName.setText(clickedRow.getDisplayName());
+		inputEquipRoom.setValue(clickedRow.getDisplayRoom());
+		inputEquipCategory.setValue(clickedRow.getDisplayCategory());
+		inputEquipStatus.setValue(clickedRow.getDisplayStatus());
+		inputEquipMfg.setValue(clickedRow.getDisplayMfg().toLocalDate());
+		inputEquipYearUse.setValue(clickedRow.getDisplayTimeUse().toLocalDate());
+		inputEquipRepairTime.setText(clickedRow.getDisplayTimeRepair().toString());
+		inputEquipNote.setText(clickedRow.getDisplayNote());
+
+		addEquipmentModal.setVisible(true);
+	}
+
+	@FXML
+	void delete(ActionEvent event) {
+		try {
+			if (curId == null || curId.isEmpty())
+				return;
+			EquipmentService eq = EquipmentService.getRepo();
+			EquipmentEntity curEquip = eq.getEquipmentById(curId);
+			eq.delete(curEquip);
+			curId = null;
+			updateTable();
+			addEquipmentModal.setVisible(false);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
 	void closeModal(ActionEvent event) {
 		addEquipmentModal.setVisible(false);
 	}
 
 	@FXML
 	void openModal(ActionEvent event) {
-		addEquipmentModal.setVisible(true);
+		deleteBtn.setVisible(false);
+		inputTitle.setText("Thêm thiết bị");
+		inputEquipName.clear();
 		inputEquipRoom.setValue("Room ?");
 		inputEquipCategory.setValue(null);
 		inputEquipStatus.setValue(null);
@@ -104,6 +155,8 @@ public class EquipmentViewController {
 		inputEquipYearUse.setValue(null);
 		inputEquipRepairTime.clear();
 		inputEquipNote.clear();
+
+		addEquipmentModal.setVisible(true);
 	}
 
 	@FXML
@@ -111,26 +164,32 @@ public class EquipmentViewController {
 		try {
 			EquipmentService equipmentRepo = EquipmentService.getRepo();
 			RoomService roomRepo = RoomService.getRepo();
-			CategoryEquipmentService categoryEquipmentService= CategoryEquipmentService.getRepo();
+			CategoryEquipmentService categoryEquipmentService = CategoryEquipmentService.getRepo();
 			EquipmentEntity newEq = new EquipmentEntity();
 
-			for (RoomEntity room : roomRepo.getAll()) {
-				if (room.getName().equals(inputEquipRoom.getValue())) {
-
-				}
-			}
+//			for (RoomEntity room : roomRepo.getAll()) {
+//				if (room.getName().equals(inputEquipRoom.getValue())) {
+//
+//				}
+//			}
 			for (CategoryEquipment ce : categoryEquipmentService.getAll()) {
 				if (ce.getName().equals(inputEquipCategory.getValue())) {
 					newEq.setEquipmentCategoryId(ce.getId());
 				}
 			}
+			newEq.setName(inputEquipName.getText());
 			newEq.setStatus(convertStatus(inputEquipStatus.getValue()));
 			newEq.setMfg(Date.valueOf(inputEquipMfg.getValue()));
 			newEq.setYearOfUse(Date.valueOf(inputEquipYearUse.getValue()));
 			newEq.setNumberOfRepairs(Integer.valueOf(inputEquipRepairTime.getText()).intValue());
 			newEq.setNote(inputEquipNote.getText());
-			newEq.setId("BD001");
-			equipmentRepo.save(newEq);
+			if (curId == null || curId.isEmpty()) {
+				newEq.setId("Unknown" + equipmentRepo.getAll().size());
+				equipmentRepo.save(newEq);
+			} else {
+				newEq.setId(curId);
+				equipmentRepo.update(newEq);
+			}
 
 			addEquipmentModal.setVisible(false);
 			updateTable();
@@ -156,7 +215,7 @@ public class EquipmentViewController {
 
 		equipments.getItems().clear();
 		EquipmentService equipmentRepo = EquipmentService.getRepo();
-			CategoryEquipmentService categoryEquipmentService= CategoryEquipmentService.getRepo();
+		CategoryEquipmentService categoryEquipmentService = CategoryEquipmentService.getRepo();
 
 		EquipmentEntity eqs = new EquipmentEntity();
 		try {
@@ -165,7 +224,7 @@ public class EquipmentViewController {
 					Equipment newEq = new Equipment();
 					newEq.setDisplayId(eq.getId());
 					newEq.setDisplayRoom("NAH");
-					for (CategoryEquipment ce :categoryEquipmentService.getAll()) {
+					for (CategoryEquipment ce : categoryEquipmentService.getAll()) {
 						if (ce.getId() == eq.getEquipmentCategoryId()) {
 							newEq.setDisplayCategory(ce.getName());
 						}
@@ -189,7 +248,7 @@ public class EquipmentViewController {
 		try {
 			equipments.getItems().clear();
 			EquipmentEntity eqs = new EquipmentEntity();
-					EquipmentService equipmentRepo = EquipmentService.getRepo();
+			EquipmentService equipmentRepo = EquipmentService.getRepo();
 			CategoryEquipmentService categoryEquipmentService = CategoryEquipmentService.getRepo();
 			for (EquipmentEntity eq : equipmentRepo.getAll()) {
 				Equipment newEq = new Equipment();
@@ -216,10 +275,10 @@ public class EquipmentViewController {
 
 	public void initialize() {
 		addEquipmentModal.setVisible(false);
-			CategoryEquipmentService categoryEquipmentRepo = CategoryEquipmentService.getRepo();
-			RoomService roomRepo = RoomService.getRepo();
+		CategoryEquipmentService categoryEquipmentRepo = CategoryEquipmentService.getRepo();
+		RoomService roomRepo = RoomService.getRepo();
 		try {
-			for (RoomEntity room :roomRepo.getAll()) {
+			for (RoomEntity room : roomRepo.getAll()) {
 				inputEquipRoom.getItems().add(room.getName());
 			}
 			for (CategoryEquipment ce : categoryEquipmentRepo.getAll()) {
