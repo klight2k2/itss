@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -14,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628" prefWidth="784" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.schedule.ScheduleViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628" prefWidth="784" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.schedule.ScheduleViewController">
    <children>
       <Text layoutX="185.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lịch sử dụng phòng" textAlignment="CENTER" wrappingWidth="419.17950439453125">
          <font>
@@ -57,10 +56,10 @@
                   <Label layoutX="330.0" layoutY="109.0" prefHeight="19.0" prefWidth="86.0" text="Kết thúc" />
                   <Label layoutX="330.0" layoutY="65.0" prefHeight="19.0" prefWidth="86.0" text="Người sử dụng" />
                   <Button fx:id="deleteBtn" layoutX="606.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c11c1c" />
-                  <ChoiceBox fx:id="inputUser" layoutX="439.0" layoutY="61.0" prefHeight="27.0" prefWidth="147.0" />
                   <HBox fx:id="startTimeBox" layoutX="154.0" layoutY="102.0" prefHeight="34.0" prefWidth="156.0" />
                   <HBox fx:id="endTimeBox" layoutX="435.0" layoutY="102.0" prefHeight="34.0" prefWidth="156.0" />
-                  <ComboBox layoutX="112.0" layoutY="62.0" prefWidth="150.0" />
+                  <ComboBox fx:id="inputRoom" layoutX="112.0" layoutY="62.0" prefWidth="150.0" />
+                  <ComboBox fx:id="inputUser" layoutX="428.0" layoutY="62.0" prefWidth="150.0" />
                </children>
                <opaqueInsets>
                   <Insets />

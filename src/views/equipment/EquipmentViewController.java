@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -68,10 +69,10 @@ public class EquipmentViewController {
 	private TextField inputEquipRepairTime;
 
 	@FXML
-	private ChoiceBox<String> inputEquipCategory;
+	private ComboBox<String> inputEquipCategory;
 
 	@FXML
-	private ChoiceBox<String> inputEquipStatus;
+	private ComboBox<String> inputEquipStatus;
 
 	@FXML
 	private DatePicker inputEquipYearUse;
@@ -89,7 +90,7 @@ public class EquipmentViewController {
 	private Button deleteBtn;
 
 	@FXML
-	private ChoiceBox<String> inputEquipRoom;
+	private ComboBox<String> inputEquipRoom;
 
 	private String curId;
 

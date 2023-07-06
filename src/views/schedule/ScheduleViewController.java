@@ -10,9 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -31,19 +29,17 @@ import service.UserService;
 
 public class ScheduleViewController {
 
-	 @FXML
-	    private HBox endTimeBox,startTimeBox;
-	
-	
-	private DateTimePicker inputEndTime= new DateTimePicker();
-	private DateTimePicker inputStartTime= new DateTimePicker();
+	@FXML
+	private HBox endTimeBox, startTimeBox;
+
+	private DateTimePicker inputEndTime = new DateTimePicker();
+	private DateTimePicker inputStartTime = new DateTimePicker();
 
 	@FXML
 	private TextArea inputReason;
 
 	@FXML
 	private ComboBox<RoomEntity> inputRoom;
-
 
 	@FXML
 	private Label inputTitle;
@@ -159,16 +155,16 @@ public class ScheduleViewController {
 
 		deleteBtn.setVisible(true);
 		inputTitle.setText("Chi tiết");
-		for(RoomEntity item :listRoom){
-			if(item.getId()==clickedRow.getRoomId()){
+		for (RoomEntity item : listRoom) {
+			if (item.getId() == clickedRow.getRoomId()) {
 				// borrowerCombobox.setV
 				inputRoom.setValue(item);
 				System.out.println("success");
 			}
 
 		}
-		for(UserEntity item :listUser){
-			if(item.getId()==clickedRow.getRoomId()){
+		for (UserEntity item : listUser) {
+			if (item.getId() == clickedRow.getRoomId()) {
 				// borrowerCombobox.setV
 				inputUser.setValue(item);
 				System.out.println("success");
@@ -203,8 +199,21 @@ public class ScheduleViewController {
 				if (RoomService.getRepo().getRoomById(res.getRoomId()).getName().toLowerCase().contains(filter)) {
 					Schedule ns = new Schedule();
 					ns.setDisplayId(Integer.valueOf(res.getId()));
-					ns.setDisplayRoom(RoomService.getRepo().getRoomById(res.getRoomId()).getName());
-					ns.setDisplayUser(UserService.getRepo().getUserById(res.getTeacherId()).getName());
+					for (RoomEntity item : listRoom) {
+						if (item.getId() == res.getRoomId()) {
+							ns.setDisplayRoom(item.getName());
+						}
+
+					}
+					for (UserEntity item : listUser) {
+						if (item.getId() == res.getTeacherId()) {
+							System.out.println("user id" + res.getTeacherId());
+							ns.setDisplayUser(item.getName());
+						}
+
+					}
+					ns.setRoomId(res.getRoomId());
+					ns.setTeacherId(res.getTeacherId());
 					ns.setDisplayStartTime(res.getStartTime());
 					ns.setDisplayEndTime(res.getEndTime());
 					ns.setDisplayReason(res.getReason());
@@ -224,8 +233,20 @@ public class ScheduleViewController {
 			for (RoomScheduleEntity res : rss.getAll()) {
 				Schedule ns = new Schedule();
 				ns.setDisplayId(Integer.valueOf(res.getId()));
-				ns.setDisplayRoom(RoomService.getRepo().getRoomById(res.getRoomId()).getName());
-				ns.setDisplayUser(UserService.getRepo().getUserById(res.getTeacherId()).getName());
+				for (RoomEntity item : listRoom) {
+					if (item.getId() == res.getRoomId()) {
+						ns.setDisplayRoom(item.getName());
+					}
+
+				}
+				for (UserEntity item : listUser) {
+					if (item.getId() == res.getTeacherId()) {
+						ns.setDisplayUser(item.getName());
+					}
+
+				}
+				ns.setRoomId(res.getRoomId());
+				ns.setTeacherId(res.getTeacherId());
 				ns.setDisplayStartTime(res.getStartTime());
 				ns.setDisplayEndTime(res.getEndTime());
 				ns.setDisplayReason(res.getReason());
@@ -240,14 +261,13 @@ public class ScheduleViewController {
 	public void initialize() {
 		startTimeBox.getChildren().add(inputStartTime);
 		endTimeBox.getChildren().add(inputEndTime);
+		this.closeModal(null);
 		scheduleId.setCellValueFactory(new PropertyValueFactory<>("displayId"));
 		scheduleRoom.setCellValueFactory(new PropertyValueFactory<>("displayRoom"));
 		scheduleUser.setCellValueFactory(new PropertyValueFactory<>("displayUser"));
 		scheduleStartTime.setCellValueFactory(new PropertyValueFactory<>("displayStartTime"));
 		scheduleEndTime.setCellValueFactory(new PropertyValueFactory<>("displayEndTime"));
 		scheduleReason.setCellValueFactory(new PropertyValueFactory<>("displayReason"));
-
-		updateTable();
 
 		try {
 			listRoom.setAll(RoomService.getRepo().getAll());
@@ -258,5 +278,7 @@ public class ScheduleViewController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		updateTable();
+
 	}
 }

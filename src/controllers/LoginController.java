@@ -43,7 +43,8 @@ public class LoginController {
 		}
 		UserService userService = UserService.getRepo();
 		try {
-			if (!userService.checkLogin(username, password)) {
+			Boolean checkLogin=userService.checkLogin(username, password);
+			if (!checkLogin) {
 				Utils.createDialog(AlertType.ERROR, "Lỗi", "",
 						"Tài khoản hoặc mật khẩu không chính xác, vui lòng thử lại!");
 			} else {
@@ -54,10 +55,10 @@ public class LoginController {
 				stage.setScene(scene);
 				System.out.println("USER"+currentUser.getName());
 			}
-		} catch (SQLException e) {
-			Utils.createDialog(AlertType.ERROR, "Lỗi", "", "Có lỗi xảy ra, vui lòng thử lại!");
-			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

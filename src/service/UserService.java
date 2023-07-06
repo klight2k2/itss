@@ -114,7 +114,7 @@ public class UserService {
 		}
 	}
 
-	public boolean checkLogin(String userName, String password) {
+	public boolean checkLogin(String userName, String password) throws ClassNotFoundException {
 		ResultSet rs;
 		try {
 			Connection connection = DB.getConnection();
