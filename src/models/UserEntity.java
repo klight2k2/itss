@@ -7,7 +7,6 @@ public class UserEntity extends BaseEntity {
 	private String password;
 	private String role;
 
-	
 	public UserEntity(String name, String username, String password, String role) {
 		super();
 		this.name = name;
@@ -15,6 +14,7 @@ public class UserEntity extends BaseEntity {
 		this.password = password;
 		this.role = role;
 	}
+
 	public UserEntity(int id, String name, String username, String password, String role) {
 		this.id = id;
 		this.name = name;
@@ -65,6 +65,18 @@ public class UserEntity extends BaseEntity {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
+
+	@Override
+	public boolean equals(Object object) {
+		UserEntity user= (UserEntity) object;
+		if(user==null) return false;
+		return user.getId()==this.getId();
 	}
 
 }

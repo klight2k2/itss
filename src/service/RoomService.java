@@ -75,15 +75,14 @@ public class RoomService {
                 return true;
             }
 
-            for (int i = 0; i < room.getListEquipment().size(); i++) {
-                String sqlRoomEquipment = "INSERT IGNORE INTO room_equipment (roomId, equipmentId) VALUES (";
-                new EquipmentService().save(roomEquipment.get(i));
-                sqlRoomEquipment += room.getId() + ",";
-                sqlRoomEquipment += "'" + roomEquipment.get(i).getId() + "'" + ")";
-                System.out.println(sqlRoomEquipment);
-                stm.executeUpdate(sqlRoomEquipment);
+            StringBuffer sqlRoomEquipment = new StringBuffer("UPDATE equipment set roomId="+room.getId()+ " WHERE id in (");
+            for (EquipmentEntity equip :roomEquipment) {
+               sqlRoomEquipment.append( equip.getId());
+               sqlRoomEquipment.append( ",");
                 // System.out.println(stm.executeUpdate(sqlRoomEquipment));
             }
+            sqlRoomEquipment.append(")");
+            stm.executeUpdate(sqlRoomEquipment.toString());
             return true;
 
         } catch (SQLException e) {

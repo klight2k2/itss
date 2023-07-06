@@ -1,80 +1,34 @@
 package utils;
 
-import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Random;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.scene.control.Alert;
 
-public class Utils {
+public class DateUtils {
+	public static LocalDateTime LocalDateTime(String string) {
+			// TODO Auto-generated method stub
+	    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
 
-	public static DateFormat DATE_FORMATER = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	private static Logger LOGGER = getLogger(Utils.class.getName());
-	static {
-		System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-4s] [%1$tF %1$tT] [%2$-7s] %5$s %n");
-	}
-
-	public static Logger getLogger(String className) {
-		return Logger.getLogger(className);
-	}
-
-	public static String getCurrencyFormat(int num) {
-		Locale vietname = new Locale("vi", "VN");
-		NumberFormat defaultFormat = NumberFormat.getCurrencyInstance(vietname);
-		return defaultFormat.format(num);
-	}
-
-	/**
-	 * Return a {@link java.lang.String String} that represents the current time in
-	 * the format of yyyy-MM-dd HH:mm:ss.
-	 * 
-	 * @author hieudm
-	 * @return the current time as {@link java.lang.String String}.
-	 */
-	public static String getToday() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = new Date();
-		return dateFormat.format(date);
-	}
-
-	/**
-	 * Return a {@link java.lang.String String} that represents the cipher text
-	 * encrypted by md5 algorithm.
-	 * 
-	 * @author hieudm vnpay
-	 * @param message - plain text as {@link java.lang.String String}.
-	 * @return cipher text as {@link java.lang.String String}.
-	 */
-	public static String md5(String message) {
-		String digest = null;
-		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			byte[] hash = md.digest(message.getBytes("UTF-8"));
-			// converting byte array to Hexadecimal String
-			StringBuilder sb = new StringBuilder(2 * hash.length);
-			for (byte b : hash) {
-				sb.append(String.format("%02x", b & 0xff));
-			}
-			digest = sb.toString();
-		} catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
-			Utils.getLogger(Utils.class.getName());
-			digest = "";
+	        // Parse the datetime string to a LocalDateTime object
+	        LocalDateTime localDateTime = LocalDateTime.parse(string, formatter);
+	        System.out.println(localDateTime.toString());
+			return localDateTime;
 		}
-		return digest;
+	
+	public static String localDateTimeToDateTime(String date) {
+		return date.replace("T", " ");
+		
 	}
-
 	public static LocalDate LOCAL_DATE(String dateString) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return LocalDate.parse(dateString, formatter);
@@ -121,7 +75,7 @@ public class Utils {
 	}
 
 	public static boolean isValidTime(String time) {
-//        String regex = "^(2[0-3]{2}|[01]?[0-9]{2}):([0-5]?[0-9]{2})$";
+//	        String regex = "^(2[0-3]{2}|[01]?[0-9]{2}):([0-5]?[0-9]{2})$";
 		String regex = "^(2[0-3]|[1][0-9]|[0][0-9]):(0[0-9]|[1-5][0-9]):(0[0-9]|[1-5][0-9])$";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(time);

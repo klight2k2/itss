@@ -20,10 +20,9 @@ public class PayBorrowEntity extends BaseEntity {
 	private int borrowerId;
 	private List<EquipmentEntity> listEquipment;
 
-	public List<EquipmentEntity> getListEquipment() {
+	public  List<EquipmentEntity> getListEquipment() {
 		return listEquipment;
 	}
-
 	public void setListEquipment(List<EquipmentEntity> listEquipment) {
 		this.listEquipment = listEquipment;
 	}
@@ -48,6 +47,7 @@ public class PayBorrowEntity extends BaseEntity {
 		this.borrowReason = borrowReason;
 		this.refuseReason = refuseReason;
 		this.borrowerId = borrowerId;
+
 	}
 
 	public PayBorrowEntity() {

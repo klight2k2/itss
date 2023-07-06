@@ -93,4 +93,14 @@ public class RoomEntity extends BaseEntity {
 			e.printStackTrace();
 		}
 	}
+	@Override
+	public String toString(){
+		return name;
+	}
+	@Override
+	public boolean equals(Object obj){
+		RoomEntity room= (RoomEntity) obj;
+		if(room==null) return false;
+		return room.getId()== this.id;
+	}
 }

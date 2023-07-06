@@ -35,7 +35,9 @@ public class RoomReportService {
                         res.getDate("mfg"), 
                         res.getDate("yearOfUse"),
                         res.getInt("numberOfRepairs"),
-                        res.getString("note")));
+                        res.getString("note"),
+                        res.getInt("roomId")
+                        ));
 			}
 			return tmp;
 		} catch (Exception e) {
@@ -98,7 +100,9 @@ public class RoomReportService {
                             res_room_equipment_report.getDate("mfg"),
                             res_room_equipment_report.getDate("yearOfUse"),
                             res_room_equipment_report.getInt("numberOfRepairs"),
-                            res_room_equipment_report.getString("note")));
+                            res_room_equipment_report.getString("note"),
+                    		res_room_equipment_report.getInt("roomId"))
+                    		);
 
                 }
                 roomReport.setListEquipmentReport(tmp);
@@ -131,11 +135,11 @@ public class RoomReportService {
 
     public boolean save(RoomReportEntity room_report) throws SQLException {
         try {
-        	Statement stm = DB.getConnection().createStatement();
-        	ResultSet resultSet = stm.executeQuery("select count(*) as count from room_report");
-        	if (resultSet.next()) {
-        		room_report.setId(resultSet.getInt("count")+1);
-			}
+            Statement stm = DB.getConnection().createStatement();
+            ResultSet resultSet = stm.executeQuery("select count(*) as count from room_report");
+            if (resultSet.next()) {
+                room_report.setId(resultSet.getInt("count") + 1);
+            }
             String insertSql = "INSERT INTO room_report (id, roomId, status, createdAt, reporterId, approverId) "
                     + "VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
@@ -146,6 +150,28 @@ public class RoomReportService {
             preparedStmt.setInt(5, room_report.getReporterId());
             preparedStmt.setInt(6, room_report.getApproverId());
             preparedStmt.execute();
+              int equipLenght = room_report.getListEquipmentReport().size();
+
+            if (equipLenght > 0) {
+
+                StringBuilder sql = new StringBuilder(
+                        "INSERT IGNORE INTO room_equip_report (roomReportId,equipmentId) VALUES ");
+                int cnt = 0;
+                for (EquipmentEntity equip : room_report.getListEquipmentReport()) {
+                    sql.append("(" + room_report.getId() + ",'" + equip.getId() + "')");
+                    cnt += 1;
+                    if (cnt < equipLenght) {
+                        sql.append(",");
+                    }
+                }
+                ;
+                sql.append(";");
+
+                System.err.println(sql.toString());
+                Statement equipQuery = DB.getConnection().createStatement();
+                String sqlCmd = sql.toString();
+                equipQuery.execute(sqlCmd);
+            }
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -183,6 +209,26 @@ public class RoomReportService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<EquipmentEntity> getEquipmentInReport(String id) throws SQLException {
+        String updateSql = "select * from  room_equipment_report , equipment where roomReportId = ? and equipment.id = room_equipment_report.equipmentId";
+        PreparedStatement preparedStmt = DB.getConnection().prepareStatement(updateSql);
+        ResultSet res = preparedStmt.executeQuery("select * from equipment");
+
+        preparedStmt.setString(1, id);
+        List<EquipmentEntity> listEQuip = new ArrayList<EquipmentEntity>();
+        while (res.next()) {
+            EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
+                    res.getString("name"),
+                    res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
+                    res.getInt("numberOfRepairs"),
+                    res.getString("note"),
+                    res.getInt("roomId")
+            		);
+            listEQuip.add(equipment);
+        }
+        return listEQuip;
     }
 
 }

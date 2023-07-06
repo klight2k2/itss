@@ -14,7 +14,15 @@ module itss {
 	requires javafx.controls;
 	requires java.logging;
 	requires java.sql;
-	opens views ;
-	opens views.home;
 
+	opens models;
+	opens views;
+	opens views.home;
+	opens views.equipment;
+	opens views.schedule;
+	opens views.room;
+	opens views.payborrow;
+	opens views.report;
+	opens views.login;
+	opens controllers;
 }
