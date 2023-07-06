@@ -50,28 +50,18 @@ public class EquipmentService {
 
     public boolean save(EquipmentEntity equipment) throws SQLException {
         try {
-            String insert_sqlString = "INSERT IGNORE INTO equipment (equipmentCategoryId, id, name, status, mfg, yearOfUse, numberOfRepairs, note,roomId)"
-                    + " values (?, ?, ?, ?, ?, ?, ?, ?,?)";
-            Statement statement = DB.getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("select count(e.equipmentCategoryId) as count, ec.code from equipment e, equipment_category ec "+
-            		"where e.equipmentCategoryId = ec.id and e.equipmentCategoryId = " + equipment.getEquipmentCategoryId() +
-            		" group by ec.code");
-            resultSet.next();
-            int count = resultSet.getInt("count")+100;
-            equipment.setId(resultSet.getString("code") + String.format("%03d", count));
-            System.out.println(equipment.getId());
-            System.out.println(resultSet.getInt("count"));
+            String insert_sqlString = "INSERT IGNORE INTO equipment (equipmentCategoryId, name, status, mfg, yearOfUse, numberOfRepairs, note,roomId)"
+                    + " values (?, ?, ?, ?, ?, ?, ?,?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
             System.out.println(preparedStmt);
             preparedStmt.setInt(1, equipment.getEquipmentCategoryId());
-            preparedStmt.setString(2, equipment.getId());
-            preparedStmt.setString(3, equipment.getName());
-            preparedStmt.setInt(4, equipment.getStatus());
-            preparedStmt.setDate(5, equipment.getMfg());
-            preparedStmt.setDate(6, equipment.getYearOfUse());
-            preparedStmt.setInt(7, equipment.getNumberOfRepairs());
-            preparedStmt.setString(8, equipment.getNote());
-            preparedStmt.setInt(9, equipment.getRoomId());
+            preparedStmt.setString(2, equipment.getName());
+            preparedStmt.setInt(3, equipment.getStatus());
+            preparedStmt.setDate(4, equipment.getMfg());
+            preparedStmt.setDate(5, equipment.getYearOfUse());
+            preparedStmt.setInt(6, equipment.getNumberOfRepairs());
+            preparedStmt.setString(7, equipment.getNote());
+            preparedStmt.setInt(8, equipment.getRoomId());
 
             System.err.println(preparedStmt.toString());
             preparedStmt.execute();

@@ -44,16 +44,10 @@ public class RoomService {
     public boolean save(RoomEntity room) throws SQLException {
         // TODO Auto-generated method stub
         try {
-        	Statement stm = DB.getConnection().createStatement();
-        	ResultSet resultSet = stm.executeQuery("select count(*) as count from room");
-        	if (resultSet.next()) {
-        		room.setId(resultSet.getInt("count")+1);
-			}
-            String insert_sqlString = " insert into room (id, name, status)" + " values (?, ?, ?)";
+            String insert_sqlString = " insert into room (id, name, status)" + " values (?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
-            preparedStmt.setInt(1, room.getId());
-            preparedStmt.setString(2, room.getName());
-            preparedStmt.setBoolean(3, room.getStatus());
+            preparedStmt.setString(1, room.getName());
+            preparedStmt.setBoolean(2, room.getStatus());
             preparedStmt.execute();
             return true;
 

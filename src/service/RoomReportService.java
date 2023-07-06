@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import models.EquipmentEntity;
@@ -135,15 +136,10 @@ public class RoomReportService {
 
     public boolean save(RoomReportEntity room_report) throws SQLException {
         try {
-            Statement stm = DB.getConnection().createStatement();
-            ResultSet resultSet = stm.executeQuery("select count(*) as count from room_report");
-            if (resultSet.next()) {
-                room_report.setId(resultSet.getInt("count") + 1);
-            }
-            String insertSql = "INSERT INTO room_report (id, roomId, status, createdAt, reporterId, approverId) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            
+            String insertSql = "INSERT INTO room_report ( roomId, status, createdAt, reporterId, approverId) "
+                    + "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
-            preparedStmt.setInt(1, room_report.getId());
             preparedStmt.setInt(2, room_report.getRoomId());
             preparedStmt.setString(3, room_report.getStatus());
             preparedStmt.setDate(4, room_report.getCreatedAt());
@@ -230,5 +226,42 @@ public class RoomReportService {
         }
         return listEQuip;
     }
-
+    public boolean saveListEquipmentInRoomReport(int roomReportId, List<Integer> listEquipmentId) {
+    	try {
+    		for (int i = 0; i < listEquipmentId.size(); i++) {
+        		Statement stmStatement = DB.getConnection().createStatement();
+        		String sqlString = "INSERT INTO room_equip_report (roomReportId,equipmentId) VALUE (" + roomReportId + "," + listEquipmentId.get(i)+")";
+        		if (stmStatement.execute(sqlString)) {
+					return true;
+				}
+        		else {
+					return false;
+				}
+    		}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+    	return true;
+    }
+    public boolean deleteListEquipmentInRoomReport(int roomReportId, List<Integer> listEquipmentId) {
+    	try {
+    		for (int i = 0; i < listEquipmentId.size(); i++) {
+        		Statement stmStatement = DB.getConnection().createStatement();
+        		String sqlString = "DELETE FROM room_equip_report WHERE roomReportId = " + roomReportId + " and " + "equipmentId = " + listEquipmentId.get(i);
+        		if (stmStatement.execute(sqlString)) {
+					return true;
+				}
+        		else {
+					return false;
+				}
+    		}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+    	return true;
+    }
 }

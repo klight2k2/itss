@@ -41,16 +41,11 @@ public class CategoryEquipmentService {
 
     public boolean save(CategoryEquipmentEntity categoryEquipment) throws SQLException {
         try {
-            Statement stm = DB.getConnection().createStatement();
-            ResultSet resultSet = stm.executeQuery("select count(*) as count from equipment_category");
-            if (resultSet.next()) {
-                categoryEquipment.setId(resultSet.getInt("count") + 1);
-            }
-            String insertSql = "INSERT INTO equipment_category (id, name, code) VALUES (?, ?, ?)";
+            
+            String insertSql = "INSERT INTO equipment_category ( name, code) VALUES (?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
-            preparedStmt.setInt(1, categoryEquipment.getId());
-            preparedStmt.setString(2, categoryEquipment.getName());
-            preparedStmt.setString(3, categoryEquipment.getCode());
+            preparedStmt.setString(1, categoryEquipment.getName());
+            preparedStmt.setString(2, categoryEquipment.getCode());
             preparedStmt.execute();
             return true;
         } catch (SQLException e) {
