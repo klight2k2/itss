@@ -113,7 +113,7 @@ public class UserService {
 		try {
 			Connection connection = DB.getConnection();
 			Statement st = connection.createStatement();
-			rs = st.executeQuery("SELECT * FROM users WHERE userName = '" + userName + "'");
+			rs = st.executeQuery("SELECT * FROM user WHERE userName = '" + userName + "'");
 			if (rs == null) {
 				return false;
 			}

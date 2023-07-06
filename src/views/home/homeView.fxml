@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox prefHeight="700.0" prefWidth="1024.0" styleClass="container" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.home.HomeViewController">
+<HBox prefHeight="700.0" prefWidth="1061.0" styleClass="container" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.home.HomeViewController">
    <children>
-      <VBox fillWidth="false" prefHeight="668.0" prefWidth="235.0" styleClass="sidebar">
+      <VBox fillWidth="false" prefHeight="700.0" prefWidth="253.0" styleClass="sidebar">
          <children>
             <ImageView fitHeight="67.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -32,9 +32,6 @@
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
-               <graphic>
-                  <AnchorPane />
-               </graphic>
             </Button>
             <Button fx:id="equipmentBtn" alignment="BASELINE_LEFT" mnemonicParsing="false" onMouseClicked="#onNavagate" prefHeight="45.0" prefWidth="240.0" styleClass="nav-btn" text="Quản lý trang thiết bị">
                <VBox.margin>
@@ -68,32 +65,41 @@
       </VBox>
       <AnchorPane prefHeight="659.0" prefWidth="809.0">
          <children>
-            <VBox prefHeight="140.0" prefWidth="784.0">
+            <VBox prefHeight="70.0" prefWidth="814.0">
                <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="784.0">
+                  <HBox alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="827.0">
                      <children>
-                        <Text fx:id="userName" strokeType="OUTSIDE" strokeWidth="0.0" text="Minh quang">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
-                        </Text>
-                        <ImageView fx:id="avatar" fitHeight="38.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/user.png" />
-                           </image>
-                        </ImageView>
+                        <AnchorPane prefHeight="40.0" prefWidth="807.0">
+                           <children>
+                              <ImageView fx:id="avatar" fitHeight="38.0" fitWidth="50.0" layoutX="766.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/user.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fx:id="userName" layoutX="683.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minh quang">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="pageTitle" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trang chủ" wrappingWidth="298.703125">
+                                 <font>
+                                    <Font name="System Italic" size="24.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </AnchorPane>
                      </children>
                      <padding>
                         <Insets bottom="10.0" right="10.0" top="10.0" />
                      </padding>
                   </HBox>
-                  <AnchorPane fx:id="content" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" />
                </children>
             </VBox>
+            <AnchorPane fx:id="content" layoutX="7.0" layoutY="81.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" />
          </children>
+         <HBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </HBox.margin>
       </AnchorPane>
    </children>
    <stylesheets>

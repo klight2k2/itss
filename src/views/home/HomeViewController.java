@@ -20,6 +20,8 @@ import views.Links;
 public class HomeViewController implements Initializable {
 
 	@FXML
+	private Text pageTitle;
+	@FXML
 	private ImageView avatar;
 
 	@FXML
@@ -60,31 +62,37 @@ public class HomeViewController implements Initializable {
 		if (sourceButton.equals(equipmentBtn)) {
 			System.out.print("equipmentBtn");
 			loadView(Links.EQUIPMENTVIEW);
+			pageTitle.setText("Thiết bị");
 		}
 
 		else if (sourceButton == homeBtn) {
 			System.out.print("homeBtn");
 			loadView(Links.HOMECONTENTVIEW);
+			pageTitle.setText("Trang chủ");
 		}
 
 		else if (sourceButton == scheduleBtn) {
 			System.out.print("scheduleBtn");
 			loadView(Links.SCHEDULEVIEW);
+			pageTitle.setText("Lịch sử dụng phòng");
 		}
 
 		else if (sourceButton == roomBtn) {
 			System.out.print("roomBtn");
 			loadView(Links.ROOMVIEW);
+			pageTitle.setText("Phòng học");
 		}
 
 		else if (sourceButton == borrowBtn) {
 			System.out.print("borrowBtn");
 			loadView(Links.PAYBORROWVIEW);
+			pageTitle.setText("Mượn trả thiết bị");
 		}
 
 		else if (sourceButton == reportBtn) {
 			System.out.print("reportBtn");
 			loadView(Links.REPORTVIEW);
+			pageTitle.setText("Báo cáo cơ sở vật chất");
 		} else if (sourceButton == logoutBtn) {
 			System.out.print("logoutBtn");
 			try {
