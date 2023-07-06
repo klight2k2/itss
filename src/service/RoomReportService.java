@@ -124,6 +124,28 @@ public class RoomReportService {
             preparedStmt.setInt(5, room_report.getReporterId());
             preparedStmt.setInt(6, room_report.getApproverId());
             preparedStmt.execute();
+              int equipLenght = room_report.getListEquipmentReport().size();
+
+            if (equipLenght > 0) {
+
+                StringBuilder sql = new StringBuilder(
+                        "INSERT IGNORE INTO room_equip_report (roomReportId,equipmentId) VALUES ");
+                int cnt = 0;
+                for (EquipmentEntity equip : room_report.getListEquipmentReport()) {
+                    sql.append("(" + room_report.getId() + ",'" + equip.getId() + "')");
+                    cnt += 1;
+                    if (cnt < equipLenght) {
+                        sql.append(",");
+                    }
+                }
+                ;
+                sql.append(";");
+
+                System.err.println(sql.toString());
+                Statement equipQuery = DB.getConnection().createStatement();
+                String sqlCmd = sql.toString();
+                equipQuery.execute(sqlCmd);
+            }
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

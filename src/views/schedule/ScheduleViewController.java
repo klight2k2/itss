@@ -5,10 +5,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -18,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import models.RoomEntity;
 import models.RoomScheduleEntity;
 import models.UserEntity;
@@ -27,23 +31,25 @@ import service.UserService;
 
 public class ScheduleViewController {
 
-	@FXML
-	private DatePicker inputEndTime;
+	 @FXML
+	    private HBox endTimeBox,startTimeBox;
+	
+	
+	private DateTimePicker inputEndTime= new DateTimePicker();
+	private DateTimePicker inputStartTime= new DateTimePicker();
 
 	@FXML
 	private TextArea inputReason;
 
 	@FXML
-	private ChoiceBox<String> inputRoom;
+	private ComboBox<RoomEntity> inputRoom;
 
-	@FXML
-	private DatePicker inputStartTime;
 
 	@FXML
 	private Label inputTitle;
 
 	@FXML
-	private ChoiceBox<String> inputUser;
+	private ComboBox<UserEntity> inputUser;
 
 	@FXML
 	private TextField inputRoomName;
@@ -77,8 +83,8 @@ public class ScheduleViewController {
 
 	private Integer curId;
 
-	List<String> listRoom = new ArrayList<>();
-	List<String> listUser = new ArrayList<>();
+	private ObservableList<RoomEntity> listRoom = FXCollections.observableArrayList();
+	private ObservableList<UserEntity> listUser = FXCollections.observableArrayList();
 
 	@FXML
 	void closeModal(ActionEvent event) {
@@ -102,11 +108,12 @@ public class ScheduleViewController {
 	@FXML
 	void submit(ActionEvent event) {
 		try {
+			System.out.println(this.inputStartTime.getDateTimeValue());
 			RoomScheduleEntity rse = new RoomScheduleEntity();
-			rse.setRoomId(RoomService.getRepo().getAll().get(listRoom.indexOf(inputRoom.getValue())).getId());
-			rse.setTeacherId(UserService.getRepo().getAll().get(listUser.indexOf(inputUser.getValue())).getId());
-			rse.setStartTime(Date.valueOf(inputStartTime.getValue()));
-			rse.setEndTime(Date.valueOf(inputEndTime.getValue()));
+			rse.setRoomId(inputRoom.getSelectionModel().getSelectedItem().getId());
+			rse.setTeacherId(inputUser.getSelectionModel().getSelectedItem().getId());
+			rse.setStartTime((inputStartTime.getDateTimeValue()));
+			rse.setEndTime((inputEndTime.getDateTimeValue()));
 			rse.setReason(inputReason.getText());
 
 			RoomScheduleService rss = RoomScheduleService.getRepo();
@@ -152,8 +159,22 @@ public class ScheduleViewController {
 
 		deleteBtn.setVisible(true);
 		inputTitle.setText("Chi tiết");
-		inputRoom.setValue(clickedRow.getDisplayRoom());
-		inputUser.setValue(clickedRow.getDisplayUser());
+		for(RoomEntity item :listRoom){
+			if(item.getId()==clickedRow.getRoomId()){
+				// borrowerCombobox.setV
+				inputRoom.setValue(item);
+				System.out.println("success");
+			}
+
+		}
+		for(UserEntity item :listUser){
+			if(item.getId()==clickedRow.getRoomId()){
+				// borrowerCombobox.setV
+				inputUser.setValue(item);
+				System.out.println("success");
+			}
+
+		}
 		inputStartTime.setValue(clickedRow.getDisplayStartTime().toLocalDate());
 		inputEndTime.setValue(clickedRow.getDisplayEndTime().toLocalDate());
 		inputReason.setText(clickedRow.getDisplayReason());
@@ -217,6 +238,8 @@ public class ScheduleViewController {
 	}
 
 	public void initialize() {
+		startTimeBox.getChildren().add(inputStartTime);
+		endTimeBox.getChildren().add(inputEndTime);
 		scheduleId.setCellValueFactory(new PropertyValueFactory<>("displayId"));
 		scheduleRoom.setCellValueFactory(new PropertyValueFactory<>("displayRoom"));
 		scheduleUser.setCellValueFactory(new PropertyValueFactory<>("displayUser"));
@@ -227,14 +250,10 @@ public class ScheduleViewController {
 		updateTable();
 
 		try {
-			for (RoomEntity room : RoomService.getRepo().getAll()) {
-				listRoom.add(room.getName());
-				inputRoom.getItems().add(room.getName());
-			}
-			for (UserEntity user : UserService.getRepo().getAll()) {
-				listUser.add(user.getName());
-				inputUser.getItems().add(user.getName());
-			}
+			listRoom.setAll(RoomService.getRepo().getAll());
+			inputRoom.setItems(listRoom);
+			listUser.setAll(UserService.getRepo().getAll());
+			inputUser.setItems(listUser);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

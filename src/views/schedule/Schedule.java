@@ -1,6 +1,7 @@
 package views.schedule;
 
-import java.sql.Date;
+
+import java.time.LocalDateTime;
 
 import models.RoomScheduleEntity;
 
@@ -8,8 +9,8 @@ public class Schedule extends RoomScheduleEntity {
 	private Integer displayId;
 	private String displayRoom;
 	private String displayUser;
-	private Date displayStartTime;
-	private Date displayEndTime;
+	private LocalDateTime displayStartTime;
+	private LocalDateTime displayEndTime;
 	private String displayReason;
 
 	public Integer getDisplayId() {
@@ -36,19 +37,19 @@ public class Schedule extends RoomScheduleEntity {
 		this.displayUser = displayUser;
 	}
 
-	public Date getDisplayStartTime() {
+	public LocalDateTime getDisplayStartTime() {
 		return displayStartTime;
 	}
 
-	public void setDisplayStartTime(Date displayStartTime) {
+	public void setDisplayStartTime(LocalDateTime displayStartTime) {
 		this.displayStartTime = displayStartTime;
 	}
 
-	public Date getDisplayEndTime() {
+	public LocalDateTime getDisplayEndTime() {
 		return displayEndTime;
 	}
 
-	public void setDisplayEndTime(Date displayEndTime) {
+	public void setDisplayEndTime(LocalDateTime displayEndTime) {
 		this.displayEndTime = displayEndTime;
 	}
 

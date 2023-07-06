@@ -1,13 +1,14 @@
 package models;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class RoomScheduleEntity extends BaseEntity {
 	private int id;
 	private int teacherId;
 	private int roomId;
-	private Date startTime;
-	private Date endTime;
+	private LocalDateTime startTime;
+	private LocalDateTime endTime;
 	private String reason;
 
 	private UserEntity teacher = new UserEntity();
@@ -20,7 +21,7 @@ public class RoomScheduleEntity extends BaseEntity {
 		this.teacher = teacher;
 	}
 
-	public RoomScheduleEntity(int teacherId, int roomId, Date startTime, Date endTime, String reason,
+	public RoomScheduleEntity(int teacherId, int roomId, LocalDateTime startTime, LocalDateTime endTime, String reason,
 			UserEntity teacher) {
 		super();
 		this.teacherId = teacherId;
@@ -31,7 +32,7 @@ public class RoomScheduleEntity extends BaseEntity {
 		this.teacher = teacher;
 	}
 
-	public RoomScheduleEntity(int id, int teacherId, int roomId, Date startTime, Date endTime, String reason) {
+	public RoomScheduleEntity(int id, int teacherId, int roomId, LocalDateTime startTime, LocalDateTime endTime, String reason) {
 		this.id = id;
 		this.teacherId = teacherId;
 		this.roomId = roomId;
@@ -68,19 +69,19 @@ public class RoomScheduleEntity extends BaseEntity {
 		this.roomId = roomId;
 	}
 
-	public Date getStartTime() {
+	public LocalDateTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Date startTime) {
+	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
 
-	public Date getEndTime() {
+	public LocalDateTime getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Date endTime) {
+	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
 

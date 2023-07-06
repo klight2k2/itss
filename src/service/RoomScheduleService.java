@@ -9,6 +9,8 @@ import java.util.List;
 import models.RoomScheduleEntity;
 import models.UserEntity;
 import models.db.DB;
+import utils.DateUtils;
+import utils.Utils;
 
 public class RoomScheduleService {
     private static RoomScheduleService repo;
@@ -30,8 +32,8 @@ public class RoomScheduleService {
 
             if (resultSet.next()) {
                 RoomScheduleEntity schedule = new RoomScheduleEntity(resultSet.getInt("id"),
-                        resultSet.getInt("teacherId"), resultSet.getInt("roomId"), resultSet.getDate("startTime"),
-                        resultSet.getDate("endTime"), resultSet.getString("reason"));
+                        resultSet.getInt("teacherId"), resultSet.getInt("roomId"), DateUtils.LocalDateTime(resultSet.getTimestamp("startTime").toString()),
+                        DateUtils.LocalDateTime(resultSet.getTimestamp("endTime").toString()), resultSet.getString("reason"));
                 return schedule;
             } else {
                 return null; // Lịch trình không tồn tại
@@ -53,8 +55,8 @@ public class RoomScheduleService {
             List<RoomScheduleEntity> roomSchedules = new ArrayList<>();
             while (res.next()) {
                 RoomScheduleEntity roomSchedule = new RoomScheduleEntity(res.getInt("id"), res.getInt("teacherId"),
-                        res.getInt("roomId"), res.getDate("startTime"), res.getDate("endTime"),
-                        res.getString("reason"));
+                        res.getInt("roomId"), DateUtils.LocalDateTime(res.getTimestamp("startTime").toString()),
+                        DateUtils.LocalDateTime(res.getTimestamp("endTime").toString()), res.getString("reason"));
                 String sql_user = "SELECT * FROM user WHERE id = " + 1;
                 // System.out.println(sql_user);
                 Statement stm = DB.getConnection().createStatement();
@@ -81,8 +83,8 @@ public class RoomScheduleService {
             ArrayList<RoomScheduleEntity> schedules = new ArrayList<>();
             while (res.next()) {
                 RoomScheduleEntity schedule = new RoomScheduleEntity(res.getInt("id"), res.getInt("teacherId"),
-                        res.getInt("roomId"), res.getDate("startTime"), res.getDate("endTime"),
-                        res.getString("reason"));
+                        res.getInt("roomId"),DateUtils.LocalDateTime(res.getTimestamp("startTime").toString()),
+                        DateUtils.LocalDateTime(res.getTimestamp("endTime").toString()),         res.getString("reason"));
                 schedules.add(schedule);
             }
             return schedules;
@@ -105,8 +107,8 @@ public class RoomScheduleService {
             preparedStmt.setInt(1, roomSchedule.getId());
             preparedStmt.setInt(2, roomSchedule.getTeacherId());
             preparedStmt.setInt(3, roomSchedule.getRoomId());
-            preparedStmt.setDate(4, new java.sql.Date(roomSchedule.getStartTime().getTime()));
-            preparedStmt.setDate(5, new java.sql.Date(roomSchedule.getEndTime().getTime()));
+            preparedStmt.setString(4, DateUtils.localDateTimeToDateTime(roomSchedule.getStartTime().toString()));
+            preparedStmt.setString(5, DateUtils.localDateTimeToDateTime(roomSchedule.getEndTime().toString()));
             preparedStmt.setString(6, roomSchedule.getReason());
             preparedStmt.execute();
             return true;
@@ -136,8 +138,8 @@ public class RoomScheduleService {
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(updateSql);
             preparedStmt.setInt(1, roomSchedule.getTeacherId());
             preparedStmt.setInt(2, roomSchedule.getRoomId());
-            preparedStmt.setDate(3, new java.sql.Date(roomSchedule.getStartTime().getTime()));
-            preparedStmt.setDate(4, new java.sql.Date(roomSchedule.getEndTime().getTime()));
+             preparedStmt.setString(3, DateUtils.localDateTimeToDateTime(roomSchedule.getStartTime().toString()));
+            preparedStmt.setString(4, DateUtils.localDateTimeToDateTime(roomSchedule.getEndTime().toString()));
             preparedStmt.setString(5, roomSchedule.getReason());
             preparedStmt.setInt(6, roomSchedule.getId());
             preparedStmt.execute();

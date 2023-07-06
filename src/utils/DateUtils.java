@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Random;
@@ -14,6 +15,20 @@ import java.util.regex.Pattern;
 import javafx.scene.control.Alert;
 
 public class DateUtils {
+	public static LocalDateTime LocalDateTime(String string) {
+			// TODO Auto-generated method stub
+	    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+
+	        // Parse the datetime string to a LocalDateTime object
+	        LocalDateTime localDateTime = LocalDateTime.parse(string, formatter);
+	        System.out.println(localDateTime.toString());
+			return localDateTime;
+		}
+	
+	public static String localDateTimeToDateTime(String date) {
+		return date.replace("T", " ");
+		
+	}
 	public static LocalDate LOCAL_DATE(String dateString) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		return LocalDate.parse(dateString, formatter);
