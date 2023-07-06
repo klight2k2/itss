@@ -7,7 +7,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.EquipmentEntity;
 import models.PayBorrowEntity;
+import models.UserEntity;
 import models.db.DB;
 
 public class PayBorrowService {
@@ -20,7 +22,51 @@ public class PayBorrowService {
             return new PayBorrowService();
         }
     };
-
+    public UserEntity getUserByPayBorrowId(int payBorrowId) {
+		try {
+			Statement stm = DB.getConnection().createStatement();
+			ResultSet res = stm.executeQuery("Select u.* from pay_borrow_equipment pbe, user u where pbe.borrowerId = u.id and pbe.payBorrowId = " + payBorrowId);
+			if (res.next()) {
+				return new UserEntity(
+						res.getString("id"),
+						res.getString("username"),
+						res.getString("password"),
+						res.getString("role")
+						);
+			}
+			else {
+				return null;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
+    public List<EquipmentEntity> getEquipmentByPayBorrowId(int payBorrowId) {
+		try {
+			Statement stm = DB.getConnection().createStatement();
+			ResultSet res = stm.executeQuery("Select e.* from pay_borrow_equipment pbe, equipment e where pbe.equipmentId = e.id and pbe.payBorrowId = " + payBorrowId);
+			List<EquipmentEntity> tmp =new ArrayList<>(); 
+			while (res.next()) {
+				tmp.add(new EquipmentEntity(
+						res.getInt("equipmentCategoryId"), 
+						res.getString("id"),
+                        res.getString("name"),
+                        res.getInt("status"), 
+                        res.getDate("mfg"), 
+                        res.getDate("yearOfUse"),
+                        res.getInt("numberOfRepairs"),
+                        res.getString("note")));
+			}
+			return tmp;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
+    
     public List<PayBorrowEntity> getAll() throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
