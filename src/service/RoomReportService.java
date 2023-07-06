@@ -230,7 +230,7 @@ public class RoomReportService {
     	try {
     		for (int i = 0; i < listEquipmentId.size(); i++) {
         		Statement stmStatement = DB.getConnection().createStatement();
-        		String sqlString = "INSERT INTO room_equip_report (roomReportId,equipmentId) VALUE (" + roomReportId + "," + listEquipmentId.get(i)+")";
+        		String sqlString = "INSERT INTO room_equipment_report (roomReportId,equipmentId) VALUE (" + roomReportId + "," + listEquipmentId.get(i)+")";
         		if (stmStatement.execute(sqlString)) {
 					return true;
 				}
@@ -249,7 +249,7 @@ public class RoomReportService {
     	try {
     		for (int i = 0; i < listEquipmentId.size(); i++) {
         		Statement stmStatement = DB.getConnection().createStatement();
-        		String sqlString = "DELETE FROM room_equip_report WHERE roomReportId = " + roomReportId + " and " + "equipmentId = " + listEquipmentId.get(i);
+        		String sqlString = "DELETE FROM room_equipment_report WHERE roomReportId = " + roomReportId + " and " + "equipmentId = " + listEquipmentId.get(i);
         		if (stmStatement.execute(sqlString)) {
 					return true;
 				}
