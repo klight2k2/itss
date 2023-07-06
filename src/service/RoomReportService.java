@@ -76,7 +76,9 @@ public class RoomReportService {
                             res_room_equipment_report.getDate("mfg"),
                             res_room_equipment_report.getDate("yearOfUse"),
                             res_room_equipment_report.getInt("numberOfRepairs"),
-                            res_room_equipment_report.getString("note")));
+                            res_room_equipment_report.getString("note"),
+                    		res_room_equipment_report.getInt("roomId"))
+                    		);
 
                 }
                 roomReport.setListEquipmentReport(tmp);
@@ -197,7 +199,9 @@ public class RoomReportService {
                     res.getString("name"),
                     res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
                     res.getInt("numberOfRepairs"),
-                    res.getString("note"));
+                    res.getString("note"),
+                    res.getInt("roomId")
+            		);
             listEQuip.add(equipment);
         }
         return listEQuip;

@@ -33,7 +33,7 @@ public class EquipmentService {
                         res.getString("name"),
                         res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
                         res.getInt("numberOfRepairs"),
-                        res.getString("note"));
+                        res.getString("note"),res.getInt("roomId"));
                 medium.add(equipment);
             }
             return medium;
@@ -46,14 +46,14 @@ public class EquipmentService {
 
     public boolean save(EquipmentEntity equipment) throws SQLException {
         try {
-            String insert_sqlString = "INSERT IGNORE INTO equipment (equipmentCategoryId, id, name, status, mfg, yearOfUse, numberOfRepairs, note)"
-                    + " values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String insert_sqlString = "INSERT IGNORE INTO equipment (equipmentCategoryId, id, name, status, mfg, yearOfUse, numberOfRepairs, note,roomId)"
+                    + " values (?, ?, ?, ?, ?, ?, ?, ?,?)";
             Statement statement = DB.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("select count(e.equipmentCategoryId) as count, ec.code from equipment e, equipment_category ec "+
             		"where e.equipmentCategoryId = ec.id and e.equipmentCategoryId = " + equipment.getEquipmentCategoryId() +
             		" group by ec.code");
             resultSet.next();
-            int count = resultSet.getInt("count")+1;
+            int count = resultSet.getInt("count")+100;
             equipment.setId(resultSet.getString("code") + String.format("%03d", count));
             System.out.println(equipment.getId());
             System.out.println(resultSet.getInt("count"));
@@ -67,10 +67,14 @@ public class EquipmentService {
             preparedStmt.setDate(6, equipment.getYearOfUse());
             preparedStmt.setInt(7, equipment.getNumberOfRepairs());
             preparedStmt.setString(8, equipment.getNote());
-            preparedStmt.executeUpdate();
+            preparedStmt.setInt(9, equipment.getRoomId());
+
+            System.err.println(preparedStmt.toString());
+            preparedStmt.execute();
             return true;
 
         } catch (SQLException e) {
+            System.err.println("Got an exception!");
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
             return false;
@@ -94,7 +98,7 @@ public class EquipmentService {
     public boolean update(EquipmentEntity equipment) throws SQLException {
         // TODO Auto-generated method stub
         try {
-            String insert_sqlString = "UPDATE equipment SET equipmentCategoryId = ?, id = ?, name = ?, status = ?, mfg = ?, yearOfUse = ?, numberOfRepairs = ?, note = ? WHERE id = ?";
+            String insert_sqlString = "UPDATE equipment SET equipmentCategoryId = ?, id = ?, name = ?, status = ?, mfg = ?, yearOfUse = ?, numberOfRepairs = ?, note = ?, roomId=? WHERE id = ?";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
             preparedStmt.setInt(1, equipment.getEquipmentCategoryId());
             preparedStmt.setString(2, equipment.getId());
@@ -104,7 +108,8 @@ public class EquipmentService {
             preparedStmt.setDate(6, equipment.getYearOfUse());
             preparedStmt.setInt(7, equipment.getNumberOfRepairs());
             preparedStmt.setString(8, equipment.getNote());
-            preparedStmt.setString(9, equipment.getId());
+            preparedStmt.setInt(9, equipment.getRoomId());
+            preparedStmt.setString(10, equipment.getId());
             preparedStmt.execute();
             return true;
         } catch (SQLException e) {
@@ -138,7 +143,7 @@ public class EquipmentService {
                         res.getString("name"),
                         res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
                         res.getInt("numberOfRepairs"),
-                        res.getString("note"));
+                        res.getString("note"),res.getInt("roomId"));
                 medium.add(equipment);
             }
             return medium;
@@ -166,7 +171,7 @@ public class EquipmentService {
                         resultSet.getDate("mfg"),
                         resultSet.getDate("yearOfUse"),
                         resultSet.getInt("numberOfRepairs"),
-                        resultSet.getString("note"));
+                        resultSet.getString("note"),resultSet.getInt("roomId"));
                 return equipment;
             } else {
                 return null; // Thiết bị không tồn tại
@@ -190,7 +195,7 @@ public class EquipmentService {
                         res.getString("name"),
                         res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
                         res.getInt("numberOfRepairs"),
-                        res.getString("note"));
+                        res.getString("note"),res.getInt("roomId"));
                 medium.add(equipment);
             }
             return medium;
@@ -216,7 +221,7 @@ public class EquipmentService {
                         res.getString("name"),
                         res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
                         res.getInt("numberOfRepairs"),
-                        res.getString("note"));
+                        res.getString("note"),res.getInt("roomId"));
                 medium.add(equipment);
             }
             return medium;

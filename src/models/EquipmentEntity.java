@@ -11,6 +11,7 @@ public class EquipmentEntity extends BaseEntity {
 	private Date yearOfUse;
 	private int numberOfRepairs;
 	private String note;
+	private int roomId;
 
 
 	public EquipmentEntity() {
@@ -18,7 +19,7 @@ public class EquipmentEntity extends BaseEntity {
 	}
 
 	public EquipmentEntity(int equipmentCategoryId, String name, int status, Date mfg, Date yearOfUse,
-			int numberOfRepairs, String note) {
+			int numberOfRepairs, String note,int roomId) {
 		super();
 		this.equipmentCategoryId = equipmentCategoryId;
 		this.name = name;
@@ -26,11 +27,12 @@ public class EquipmentEntity extends BaseEntity {
 		this.mfg = mfg;
 		this.yearOfUse = yearOfUse;
 		this.numberOfRepairs = numberOfRepairs;
-		this.note = note;
+		this.note  = note;
+		this.setRoomId(roomId);
 	}
 
 	public EquipmentEntity(int equipmentCategoryId, String id, String name, int status, Date mfg,
-			Date yearOfUse, int numberOfRepairs, String note) {
+			Date yearOfUse, int numberOfRepairs, String note,int roomId) {
 		super();
 		this.equipmentCategoryId = equipmentCategoryId;
 		this.id = id;
@@ -40,6 +42,7 @@ public class EquipmentEntity extends BaseEntity {
 		this.yearOfUse = yearOfUse;
 		this.numberOfRepairs = numberOfRepairs;
 		this.note = note;
+		this.setRoomId(roomId);
 	}
 
 	public int getEquipmentCategoryId() {
@@ -117,6 +120,14 @@ public class EquipmentEntity extends BaseEntity {
 		EquipmentEntity entity =(EquipmentEntity) obj;
 		if(entity.id==this.id) return true;
 		return false;
+	}
+
+	public int getRoomId() {
+		return roomId;
+	}
+
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
 	}
 
 }

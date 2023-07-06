@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.CategoryEquipment;
+import models.CategoryEquipmentEntity;
 import models.db.DB;
 
 public class CategoryEquipmentService {
@@ -20,13 +20,13 @@ public class CategoryEquipmentService {
 	            return new CategoryEquipmentService();
 	        }
 	    };
-	public List<CategoryEquipment> getAll() throws SQLException {
+	public List<CategoryEquipmentEntity> getAll() throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
             ResultSet res = stm.executeQuery("SELECT * FROM equipment_category");
-            ArrayList<CategoryEquipment> equipmentCategories = new ArrayList<>();
+            ArrayList<CategoryEquipmentEntity> equipmentCategories = new ArrayList<>();
             while (res.next()) {
-                CategoryEquipment categoryEquipment = new CategoryEquipment(
+                CategoryEquipmentEntity categoryEquipment = new CategoryEquipmentEntity(
                         res.getInt("id"),
                         res.getString("name"),
                         res.getString("code"));
@@ -39,7 +39,7 @@ public class CategoryEquipmentService {
         }
     }
 
-    public boolean save(CategoryEquipment categoryEquipment) throws SQLException {
+    public boolean save(CategoryEquipmentEntity categoryEquipment) throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
             ResultSet resultSet = stm.executeQuery("select count(*) as count from equipment_category");
@@ -59,7 +59,7 @@ public class CategoryEquipmentService {
         }
     }
 
-    public boolean delete(CategoryEquipment categoryEquipment) throws SQLException {
+    public boolean delete(CategoryEquipmentEntity categoryEquipment) throws SQLException {
         try {
             String deleteSql = "DELETE FROM equipment_category WHERE id = ?";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(deleteSql);
@@ -72,7 +72,7 @@ public class CategoryEquipmentService {
         }
     }
 
-    public boolean update(CategoryEquipment categoryEquipment) throws SQLException {
+    public boolean update(CategoryEquipmentEntity categoryEquipment) throws SQLException {
         String updateSql = "UPDATE category_equipment SET name = ?, code = ? WHERE id = ?";
         try (PreparedStatement statement = DB.getConnection().prepareStatement(updateSql)) {
             statement.setString(1, categoryEquipment.getName());
@@ -87,13 +87,13 @@ public class CategoryEquipmentService {
         }
     }
 
-    public static CategoryEquipment getCategoryById(int categoryId) throws SQLException {
+    public static CategoryEquipmentEntity getCategoryById(int categoryId) throws SQLException {
         String selectSql = "SELECT * FROM category_equipment WHERE id = ?";
         try (PreparedStatement statement = DB.getConnection().prepareStatement(selectSql)) {
             statement.setInt(1, categoryId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    CategoryEquipment category = new CategoryEquipment();
+                    CategoryEquipmentEntity category = new CategoryEquipmentEntity();
                     category.setId(resultSet.getInt("id"));
                     category.setName(resultSet.getString("name"));
                     category.setCode(resultSet.getString("code"));
