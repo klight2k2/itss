@@ -97,20 +97,14 @@ public class PayBorrowService {
 
     public boolean save(PayBorrowEntity pay_borrow) throws SQLException {
         try {
-            Statement stm = DB.getConnection().createStatement();
-            ResultSet resultSet = stm.executeQuery("select count(*) as count from pay_borrow");
-            if (resultSet.next()) {
-                pay_borrow.setId(resultSet.getInt("count") + 1);
-            }
-            String insertSql = "INSERT INTO pay_borrow (id, fromDate, toDate, status, borrowReason, refuseReason, borrowerId) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String insertSql = "INSERT INTO pay_borrow (fromDate, toDate, status, borrowReason, refuseReason, borrowerId) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
-            preparedStmt.setInt(1, pay_borrow.getId());
-            preparedStmt.setDate(2, pay_borrow.getFromDate());
-            preparedStmt.setDate(3, pay_borrow.getToDate());
-            preparedStmt.setString(4, pay_borrow.getStatus());
-            preparedStmt.setString(5, pay_borrow.getBorrowReason());
-            preparedStmt.setString(6, pay_borrow.getRefuseReason());
-            preparedStmt.setInt(7, pay_borrow.getBorrowerId());
+            preparedStmt.setDate(1, pay_borrow.getFromDate());
+            preparedStmt.setDate(2, pay_borrow.getToDate());
+            preparedStmt.setString(3, pay_borrow.getStatus());
+            preparedStmt.setString(4, pay_borrow.getBorrowReason());
+            preparedStmt.setString(5, pay_borrow.getRefuseReason());
+            preparedStmt.setInt(6, pay_borrow.getBorrowerId());
             preparedStmt.execute();
             int equipLenght = pay_borrow.getListEquipment().size();
 
@@ -201,5 +195,42 @@ public class PayBorrowService {
             return false;
         }
     }
-
+    public boolean saveListEquipmentInPayBorrow(int payBorrowId, List<Integer> listEquipmentId) {
+    	try {
+    		for (int i = 0; i < listEquipmentId.size(); i++) {
+        		Statement stmStatement = DB.getConnection().createStatement();
+        		String sqlString = "INSERT INTO pay_borrow_equipment (payBorrowId,equipmentId) VALUE (" + payBorrowId + "," + listEquipmentId.get(i)+")";
+        		if (stmStatement.execute(sqlString)) {
+					return true;
+				}
+        		else {
+					return false;
+				}
+    		}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+    	return true;
+    }
+    public boolean deleteListEquipmentInPayBorrowId(int payBorrowId, List<Integer> listEquipmentId) {
+    	try {
+    		for (int i = 0; i < listEquipmentId.size(); i++) {
+        		Statement stmStatement = DB.getConnection().createStatement();
+        		String sqlString = "DELETE FROM pay_borrow_equipment WHERE payBorrowId = " + payBorrowId + " and " + "equipmentId = " + listEquipmentId.get(i);
+        		if (stmStatement.execute(sqlString)) {
+					return true;
+				}
+        		else {
+					return false;
+				}
+    		}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+    	return true;
+    }
 }

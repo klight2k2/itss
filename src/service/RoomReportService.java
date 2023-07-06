@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import models.EquipmentEntity;
@@ -202,11 +203,53 @@ public class RoomReportService {
 		List<EquipmentEntity> listEQuip = new ArrayList<EquipmentEntity>();
 		while (res.next()) {
 			EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
-					res.getString("name"), res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
-					res.getInt("numberOfRepairs"), res.getString("note"), res.getInt("roomId"));
+					res.getString("name"),
+					res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
+					res.getInt("numberOfRepairs"),
+					res.getString("note"),
+					res.getInt("roomId"));
 			listEQuip.add(equipment);
 		}
 		return listEQuip;
 	}
 
+	public boolean saveListEquipmentInRoomReport(int roomReportId, List<Integer> listEquipmentId) {
+		try {
+			for (int i = 0; i < listEquipmentId.size(); i++) {
+				Statement stmStatement = DB.getConnection().createStatement();
+				String sqlString = "INSERT INTO room_equip_report (roomReportId,equipmentId) VALUE (" + roomReportId + ","
+						+ listEquipmentId.get(i) + ")";
+				if (stmStatement.execute(sqlString)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public boolean deleteListEquipmentInRoomReport(int roomReportId, List<Integer> listEquipmentId) {
+		try {
+			for (int i = 0; i < listEquipmentId.size(); i++) {
+				Statement stmStatement = DB.getConnection().createStatement();
+				String sqlString = "DELETE FROM room_equip_report WHERE roomReportId = " + roomReportId + " and "
+						+ "equipmentId = " + listEquipmentId.get(i);
+				if (stmStatement.execute(sqlString)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 }
