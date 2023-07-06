@@ -51,12 +51,8 @@ public class UserService {
 			ResultSet res = stm.executeQuery("SELECT * FROM user");
 			ArrayList<UserEntity> users = new ArrayList<>();
 			while (res.next()) {
-				UserEntity user = new UserEntity(
-						res.getInt("id"),
-						res.getString("name"),
-						res.getString("username"),
-						res.getString("password"),
-						res.getString("role"));
+				UserEntity user = new UserEntity(res.getInt("id"), res.getString("name"), res.getString("username"),
+						res.getString("password"), res.getString("role"));
 				users.add(user);
 			}
 			return users;
@@ -117,21 +113,27 @@ public class UserService {
 			return false;
 		}
 	}
-	 public boolean checkLogin(String userName, String password) throws SQLException, ClassNotFoundException{
-	        Connection connection = DB.getConnection();
-	        Statement st = connection.createStatement();
-	        ResultSet rs = st.executeQuery("SELECT * FROM users WHERE userName = '" + userName +"'");
-	        if (rs == null) {
-	            return false;
-	        }
-	        while (rs.next()) {                
-	            if (rs.getString("password") == null ? password == null : rs.getString("password").equals(password)) {
-	                LoginController.currentUser.setId(rs.getInt("id"));
-	                LoginController.currentUser.setName(rs.getString("userName"));
-	                return true;
-	            }
-	        }
-	        connection.close();
-	        return false;
-	    }
+
+	public boolean checkLogin(String userName, String password) {
+		ResultSet rs;
+		try {
+			Connection connection = DB.getConnection();
+			Statement st = connection.createStatement();
+			rs = st.executeQuery("SELECT * FROM users WHERE userName = '" + userName + "'");
+			if (rs == null) {
+				return false;
+			}
+			while (rs.next()) {
+				if (rs.getString("password") == null ? password == null : rs.getString("password").equals(password)) {
+					LoginController.currentUser.setId(rs.getInt("id"));
+					LoginController.currentUser.setName(rs.getString("userName"));
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
 }
