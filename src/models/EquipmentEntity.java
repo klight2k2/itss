@@ -11,15 +11,7 @@ public class EquipmentEntity extends BaseEntity {
 	private Date yearOfUse;
 	private int numberOfRepairs;
 	private String note;
-	private String belongto;
 
-	public String getBelongto() {
-		return belongto;
-	}
-
-	public void setBelongto(String belongto) {
-		this.belongto = belongto;
-	}
 
 	public EquipmentEntity() {
 		super();

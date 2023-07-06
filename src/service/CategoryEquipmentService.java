@@ -41,11 +41,11 @@ public class CategoryEquipmentService {
 
     public boolean save(CategoryEquipment categoryEquipment) throws SQLException {
         try {
-        	Statement stm = DB.getConnection().createStatement();
-        	ResultSet resultSet = stm.executeQuery("select count(*) as count from equipment_category");
-        	if (resultSet.next()) {
-        		categoryEquipment.setId(resultSet.getInt("count")+1);
-			}
+            Statement stm = DB.getConnection().createStatement();
+            ResultSet resultSet = stm.executeQuery("select count(*) as count from equipment_category");
+            if (resultSet.next()) {
+                categoryEquipment.setId(resultSet.getInt("count") + 1);
+            }
             String insertSql = "INSERT INTO equipment_category (id, name, code) VALUES (?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
             preparedStmt.setInt(1, categoryEquipment.getId());
@@ -86,7 +86,7 @@ public class CategoryEquipmentService {
             return false;
         }
     }
-    
+
     public static CategoryEquipment getCategoryById(int categoryId) throws SQLException {
         String selectSql = "SELECT * FROM category_equipment WHERE id = ?";
         try (PreparedStatement statement = DB.getConnection().prepareStatement(selectSql)) {

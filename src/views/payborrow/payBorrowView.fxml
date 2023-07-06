@@ -20,6 +20,7 @@
             <Font size="38.0" />
          </font></Text>
       <Label layoutX="16.0" layoutY="89.0" text="* Nhấn để xem chi tiết" />
+      <Button layoutX="660.0" layoutY="75.0" mnemonicParsing="false" onAction="#openModal" text="Thêm lịch mượn" />
       <TableView fx:id="pbEquipments" layoutX="16.0" layoutY="116.0" onMouseClicked="#rowClicked" prefHeight="457.0" prefWidth="753.0">
         <columns>
           <TableColumn fx:id="pbId" prefWidth="54.0" text="ID" />
@@ -35,12 +36,12 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
+      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
          <children>
             <AnchorPane layoutX="62.0" layoutY="86.0" prefHeight="481.0" prefWidth="671.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
                <children>
                   <TextField fx:id="equipId" disable="true" layoutX="158.0" layoutY="48.0" prefHeight="27.0" prefWidth="147.0" />
-                  <Label alignment="CENTER" layoutX="242.0" layoutY="14.0" prefHeight="27.0" prefWidth="176.0" style="-fx-font-weight: bold; -fx-font-size: 16;" styleClass="title" text="Thông tin mượn trả" />
+                  <Label fx:id="modalTitle" alignment="CENTER" layoutX="242.0" layoutY="14.0" prefHeight="27.0" prefWidth="176.0" style="-fx-font-weight: bold; -fx-font-size: 16;" styleClass="title" text="Thông tin mượn trả" />
                   <Label layoutX="48.0" layoutY="130.0" prefHeight="19.0" prefWidth="86.0" text="Trạng thái" />
                   <ChoiceBox fx:id="status" layoutX="158.0" layoutY="126.0" prefHeight="27.0" prefWidth="147.0" />
                   <Button layoutX="514.0" layoutY="453.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="86.0" text="Xác nhận" />
@@ -66,6 +67,7 @@
                         <TableColumn fx:id="borrowedNoteColumn" prefWidth="170.0" text="Note" />
                     </columns>
                   </TableView>
+                  <Button fx:id="deleteBtn" layoutX="606.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c11c1c" />
                </children>
                <opaqueInsets>
                   <Insets />

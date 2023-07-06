@@ -8,10 +8,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -82,12 +83,16 @@ public class PayBorrowViewController {
 	@FXML
 	private ChoiceBox<String> status;
 
+	@FXML
+	private Button deleteBtn;
+
 	private String[] statusValues = { "PENDING", "BORROWING", "PAID" };
 
 	@FXML
 	private TextArea refuseReason;
 
-	private int pbCurId;
+	@FXML
+	private Label modalTitle;
 
 	@FXML
 	private TableColumn<EquipmentEntity, String> borrowNoteColumn;
@@ -119,6 +124,7 @@ public class PayBorrowViewController {
 
 	}
 
+	private int pbCurId;
 	private ObservableList<EquipmentEntity> listBorrowed = FXCollections.observableArrayList();
 	private ObservableList<EquipmentEntity> listBorrow = FXCollections.observableArrayList();
 
@@ -128,22 +134,39 @@ public class PayBorrowViewController {
 	}
 
 	@FXML
+	void openModal(ActionEvent event) {
+		this.pbCurId = -1;
+		deleteBtn.setVisible(false);
+		equipId.setText("BD001");
+		borrowUser.clear();
+		status.setValue(null);
+		borrowDate.setValue(null);
+		payDate.setValue(null);
+		borrowReason.clear();
+		refuseReason.clear();
+
+		pbDetailModal.setVisible(true);
+	}
+
+	@FXML
 	void submit(ActionEvent event) {
 		try {
 
-			PayBorrowEntity pbs = new PayBorrow();
+			PayBorrowEntity pb = new PayBorrowEntity();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
-			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
-				if (pb.getId() == pbCurId) {
-					pb.setStatus(status.getValue());
-					pb.setFromDate(Date.valueOf(borrowDate.getValue()));
-					pb.setToDate(Date.valueOf(payDate.getValue()));
-					pb.setBorrowReason(borrowReason.getText());
-					pb.setRefuseReason(refuseReason.getText());
-					payBorrowRepo.update(pb);
-					break;
-				}
+			pb.setStatus(status.getValue());
+			pb.setFromDate(Date.valueOf(borrowDate.getValue()));
+			pb.setToDate(Date.valueOf(payDate.getValue()));
+			pb.setBorrowReason(borrowReason.getText());
+			pb.setRefuseReason(refuseReason.getText());
+			if (pbCurId > 0) {
+				pb.setId(pbCurId);
+				payBorrowRepo.update(pb);
+			} else {
+				pb.setId(payBorrowRepo.getAll().size() + 1);
+				payBorrowRepo.save(pb);
 			}
+
 			updateTable();
 			pbDetailModal.setVisible(false);
 		} catch (SQLException e) {
@@ -178,6 +201,7 @@ public class PayBorrowViewController {
 			return;
 
 		pbCurId = clickedRow.getDisplayId().intValue();
+		deleteBtn.setVisible(true);
 		equipId.setText("BD001");
 		borrowUser.setText(clickedRow.getDisplayUsername());
 		status.setValue(clickedRow.getDisplayStatus());
