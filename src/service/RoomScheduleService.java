@@ -96,20 +96,15 @@ public class RoomScheduleService {
 
     public boolean save(RoomScheduleEntity roomSchedule) throws SQLException {
         try {
-        	Statement stm = DB.getConnection().createStatement();
-        	ResultSet resultSet = stm.executeQuery("select count(*) as count from room_schedule");
-        	if (resultSet.next()) {
-        		roomSchedule.setId(resultSet.getInt("count")+1);
-			}
-            String insertSql = "INSERT INTO room_schedule (id, teacherId, roomId, startTime, endTime, reason) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+        	
+            String insertSql = "INSERT INTO room_schedule ( teacherId, roomId, startTime, endTime, reason) "
+                    + "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
-            preparedStmt.setInt(1, roomSchedule.getId());
-            preparedStmt.setInt(2, roomSchedule.getTeacherId());
-            preparedStmt.setInt(3, roomSchedule.getRoomId());
-            preparedStmt.setString(4, DateUtils.localDateTimeToDateTime(roomSchedule.getStartTime().toString()));
-            preparedStmt.setString(5, DateUtils.localDateTimeToDateTime(roomSchedule.getEndTime().toString()));
-            preparedStmt.setString(6, roomSchedule.getReason());
+            preparedStmt.setInt(1, roomSchedule.getTeacherId());
+            preparedStmt.setInt(2, roomSchedule.getRoomId());
+            preparedStmt.setString(3, DateUtils.localDateTimeToDateTime(roomSchedule.getStartTime().toString()));
+            preparedStmt.setString(4, DateUtils.localDateTimeToDateTime(roomSchedule.getEndTime().toString()));
+            preparedStmt.setString(5, roomSchedule.getReason());
             preparedStmt.execute();
             return true;
         } catch (SQLException e) {

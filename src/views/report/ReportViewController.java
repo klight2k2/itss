@@ -4,19 +4,26 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import models.EquipmentEntity;
 import models.RoomEntity;
 import models.RoomReportEntity;
+import models.UserEntity;
 import service.EquipmentService;
 import service.RoomReportService;
 import service.RoomService;
@@ -32,10 +39,37 @@ public class ReportViewController {
 	private AnchorPane detailModal;
 
 	@FXML
+	private AnchorPane addModal;
+
+	@FXML
+	private AnchorPane addEquipModal;
+
+	@FXML
 	private Label detailRoom;
 
 	@FXML
 	private Label detailUser;
+
+	@FXML
+	private Label detailStatus;
+
+	@FXML
+	private Label detailTime;
+
+	@FXML
+	private Label reportTitle;
+
+	@FXML
+	private TableColumn<Equipment, String> addEquipId;
+
+	@FXML
+	private TableColumn<Equipment, String> addEquipName;
+
+	@FXML
+	private TableColumn<Equipment, String> addEquipNote;
+
+	@FXML
+	private TableView<Equipment> addEquipments;
 
 	@FXML
 	private TableColumn<Equipment, String> equipId;
@@ -85,12 +119,50 @@ public class ReportViewController {
 	@FXML
 	private TableView<Report> reports;
 
+	@FXML
+	private ComboBox<UserEntity> inputReporter;
+	ObservableList<UserEntity> listUser = FXCollections.observableArrayList();
+
+	@FXML
+	private ComboBox<RoomEntity> inputRoom;
+	ObservableList<RoomEntity> listRoom = FXCollections.observableArrayList();
+
+	@FXML
+	private ComboBox<String> inputStatus;
+	ObservableList<String> listStatus = FXCollections.observableArrayList();
+
+	@FXML
+	private DatePicker inputTime;
+
 	private int curId = -1;
 	private int detailRoomId;
 	private String selectedEquipId;
+	List<Equipment> curRoomListEquips;
+
+	@FXML
+	private TextField searchEquipTextField;
+
+	public void onSearchEquip(InputMethodEvent event) {
+		FilteredList<Equipment> filteredData = new FilteredList<>(addEquipments.getItems(), p -> true);
+		searchEquipTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(equip -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = newValue.toLowerCase();
+				if (equip.getName().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+		});
+
+	}
 
 	@FXML
 	void closeDetailModal(ActionEvent event) {
+		updateTable();
 		detailModal.setVisible(false);
 		detailRoomId = -1;
 	}
@@ -103,13 +175,79 @@ public class ReportViewController {
 	}
 
 	@FXML
-	void addEquipment(ActionEvent event) {
-
+	void addOpenModal(ActionEvent event) {
+		reportTitle.setText("Tạo báo cáo mới");
+		inputRoom.setValue(null);
+		inputReporter.setValue(null);
+		inputStatus.setValue("PENDING");
+		inputTime.setValue(null);
+		addModal.setVisible(true);
 	}
 
 	@FXML
-	void editEquipment(ActionEvent event) {
+	void addCancel(ActionEvent event) {
+		addModal.setVisible(false);
+	}
 
+	@FXML
+	void editReport(ActionEvent event) {
+		try {
+			if (curId < 0)
+				return;
+			RoomReportEntity rre = RoomReportService.getRepo().getRoomReportById(curId);
+			reportTitle.setText("Chỉnh sửa báo cáo");
+			inputRoom.setValue(RoomService.getRepo().getRoomById(rre.getRoomId()));
+			inputReporter.setValue(UserService.getRepo().getUserById(rre.getReporterId()));
+			inputStatus.setValue(rre.getStatus());
+			inputTime.setValue(rre.getCreatedAt().toLocalDate());
+			addModal.setVisible(true);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	void addSubmit(ActionEvent event) {
+		RoomReportEntity rre = new RoomReportEntity();
+		rre.setRoomId(inputRoom.getSelectionModel().getSelectedItem().getId());
+		rre.setReporterId(inputReporter.getSelectionModel().getSelectedItem().getId());
+		rre.setCreatedAt(Date.valueOf(inputTime.getValue()));
+		rre.setStatus(inputStatus.getSelectionModel().getSelectedItem());
+		rre.setApproverId(1);
+		try {
+			if (curId > 0) {
+				rre.setId(curId);
+				RoomReportService.getRepo().update(rre);
+			} else {
+				RoomReportService.getRepo().save(rre);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		updateTable();
+		addModal.setVisible(false);
+	}
+
+	@FXML
+	void addEquipment(ActionEvent event) {
+		addEquipModal.setVisible(true);
+	}
+
+	@FXML
+	void closeAddEquipModal(ActionEvent event) {
+		addEquipModal.setVisible(false);
+	}
+
+	@FXML
+	void addEquipRowClick(MouseEvent event) {
+		Equipment clickedRow = equipments.getSelectionModel().getSelectedItem();
+		if (clickedRow == null)
+			return;
+
+		updateEquipTable();
+		addEquipModal.setVisible(false);
 	}
 
 	@FXML
@@ -136,10 +274,26 @@ public class ReportViewController {
 				}
 			}
 			detailUser.setText(clickedRow.getDisplayReporter());
+			detailStatus.setText(clickedRow.getDisplayStatus());
+			detailTime.setText(clickedRow.getDisplayTimestamp().toString());
 			updateEquipTable();
 			detailModal.setVisible(true);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	void openDetailModal() {
+		try {
+			if (curId < 0) {
+				// Get newest
+				curId = reports.getItems().get(reports.getItems().size() - 1).getDisplayId().intValue();
+			}
+//			RoomEntity 
+//			detailRoom.setText();
+		} catch (Exception e) {
+			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
@@ -187,7 +341,8 @@ public class ReportViewController {
 					Report newRp = new Report();
 					newRp.setDisplayId(Integer.valueOf(rp.getId()));
 					newRp.setDisplayRoom(roomRepo.getRoomById(rp.getRoomId()).getName());
-					newRp.setDisplayEquipment("MT009");
+					newRp.setDisplayEquipment(
+							RoomReportService.getRepo().getEquipmentInReport(String.valueOf(rp.getId())).size());
 					newRp.setDisplayStatus(rp.getStatus());
 					newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
 					newRp.setDisplayTimestamp(rp.getCreatedAt());
@@ -212,7 +367,8 @@ public class ReportViewController {
 				Report newRp = new Report();
 				newRp.setDisplayId(Integer.valueOf(rp.getId()));
 				newRp.setDisplayRoom(roomRepo.getRoomById(rp.getRoomId()).getName());
-				newRp.setDisplayEquipment("MT009");
+				newRp.setDisplayEquipment(
+						RoomReportService.getRepo().getEquipmentInReport(String.valueOf(rp.getId())).size());
 				newRp.setDisplayStatus(rp.getStatus());
 				newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
 				newRp.setDisplayTimestamp(rp.getCreatedAt());
@@ -230,11 +386,14 @@ public class ReportViewController {
 			if (detailRoomId < 0)
 				return;
 			int roomId = detailRoomId;
-			List<EquipmentEntity> equipmentsEntity = EquipmentService.getRepo().getAllEquipmentInRoom(roomId);
-			if (equipmentsEntity == null)
+			List<EquipmentEntity> roomEquipments = EquipmentService.getRepo().getAllEquipmentInRoom(roomId);
+			List<EquipmentEntity> reportEquipments = RoomReportService.getRepo()
+					.getEquipmentInReport(String.valueOf(curId));
+			if (roomEquipments == null)
 				return;
 			equipments.getItems().clear();
-			for (EquipmentEntity equip : equipmentsEntity) {
+			addEquipments.getItems().clear();
+			for (EquipmentEntity equip : roomEquipments) {
 				Equipment newEquip = new Equipment();
 				newEquip.setDisplayId(equip.getId());
 				newEquip.setDisplayName(equip.getName());
@@ -243,7 +402,11 @@ public class ReportViewController {
 				newEquip.setDisplayTimeUse(equip.getYearOfUse());
 				newEquip.setDisplayTimeRepair(equip.getNumberOfRepairs());
 				newEquip.setDisplayNote(equip.getNote());
-				equipments.getItems().add(newEquip);
+				if (reportEquipments.indexOf(equip) > -1) {
+					equipments.getItems().add(newEquip);
+				} else {
+					addEquipments.getItems().add(newEquip);
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -252,6 +415,10 @@ public class ReportViewController {
 	}
 
 	public void initialize() {
+		detailModal.setVisible(false);
+		addModal.setVisible(false);
+		addEquipModal.setVisible(false);
+
 		reportId.setCellValueFactory(new PropertyValueFactory<>("displayId"));
 		reportRoom.setCellValueFactory(new PropertyValueFactory<>("displayRoom"));
 		reportEquipment.setCellValueFactory(new PropertyValueFactory<>("displayEquipment"));
@@ -266,6 +433,22 @@ public class ReportViewController {
 		equipMfg.setCellValueFactory(new PropertyValueFactory<Equipment, Date>("displayMfg"));
 		equipRepairTime.setCellValueFactory(new PropertyValueFactory<Equipment, Integer>("displayTimeRepair"));
 		equipNote.setCellValueFactory(new PropertyValueFactory<Equipment, String>("displayNote"));
+
+		addEquipId.setCellValueFactory(new PropertyValueFactory<>("displayId"));
+		addEquipName.setCellValueFactory(new PropertyValueFactory<>("displayName"));
+		addEquipNote.setCellValueFactory(new PropertyValueFactory<>("displayNote"));
+
+		try {
+			listRoom.setAll(RoomService.getRepo().getAll());
+			inputRoom.setItems(listRoom);
+			listUser.setAll(UserService.getRepo().getAll());
+			inputReporter.setItems(listUser);
+			listStatus.setAll("PENDING", "APPROVED", "REJECTED");
+			inputStatus.setItems(listStatus);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		updateTable();
 	}

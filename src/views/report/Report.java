@@ -7,7 +7,7 @@ import models.RoomReportEntity;
 public class Report extends RoomReportEntity {
 	private Integer displayId;
 	private String displayRoom;
-	private String displayEquipment;
+	private Integer displayEquipment;
 	private String displayStatus;
 	private String displayReporter;
 	private Date displayTimestamp;
@@ -28,11 +28,11 @@ public class Report extends RoomReportEntity {
 		this.displayRoom = displayRoom;
 	}
 
-	public String getDisplayEquipment() {
+	public Integer getDisplayEquipment() {
 		return displayEquipment;
 	}
 
-	public void setDisplayEquipment(String displayEquipment) {
+	public void setDisplayEquipment(Integer displayEquipment) {
 		this.displayEquipment = displayEquipment;
 	}
 
