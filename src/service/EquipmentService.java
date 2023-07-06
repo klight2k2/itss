@@ -127,20 +127,8 @@ public class EquipmentService {
     public List<EquipmentEntity> getAllEquipmentInRoom(int roomId) throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
-            String insert_sqlString = "select * from room_equipment where roomId = " + roomId + ";";
-            ResultSet res = stm.executeQuery(insert_sqlString);
-            String sql = "SELECT * FROM equipment WHERE id IN (";
-            while (res.next()) {
-                sql += "'" + res.getString("equipmentId") + "'";
-                sql += ",";
-            }
-            if (sql.charAt(sql.length() - 1) == ',') {
-                sql = sql.substring(0, sql.length() - 1);
-            }
-            sql += ")";
-            if (sql.charAt(sql.length() - 2) != '(') {
-                res = stm.executeQuery(sql);
-            }
+            String sql = "SELECT * FROM equipment WHERE roomId="+roomId;
+               ResultSet res = stm.executeQuery(sql);
             ArrayList<EquipmentEntity> medium = new ArrayList<>();
             while (res.next()) {
                 EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
@@ -190,9 +178,8 @@ public class EquipmentService {
     public List<EquipmentEntity> getAllEquipmentNoUse() throws SQLException {
         try {
             Statement stm = DB.getConnection().createStatement();
-            String insert_sqlString = "select * from equipment where equipment.id not in (select equipmentId from pay_borrow_equipment where payBorrowId in (select id from pay_borrow where status!=\"paid\")) and equipment.id not in (select equipmentId from room_equipment) ";
+            String insert_sqlString = "select * from equipment where equipment.id not in (select equipmentId from pay_borrow_equipment where payBorrowId in (select id from pay_borrow where status!=\"paid\")) and equipment.roomId=1";
             ResultSet res = stm.executeQuery(insert_sqlString);
-
             ArrayList<EquipmentEntity> medium = new ArrayList<>();
             while (res.next()) {
                 EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
