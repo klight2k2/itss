@@ -144,4 +144,25 @@ public class RoomScheduleService {
             return false;
         }
     }
+    public UserEntity getUserByRoomScheduleId(int roomScheduleId) {
+		try {
+			Statement stm = DB.getConnection().createStatement();
+			ResultSet res = stm.executeQuery("Select u.* from room_schedule rs, user u where rs.teacherId = u.id and rs.id = " + roomScheduleId);
+			if (res.next()) {
+				return new UserEntity(
+						res.getString("id"),
+						res.getString("username"),
+						res.getString("password"),
+						res.getString("role")
+						);
+			}
+			else {
+				return null;
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
