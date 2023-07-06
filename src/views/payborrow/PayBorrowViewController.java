@@ -135,7 +135,7 @@ public class PayBorrowViewController {
 
 	@FXML
 	void openModal(ActionEvent event) {
-		this.pbCurId = -1;
+		pbCurId = -1;
 		deleteBtn.setVisible(false);
 		equipId.setText("BD001");
 		borrowUser.clear();
