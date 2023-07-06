@@ -238,6 +238,13 @@ REFERENCES room(id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 
+ALTER TABLE room_schedule
+ADD CONSTRAINT FK_room_schedule_teacherId
+FOREIGN KEY (teacherId)
+REFERENCES user(id)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
 ALTER TABLE room_report
 ADD CONSTRAINT FK_room_report_reporterId
 FOREIGN KEY (reporterId)
