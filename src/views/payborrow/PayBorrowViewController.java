@@ -6,6 +6,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -39,10 +41,8 @@ public class PayBorrowViewController {
 	private TextArea borrowReason;
 
 	@FXML
-	private TextField borrowUser;
+	private ComboBox<UserEntity> borrowerCombobox;
 
-	@FXML
-	private TextField equipId;
 
 	@FXML
 	private DatePicker payDate;
@@ -127,6 +127,7 @@ public class PayBorrowViewController {
 	private int pbCurId;
 	private ObservableList<EquipmentEntity> listBorrowed = FXCollections.observableArrayList();
 	private ObservableList<EquipmentEntity> listBorrow = FXCollections.observableArrayList();
+	private ObservableList<UserEntity> listBorrower = FXCollections.observableArrayList();
 
 	@FXML
 	void closeModal(ActionEvent event) {
@@ -136,21 +137,26 @@ public class PayBorrowViewController {
 	@FXML
 	void openModal(ActionEvent event) {
 		pbCurId = -1;
+		listBorrowed.removeAll();
 		deleteBtn.setVisible(false);
-		equipId.setText("BD001");
-		borrowUser.clear();
 		status.setValue(null);
 		borrowDate.setValue(null);
 		payDate.setValue(null);
 		borrowReason.clear();
 		refuseReason.clear();
-
+try {
+			listBorrow.setAll(EquipmentService.getRepo().getAllEquipmentNoUse());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		pbDetailModal.setVisible(true);
 	}
 
 	@FXML
 	void submit(ActionEvent event) {
 		try {
+
 
 			PayBorrowEntity pb = new PayBorrowEntity();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
@@ -159,11 +165,12 @@ public class PayBorrowViewController {
 			pb.setToDate(Date.valueOf(payDate.getValue()));
 			pb.setBorrowReason(borrowReason.getText());
 			pb.setRefuseReason(refuseReason.getText());
+			pb.setBorrowerId(borrowerCombobox.getSelectionModel().getSelectedItem().getId());
+			pb.setListEquipment(listBorrowed);
 			if (pbCurId > 0) {
 				pb.setId(pbCurId);
 				payBorrowRepo.update(pb);
 			} else {
-				pb.setId(payBorrowRepo.getAll().size() + 1);
 				payBorrowRepo.save(pb);
 			}
 
@@ -202,8 +209,16 @@ public class PayBorrowViewController {
 
 		pbCurId = clickedRow.getDisplayId().intValue();
 		deleteBtn.setVisible(true);
-		equipId.setText("BD001");
-		borrowUser.setText(clickedRow.getDisplayUsername());
+		for(UserEntity item :listBorrower){
+			if(item.getId()==clickedRow.getBorrowerId()){
+				// borrowerCombobox.setV
+				borrowerCombobox.setValue(item);
+				System.out.println("success");
+			}
+
+		}
+		System.out.println(clickedRow.getBorrowerId());
+
 		status.setValue(clickedRow.getDisplayStatus());
 		borrowDate.setValue(clickedRow.getDisplayFromDate().toLocalDate());
 		payDate.setValue(clickedRow.getDisplayToDate().toLocalDate());
@@ -217,25 +232,41 @@ public class PayBorrowViewController {
 			System.out.println("loi o day");
 			e.printStackTrace();
 		}
-		tableViewBorrowed.setItems(listBorrowed);
 		try {
 			listBorrow.setAll(EquipmentService.getRepo().getAllEquipmentNoUse());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		tableViewBorrowed.setItems(listBorrowed);
 
 		tableViewBorrow.setItems(listBorrow);
 
 		pbDetailModal.setVisible(true);
 	}
+	@FXML
+	private TextField searchEquipTextField;
+    public void onSearchEquip(InputMethodEvent event) {
+           FilteredList<EquipmentEntity> filteredData = new FilteredList<>(listBorrow, p -> true);
+        searchEquipTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+        filteredData.setPredicate(equip -> {
+            if (newValue == null || newValue.isEmpty()) {
+                return true;
+            }
+            String lowerCaseFilter = newValue.toLowerCase();
+            if (equip.getName().toLowerCase().contains(lowerCaseFilter)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        });
 
+    }
 	public void updateTable() {
 		try {
 			pbEquipments.getItems().clear();
-			PayBorrowEntity pbs = new PayBorrow();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
-			UserService userRepo = UserService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				PayBorrow newPb = new PayBorrow();
 				newPb.setDisplayId(Integer.valueOf(pb.getId()));
@@ -244,8 +275,8 @@ public class PayBorrowViewController {
 				newPb.setDisplayToDate(pb.getToDate());
 				newPb.setDisplayBorrowReason(pb.getBorrowReason());
 				newPb.setDisplayRefuseReason(pb.getRefuseReason());
-				UserEntity user = new UserEntity();
-				for (UserEntity curUser : userRepo.getAll()) {
+				newPb.setBorrowerId(pb.getBorrowerId());
+				for (UserEntity curUser : listBorrower) {
 					if (curUser.getId() == pb.getBorrowerId()) {
 						newPb.setDisplayUsername(curUser.getName());
 						break;
@@ -268,6 +299,8 @@ public class PayBorrowViewController {
 			pbDetailModal.setVisible(false);
 			addEquipModal.setVisible(false);
 			status.getItems().addAll(statusValues);
+		listBorrower.setAll(UserService.getRepo().getAll());
+		borrowerCombobox.setItems(listBorrower);
 
 			pbId.setCellValueFactory(new PropertyValueFactory<PayBorrow, Integer>("displayId"));
 			pbBorrowUser.setCellValueFactory(new PropertyValueFactory<PayBorrow, String>("displayUsername"));
@@ -298,6 +331,9 @@ public class PayBorrowViewController {
 				});
 				return row;
 			});
+		tableViewBorrowed.setItems(listBorrowed);
+
+		tableViewBorrow.setItems(listBorrow);
 
 			updateTable();
 		} catch (Exception e) {

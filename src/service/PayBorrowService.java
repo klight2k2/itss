@@ -7,6 +7,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.collections.transformation.FilteredList;
+import javafx.fxml.FXML;
+import javafx.scene.input.InputMethodEvent;
+import models.EquipmentEntity;
 import models.PayBorrowEntity;
 import models.db.DB;
 
@@ -46,11 +50,11 @@ public class PayBorrowService {
 
     public boolean save(PayBorrowEntity pay_borrow) throws SQLException {
         try {
-        	Statement stm = DB.getConnection().createStatement();
-        	ResultSet resultSet = stm.executeQuery("select count(*) as count from tablde_name");
-        	if (resultSet.next()) {
-				pay_borrow.setId(resultSet.getInt("count")+1);
-			}
+            Statement stm = DB.getConnection().createStatement();
+            ResultSet resultSet = stm.executeQuery("select count(*) as count from pay_borrow");
+            if (resultSet.next()) {
+                pay_borrow.setId(resultSet.getInt("count") + 1);
+            }
             String insertSql = "INSERT INTO pay_borrow (id, fromDate, toDate, status, borrowReason, refuseReason, borrowerId) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
             preparedStmt.setInt(1, pay_borrow.getId());
@@ -61,6 +65,28 @@ public class PayBorrowService {
             preparedStmt.setString(6, pay_borrow.getRefuseReason());
             preparedStmt.setInt(7, pay_borrow.getBorrowerId());
             preparedStmt.execute();
+            int equipLenght = pay_borrow.getListEquipment().size();
+
+            if (equipLenght > 0) {
+
+                StringBuilder sql = new StringBuilder(
+                        "INSERT IGNORE INTO pay_borrow_equipment (payBorrowId,equipmentId) VALUES ");
+                int cnt = 0;
+                for (EquipmentEntity equip : pay_borrow.getListEquipment()) {
+                    sql.append("(" + pay_borrow.getId() + ",'" + equip.getId() + "')");
+                    cnt += 1;
+                    if (cnt < equipLenght) {
+                        sql.append(",");
+                    }
+                }
+                ;
+                sql.append(";");
+
+                System.err.println(sql.toString());
+                Statement equipQuery = DB.getConnection().createStatement();
+                String sqlCmd = sql.toString();
+                equipQuery.execute(sqlCmd);
+            }
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,6 +100,7 @@ public class PayBorrowService {
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(deleteSql);
             preparedStmt.setInt(1, pay_borrow.getId());
             preparedStmt.execute();
+
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,13 +109,14 @@ public class PayBorrowService {
     }
 
     public boolean update(PayBorrowEntity pay_borrow) throws SQLException {
-    	
+
         // Update operation may not be applicable for pay_borrow getTable() structure
-        String sql = "UPDATE pay_borrow " +
+        String sqlPayBorrow = "UPDATE pay_borrow " +
                 "SET fromDate = ?, toDate = ?, status = ?, borrowReason = ?, refuseReason = ?, borrowerId = ? " +
                 "WHERE id = ?";
-        
-        try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
+
+        try {
+            PreparedStatement statement = DB.getConnection().prepareStatement(sqlPayBorrow);
             statement.setDate(1, pay_borrow.getFromDate());
             statement.setDate(2, pay_borrow.getToDate());
             statement.setString(3, pay_borrow.getStatus());
@@ -97,8 +125,29 @@ public class PayBorrowService {
             statement.setInt(6, pay_borrow.getBorrowerId());
             statement.setInt(7, pay_borrow.getId());
 
-            int rowsAffected = statement.executeUpdate();
-            return rowsAffected > 0;
+            statement.executeUpdate();
+            int equipLenght = pay_borrow.getListEquipment().size();
+            if (equipLenght > 0) {
+
+                StringBuilder sql = new StringBuilder(
+                        "INSERT IGNORE INTO pay_borrow_equipment (payBorrowId,equipmentId) VALUES ");
+                int cnt = 0;
+                for (EquipmentEntity equip : pay_borrow.getListEquipment()) {
+                    sql.append("(" + pay_borrow.getId() + ",'" + equip.getId() + "')");
+                    cnt += 1;
+                    if (cnt < equipLenght) {
+                        sql.append(",");
+                    }
+                }
+                ;
+                sql.append(";");
+
+                System.err.println(sql.toString());
+                Statement equipQuery = DB.getConnection().createStatement();
+                String sqlCmd = sql.toString();
+                equipQuery.execute(sqlCmd);
+            }
+            return true;
         } catch (SQLException e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());

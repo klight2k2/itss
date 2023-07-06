@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -36,17 +37,15 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
+      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
          <children>
             <AnchorPane layoutX="62.0" layoutY="86.0" prefHeight="481.0" prefWidth="671.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
                <children>
-                  <TextField fx:id="equipId" disable="true" layoutX="158.0" layoutY="48.0" prefHeight="27.0" prefWidth="147.0" />
                   <Label fx:id="modalTitle" alignment="CENTER" layoutX="242.0" layoutY="14.0" prefHeight="27.0" prefWidth="176.0" style="-fx-font-weight: bold; -fx-font-size: 16;" styleClass="title" text="Thông tin mượn trả" />
                   <Label layoutX="48.0" layoutY="130.0" prefHeight="19.0" prefWidth="86.0" text="Trạng thái" />
                   <ChoiceBox fx:id="status" layoutX="158.0" layoutY="126.0" prefHeight="27.0" prefWidth="147.0" />
                   <Button layoutX="514.0" layoutY="453.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="86.0" text="Xác nhận" />
                   <Button layoutX="440.0" layoutY="454.0" mnemonicParsing="false" onAction="#closeModal" text="Hủy" />
-                  <Label layoutX="48.0" layoutY="52.0" prefHeight="19.0" prefWidth="86.0" text="Mã thiết bị" />
                   <Label layoutX="48.0" layoutY="212.0" prefHeight="19.0" prefWidth="86.0" text="Lý do mượn" />
                   <DatePicker fx:id="borrowDate" layoutX="158.0" layoutY="169.0" prefHeight="27.0" prefWidth="147.0" />
                   <TextArea fx:id="borrowReason" layoutX="158.0" layoutY="212.0" prefHeight="60.0" prefWidth="147.0" />
@@ -55,7 +54,6 @@
                   <Label layoutX="330.0" layoutY="173.0" prefHeight="19.0" prefWidth="86.0" text="Ngày trả" />
                   <Label layoutX="330.0" layoutY="212.0" prefHeight="19.0" prefWidth="86.0" text="Lý do từ chối" />
                   <TextArea fx:id="refuseReason" layoutX="440.0" layoutY="212.0" prefHeight="60.0" prefWidth="147.0" />
-                  <TextField fx:id="borrowUser" disable="true" layoutX="158.0" layoutY="85.0" prefHeight="27.0" prefWidth="147.0" />
                   <Label layoutX="48.0" layoutY="89.0" prefHeight="19.0" prefWidth="86.0" text="Người mượn" />
                   <Button layoutX="606.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c11c1c" />
                   <Text layoutX="40.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Danh sách các thiết bị mượn" wrappingWidth="101.673828125" />
@@ -68,6 +66,7 @@
                     </columns>
                   </TableView>
                   <Button fx:id="deleteBtn" layoutX="606.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c11c1c" />
+                  <ComboBox fx:id="borrowerCombobox" layoutX="157.0" layoutY="86.0" prefWidth="150.0" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -86,7 +85,7 @@
                         <TableColumn fx:id="borrowNoteColumn" prefWidth="261.0" text="Note" />
                     </columns>
                   </TableView>
-                  <TextField layoutX="31.0" layoutY="35.0" promptText="Tìm kiếm theo tên" />
+                  <TextField fx:id="searchEquipTextField" layoutX="31.0" layoutY="35.0" onMouseClicked="#onSearchEquip" promptText="Tìm kiếm theo tên" />
                </children>
             </AnchorPane>
          </children>
