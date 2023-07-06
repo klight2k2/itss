@@ -21,7 +21,29 @@ public class RoomReportService {
             return new RoomReportService();
         }
     };
-
+    public List<EquipmentEntity> getEquipmentByRoomReportId(int roomReportID) {
+		try {
+			Statement stm = DB.getConnection().createStatement();
+			ResultSet res = stm.executeQuery("Select e.* from room_equipment_report rer, equipment e where rer.equipmentId = e.id and rer.roomReportID = " + roomReportID);
+			List<EquipmentEntity> tmp =new ArrayList<>(); 
+			while (res.next()) {
+				tmp.add(new EquipmentEntity(
+						res.getInt("equipmentCategoryId"), 
+						res.getString("id"),
+                        res.getString("name"),
+                        res.getInt("status"), 
+                        res.getDate("mfg"), 
+                        res.getDate("yearOfUse"),
+                        res.getInt("numberOfRepairs"),
+                        res.getString("note")));
+			}
+			return tmp;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+	}
     public RoomReportEntity getRoomReportById(int reportId) {
         String sql = "SELECT * FROM room_report WHERE id = ?";
 

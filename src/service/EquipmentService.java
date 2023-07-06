@@ -29,9 +29,13 @@ public class EquipmentService {
             ResultSet res = stm.executeQuery("select * from equipment");
             ArrayList<EquipmentEntity> medium = new ArrayList<>();
             while (res.next()) {
-                EquipmentEntity equipment = new EquipmentEntity(res.getInt("equipmentCategoryId"), res.getString("id"),
+                EquipmentEntity equipment = new EquipmentEntity(
+                		res.getInt("equipmentCategoryId"), 
+                		res.getString("id"),
                         res.getString("name"),
-                        res.getInt("status"), res.getDate("mfg"), res.getDate("yearOfUse"),
+                        res.getInt("status"), 
+                        res.getDate("mfg"), 
+                        res.getDate("yearOfUse"),
                         res.getInt("numberOfRepairs"),
                         res.getString("note"),res.getInt("roomId"));
                 medium.add(equipment);
