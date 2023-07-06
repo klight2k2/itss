@@ -35,7 +35,9 @@ public class RoomReportService {
                         res.getDate("mfg"), 
                         res.getDate("yearOfUse"),
                         res.getInt("numberOfRepairs"),
-                        res.getString("note")));
+                        res.getString("note"),
+                        res.getInt("roomId")
+                        ));
 			}
 			return tmp;
 		} catch (Exception e) {
