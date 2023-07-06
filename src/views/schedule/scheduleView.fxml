@@ -10,17 +10,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628" prefWidth="784" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.schedule.ScheduleViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.schedule.ScheduleViewController">
    <children>
-      <Text layoutX="185.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lịch sử dụng phòng" textAlignment="CENTER" wrappingWidth="419.17950439453125">
-         <font>
-            <Font size="38.0" />
-         </font>
-      </Text>
-      <TableView fx:id="schedules" layoutX="36.0" layoutY="145.0" onMouseClicked="#onRowClick" prefHeight="442.0" prefWidth="711.0">
+      <TableView fx:id="schedules" layoutY="90.0" onMouseClicked="#onRowClick" prefHeight="510.0" prefWidth="800.0">
          <columns>
             <TableColumn fx:id="scheduleId" prefWidth="57.600006103515625" text="ID" />
             <TableColumn fx:id="scheduleRoom" prefWidth="85.5999755859375" text="Phòng " />
@@ -37,21 +30,20 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Label layoutX="36.0" layoutY="102.0" prefHeight="19.0" prefWidth="82.0" text="Phòng học" />
-      <TextField fx:id="inputRoomName" layoutX="118.0" layoutY="98.0" prefHeight="27.0" prefWidth="122.0" />
-      <Button layoutX="328.0" layoutY="98.0" mnemonicParsing="false" onAction="#reset" text="Làm mới" />
-      <Button layoutX="250.0" layoutY="98.0" mnemonicParsing="false" onAction="#search" text="Tìm kiếm" />
-      <Button layoutX="674.0" layoutY="98.0" mnemonicParsing="false" onAction="#openModal" text="Thêm lịch" />
-      <AnchorPane fx:id="scheduleModal" layoutX="4.0" layoutY="6.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
+      <TextField fx:id="inputRoomName" layoutX="6.0" layoutY="36.0" prefHeight="30.0" prefWidth="225.0" promptText="Nhập tên phòng học để tìm kiếm" />
+      <Button layoutX="325.0" layoutY="36.0" mnemonicParsing="false" onAction="#reset" styleClass="btn" text="Làm mới" />
+      <Button layoutX="241.0" layoutY="37.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
+      <Button layoutX="726.0" layoutY="36.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm lịch" />
+      <AnchorPane fx:id="scheduleModal" layoutX="4.0" layoutY="6.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
          <children>
-            <AnchorPane layoutX="62.0" layoutY="178.0" prefHeight="272.0" prefWidth="660.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
+            <AnchorPane layoutX="62.0" layoutY="178.0" prefHeight="272.0" prefWidth="660.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
                <children>
                   <Label fx:id="inputTitle" alignment="CENTER" layoutX="242.0" layoutY="14.0" prefHeight="27.0" prefWidth="176.0" style="-fx-font-weight: bold; -fx-font-size: 16;" styleClass="title" text="Thông tin sử dụng" />
-                  <Button layoutX="312.0" layoutY="227.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="86.0" text="Xác nhận" />
-                  <Button layoutX="262.0" layoutY="227.0" mnemonicParsing="false" onAction="#closeModal" text="Hủy" />
+                  <Button layoutX="492.0" layoutY="226.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="86.0" styleClass="btn" text="Xác nhận" />
+                  <Button layoutX="416.0" layoutY="227.0" mnemonicParsing="false" onAction="#closeModal" styleClass="btn" text="Hủy" />
                   <Label layoutX="48.0" layoutY="65.0" prefHeight="19.0" prefWidth="86.0" text="Phòng" />
                   <Label layoutX="48.0" layoutY="148.0" prefHeight="19.0" prefWidth="86.0" text="Lý do" />
-                  <TextArea fx:id="inputReason" layoutX="158.0" layoutY="148.0" prefHeight="60.0" prefWidth="147.0" />
+                  <TextArea fx:id="inputReason" layoutX="113.0" layoutY="148.0" prefHeight="60.0" prefWidth="469.0" />
                   <Label layoutX="48.0" layoutY="109.0" prefHeight="19.0" prefWidth="86.0" text="Bắt đầu" />
                   <Label layoutX="330.0" layoutY="109.0" prefHeight="19.0" prefWidth="86.0" text="Kết thúc" />
                   <Label layoutX="330.0" layoutY="65.0" prefHeight="19.0" prefWidth="86.0" text="Người sử dụng" />

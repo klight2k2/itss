@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -11,11 +12,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628" prefWidth="784" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.equipment.EquipmentViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.equipment.EquipmentViewController">
    <children>
-      <TableView fx:id="equipments" layoutX="22.0" layoutY="135.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#onRowClick" prefHeight="471.0" prefWidth="739.0">
+      <TableView fx:id="equipments" layoutY="103.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#onRowClick" prefHeight="501.0" prefWidth="800.0">
          <columns>
             <TableColumn fx:id="equipId" prefWidth="40.000030517578125" text="ID" />
             <TableColumn fx:id="equipName" prefWidth="96.79995727539062" text="Tên thiết bị" />
@@ -35,36 +35,58 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <TextField fx:id="inputSearch" layoutX="22.0" layoutY="83.0" />
-      <Button layoutX="190.0" layoutY="83.0" mnemonicParsing="false" onAction="#search" text="Tìm kiếm" />
-      <Button layoutX="268.0" layoutY="83.0" mnemonicParsing="false" onAction="#reset" text="Làm mới" />
-      <Text layoutX="308.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thiết bị" textAlignment="CENTER" wrappingWidth="167.9794921875">
-         <font>
-            <Font size="38.0" />
-         </font>
-      </Text>
-      <Button layoutX="668.0" layoutY="83.0" mnemonicParsing="false" onAction="#openModal" text="Thêm thiết bị" />
-      <AnchorPane fx:id="addEquipmentModal" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
+      <TextField fx:id="inputSearch" layoutY="42.0" />
+      <Button layoutX="189.0" layoutY="42.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
+      <Button layoutX="293.0" layoutY="43.0" mnemonicParsing="false" onAction="#reset" styleClass="btn" text="Làm mới" />
+      <Button layoutX="689.0" layoutY="43.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm thiết bị" />
+      <AnchorPane fx:id="addEquipmentModal" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" stylesheets="@../styles/global.css" visible="false">
          <children>
-            <AnchorPane layoutX="210.0" layoutY="73.0" prefHeight="481.0" prefWidth="362.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
+            <AnchorPane layoutX="210.0" layoutY="73.0" prefHeight="481.0" prefWidth="352.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
                <children>
-                  <Label fx:id="inputTitle" alignment="CENTER" layoutX="113.0" layoutY="14.0" prefHeight="27.0" prefWidth="136.0" style="-fx-font-weight: bold; -fx-font-size: 16;" styleClass="title" text="Thêm thiết bị" />
-                  <Label layoutX="52.0" layoutY="54.0" prefHeight="19.0" prefWidth="86.0" text="Tên phòng" />
-                  <Label layoutX="52.0" layoutY="171.0" prefHeight="19.0" prefWidth="86.0" text="Trạng thái" />
-                  <Button layoutX="164.0" layoutY="438.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="86.0" text="Xác nhận" />
-                  <Button layoutX="119.0" layoutY="438.0" mnemonicParsing="false" onAction="#closeModal" text="Hủy" />
-                  <Label layoutX="52.0" layoutY="133.0" prefHeight="19.0" prefWidth="86.0" text="Loại thiết bị" />
-                  <Label layoutX="52.0" layoutY="208.0" prefHeight="38.0" prefWidth="80.0" text="Ngày xuất&#10;xưởng" />
-                  <Label layoutX="52.0" layoutY="253.0" prefHeight="38.0" prefWidth="80.0" text="Số năm&#10;sử dụng" />
-                  <Label layoutX="52.0" layoutY="306.0" prefHeight="38.0" prefWidth="80.0" text="Số lần&#10;sửa chữa" />
-                  <Label layoutX="52.0" layoutY="356.0" prefHeight="19.0" prefWidth="86.0" text="Ghi chú" />
+                  <Label fx:id="inputTitle" alignment="CENTER" layoutX="113.0" layoutY="14.0" prefHeight="27.0" prefWidth="147.0" styleClass="title" text="Thêm thiết bị">
+                     <font>
+                        <Font name="System Bold Italic" size="20.0" />
+                     </font></Label>
+                  <Label layoutX="39.0" layoutY="54.0" prefHeight="20.0" prefWidth="100.0" text="Tên phòng">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="39.0" layoutY="171.0" prefHeight="19.0" prefWidth="100.0" text="Trạng thái">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Button layoutX="236.0" layoutY="437.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="72.0" styleClass="btn" text="Xác nhận" />
+                  <Button layoutX="126.0" layoutY="437.0" mnemonicParsing="false" onAction="#closeModal" prefHeight="25.0" prefWidth="72.0" styleClass="btn" text="Hủy" />
+                  <Label layoutX="39.0" layoutY="133.0" prefHeight="19.0" prefWidth="100.0" text="Loại thiết bị">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="39.0" layoutY="202.0" prefHeight="38.0" prefWidth="123.0" text="Ngày xuất xưởng">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="39.0" layoutY="247.0" prefHeight="38.0" prefWidth="100.0" text="Số năm&#10;sử dụng">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="39.0" layoutY="300.0" prefHeight="38.0" prefWidth="100.0" text="Số lần&#10;sửa chữa">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
+                  <Label layoutX="39.0" layoutY="350.0" prefHeight="19.0" prefWidth="100.0" text="Ghi chú">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                   <DatePicker fx:id="inputEquipMfg" layoutX="162.0" layoutY="213.0" prefHeight="27.0" prefWidth="147.0" />
                   <TextField fx:id="inputEquipRepairTime" layoutX="162.0" layoutY="311.0" prefHeight="27.0" prefWidth="147.0" />
                   <TextArea fx:id="inputEquipNote" layoutX="162.0" layoutY="356.0" prefHeight="60.0" prefWidth="147.0" />
                   <DatePicker fx:id="inputEquipYearUse" layoutX="162.0" layoutY="258.0" prefHeight="27.0" prefWidth="147.0" />
-                  <Label layoutX="52.0" layoutY="93.0" prefHeight="19.0" prefWidth="86.0" text="Tên thiết bị" />
+                  <Label layoutX="39.0" layoutY="94.0" prefHeight="19.0" prefWidth="100.0" text="Tên thiết bị">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                   <TextField fx:id="inputEquipName" layoutX="162.0" layoutY="89.0" prefHeight="27.0" prefWidth="147.0" />
-                  <Button fx:id="deleteBtn" layoutX="308.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c42e2e" />
+                  <Button fx:id="deleteBtn" layoutX="39.0" layoutY="438.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="50.0" styleClass="btn" text="Xóa" />
                   <ComboBox fx:id="inputEquipRoom" layoutX="161.0" layoutY="51.0" prefWidth="150.0" />
                   <ComboBox fx:id="inputEquipCategory" layoutX="161.0" layoutY="130.0" prefWidth="150.0" />
                   <ComboBox fx:id="inputEquipStatus" layoutX="161.0" layoutY="168.0" prefWidth="150.0" />
@@ -76,4 +98,8 @@
          </children>
       </AnchorPane>
    </children>
+   <stylesheets>
+      <URL value="@../styles/global.css" />
+      <URL value="@../styles/global.css" />
+   </stylesheets>
 </AnchorPane>
