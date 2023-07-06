@@ -11,6 +11,7 @@ public class Report extends RoomReportEntity {
 	private String displayStatus;
 	private String displayReporter;
 	private Date displayTimestamp;
+	private String displayNote;
 
 	public Integer getDisplayId() {
 		return displayId;
@@ -58,5 +59,13 @@ public class Report extends RoomReportEntity {
 
 	public void setDisplayTimestamp(Date displayTimestamp) {
 		this.displayTimestamp = displayTimestamp;
+	}
+
+	public String getDisplayNote() {
+		return displayNote;
+	}
+
+	public void setDisplayNote(String displayNote) {
+		this.displayNote = displayNote;
 	}
 }

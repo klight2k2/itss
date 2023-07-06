@@ -16,6 +16,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.InputMethodEvent;
@@ -118,6 +119,9 @@ public class ReportViewController {
 	private TableColumn<Report, String> reportUser;
 
 	@FXML
+	private TableColumn<Report, String> reportNote;
+
+	@FXML
 	private TableView<Report> reports;
 
 	@FXML
@@ -134,6 +138,9 @@ public class ReportViewController {
 
 	@FXML
 	private DatePicker inputTime;
+
+	@FXML
+	private TextArea inputNote;
 
 	private int curId = -1;
 	private int detailRoomId;
@@ -194,6 +201,7 @@ public class ReportViewController {
 		inputReporter.setDisable(false);
 		inputStatus.setValue("PENDING");
 		inputTime.setValue(null);
+		inputNote.clear();
 		addModal.setVisible(true);
 	}
 
@@ -215,6 +223,7 @@ public class ReportViewController {
 			inputReporter.setDisable(true);
 			inputStatus.setValue(rre.getStatus());
 			inputTime.setValue(rre.getCreatedAt().toLocalDate());
+			inputNote.setText("Sample note");
 			addModal.setVisible(true);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -265,6 +274,7 @@ public class ReportViewController {
 		try {
 			List<Integer> addEquips = new ArrayList<>();
 			addEquips.add(Integer.valueOf(clickedRow.getDisplayId()));
+			System.out.println("Add equips: " + addEquips);
 			RoomReportService.getRepo().saveListEquipmentInRoomReport(curId, addEquips);
 			updateEquipTable();
 			addEquipModal.setVisible(false);
@@ -299,6 +309,7 @@ public class ReportViewController {
 				// Get newest
 				curId = reports.getItems().get(reports.getItems().size() - 1).getDisplayId().intValue();
 			}
+			System.out.println("Current report: " + curId);
 			RoomReportEntity rre = RoomReportService.getRepo().getRoomReportById(curId);
 			detailRoom.setText(RoomService.getRepo().getRoomById(rre.getRoomId()).getName());
 			detailRoomId = rre.getRoomId();
@@ -361,6 +372,7 @@ public class ReportViewController {
 					newRp.setDisplayStatus(rp.getStatus());
 					newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
 					newRp.setDisplayTimestamp(rp.getCreatedAt());
+					newRp.setDisplayNote("Sample note");
 					reports.getItems().add(newRp);
 				}
 			}
@@ -386,6 +398,7 @@ public class ReportViewController {
 				newRp.setDisplayStatus(rp.getStatus());
 				newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
 				newRp.setDisplayTimestamp(rp.getCreatedAt());
+				newRp.setDisplayNote("Sample note");
 				reports.getItems().add(newRp);
 			}
 		} catch (SQLException e) {
@@ -451,6 +464,7 @@ public class ReportViewController {
 		reportStatus.setCellValueFactory(new PropertyValueFactory<>("displayStatus"));
 		reportUser.setCellValueFactory(new PropertyValueFactory<>("displayReporter"));
 		reportTimestamp.setCellValueFactory(new PropertyValueFactory<>("displayTimestamp"));
+		reportNote.setCellValueFactory(new PropertyValueFactory<>("displayNote"));
 
 		equipId.setCellValueFactory(new PropertyValueFactory<Equipment, String>("displayId"));
 		equipName.setCellValueFactory(new PropertyValueFactory<Equipment, String>("displayName"));

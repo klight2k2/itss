@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -82,7 +83,7 @@
       </AnchorPane>
       <AnchorPane fx:id="addModal" layoutX="-3.0" layoutY="-3.0" prefHeight="636.0" prefWidth="792.0" style="-fx-background-color: #f2f2f2dd;">
          <children>
-            <AnchorPane layoutX="163.0" layoutY="219.0" prefHeight="189.0" prefWidth="458.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
+            <AnchorPane layoutX="163.0" layoutY="219.0" prefHeight="260.0" prefWidth="458.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -91,13 +92,15 @@
                   <Label layoutX="40.0" layoutY="52.0" text="Phòng" />
                   <Label layoutX="229.0" layoutY="52.0" text="Người báo cáo" />
                   <Label layoutX="40.0" layoutY="92.0" text="Trạng thái" />
-                  <Button layoutX="170.0" layoutY="135.0" mnemonicParsing="false" onAction="#addCancel" text="Hủy" />
-                  <Button layoutX="219.0" layoutY="135.0" mnemonicParsing="false" onAction="#addSubmit" text="Xác nhận" />
+                  <Button layoutX="170.0" layoutY="216.0" mnemonicParsing="false" onAction="#addCancel" text="Hủy" />
+                  <Button layoutX="219.0" layoutY="216.0" mnemonicParsing="false" onAction="#addSubmit" text="Xác nhận" />
                   <ComboBox fx:id="inputRoom" layoutX="108.0" layoutY="48.0" prefHeight="27.0" prefWidth="98.0" />
                   <ComboBox fx:id="inputReporter" layoutX="331.0" layoutY="48.0" prefHeight="27.0" prefWidth="98.0" />
                   <ComboBox fx:id="inputStatus" layoutX="108.0" layoutY="88.0" prefHeight="27.0" prefWidth="98.0" />
                   <Label layoutX="230.0" layoutY="92.0" text="Thời gian" />
                   <DatePicker fx:id="inputTime" layoutX="331.0" layoutY="88.0" prefHeight="27.0" prefWidth="98.0" />
+                  <Label layoutX="40.0" layoutY="139.0" text="Ghi chú" />
+                  <TextArea fx:id="inputNote" layoutX="106.0" layoutY="139.0" prefHeight="61.0" prefWidth="326.0" />
                </children>
             </AnchorPane>
          </children>
