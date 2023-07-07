@@ -262,7 +262,7 @@ ON UPDATE CASCADE;
 ALTER TABLE room_equipment_report
 ADD CONSTRAINT FK_room_equipment_report_roomReportId
 FOREIGN KEY (roomReportId)
-REFERENCES room_report(roomId)
+REFERENCES room_report(id)
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 

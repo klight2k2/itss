@@ -142,11 +142,11 @@ public class RoomReportService {
             String insertSql = "INSERT INTO room_report ( roomId, status, createdAt, reporterId, approverId) "
                     + "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insertSql);
-            preparedStmt.setInt(2, room_report.getRoomId());
-            preparedStmt.setString(3, room_report.getStatus());
-            preparedStmt.setDate(4, room_report.getCreatedAt());
-            preparedStmt.setInt(5, room_report.getReporterId());
-            preparedStmt.setInt(6, room_report.getApproverId());
+            preparedStmt.setInt(1, room_report.getRoomId());
+            preparedStmt.setString(2, room_report.getStatus());
+            preparedStmt.setDate(3, room_report.getCreatedAt());
+            preparedStmt.setInt(4, room_report.getReporterId());
+            preparedStmt.setInt(5, room_report.getApproverId());
             preparedStmt.execute();
             int equipLenght = room_report.getListEquipmentReport().size();
 
@@ -231,14 +231,12 @@ public class RoomReportService {
     public boolean saveListEquipmentInRoomReport(int roomReportId, List<Integer> listEquipmentId) {
         try {
             for (int i = 0; i < listEquipmentId.size(); i++) {
+            	System.out.println(listEquipmentId.get(i));
                 Statement stmStatement = DB.getConnection().createStatement();
                 String sqlString = "INSERT INTO room_equipment_report (roomReportId,equipmentId) VALUE (" + roomReportId
                         + "," + listEquipmentId.get(i) + ")";
-                if (stmStatement.execute(sqlString)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                stmStatement.execute(sqlString);
+                return true;
             }
         } catch (SQLException e) {
             // TODO: handle exception
