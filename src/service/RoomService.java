@@ -44,7 +44,7 @@ public class RoomService {
     public boolean save(RoomEntity room) throws SQLException {
         // TODO Auto-generated method stub
         try {
-            String insert_sqlString = " insert into room (id, name, status)" + " values (?, ?)";
+            String insert_sqlString = " insert into room (name, status)" + " values (?, ?)";
             PreparedStatement preparedStmt = DB.getConnection().prepareStatement(insert_sqlString);
             preparedStmt.setString(1, room.getName());
             preparedStmt.setBoolean(2, room.getStatus());
@@ -54,6 +54,7 @@ public class RoomService {
         } catch (SQLException e) {
             System.err.println("Got an exception!");
             System.err.println(e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
