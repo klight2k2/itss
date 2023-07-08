@@ -13,6 +13,7 @@ import java.sql.*;
 import models.UserEntity;
 import models.db.DB;
 import service.UserService;
+import utils.NotificationUtil;
 import utils.Utils;
 import views.Links;
 import javafx.fxml.FXML;
@@ -38,22 +39,26 @@ public class LoginController {
 		String password = passwordField.getText();
 		String username = userameField.getText();
 		if (password.equals("") || username.equals("")) {
-			Utils.createDialog(AlertType.WARNING, "Cảnh báo", "",
+			NotificationUtil.error( "Cảnh báo", 
 					"Vui lòng nhập đầy đủ thông tin tài khoản và mật khẩu!");
+			return;
+		}
+		if(password.length()<6) {
+			NotificationUtil.error( "Cảnh báo", "Mật khẩu phải có độ dài tối thiếu là 6!");
+			return;
 		}
 		UserService userService = UserService.getRepo();
 		try {
-			Boolean checkLogin=userService.checkLogin(username, password);
+			Boolean checkLogin = userService.checkLogin(username, password);
 			if (!checkLogin) {
-				Utils.createDialog(AlertType.ERROR, "Lỗi", "",
-						"Tài khoản hoặc mật khẩu không chính xác, vui lòng thử lại!");
+				NotificationUtil.error("Lỗi", "Tài khoản hoặc mật khẩu không chính xác, vui lòng thử lại!");
 			} else {
 				Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource(Links.HOMEVIEW));
 				Scene scene = new Scene(loader.load());
 				stage.setScene(scene);
-				System.out.println("USER"+currentUser.getName());
+				System.out.println("USER" + currentUser.getName());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

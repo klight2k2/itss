@@ -8,14 +8,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.controller.SignUpController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SignUpController">
    <children>
       <Label alignment="BASELINE_CENTER" layoutX="260.0" layoutY="57.0" prefHeight="54.0" prefWidth="292.0" text="Đăng ký người dùng mới" textAlignment="CENTER" textFill="#3f4d66">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="signUpUsername" layoutX="220.0" layoutY="189.0" prefHeight="46.0" prefWidth="343.0" promptText="Username">
+      <TextField fx:id="signUpName" layoutX="220.0" layoutY="144.0" prefHeight="46.0" prefWidth="343.0" promptText="Tên hiển thị">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="signUpUsername" layoutX="220.0" layoutY="211.0" prefHeight="46.0" prefWidth="343.0" promptText="Username">
          <font>
             <Font size="20.0" />
          </font>
@@ -25,20 +30,20 @@
             <Font size="20.0" />
          </font>
       </PasswordField>
-      <Button fx:id="signUpButton" layoutX="220.0" layoutY="432.0" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="46.0" prefWidth="343.0" styleClass="btn_primary" text="Tạo tài khoản" textFill="WHITE">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
       <RadioButton fx:id="isAdmin" layoutX="239.0" layoutY="374.0" mnemonicParsing="false" text="Admin" textFill="#3f4d67">
          <font>
             <Font size="16.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="isOfficer" layoutX="442.0" layoutY="373.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Giáo viên" textFill="#3f4d67">
+      <RadioButton fx:id="isTeacher" layoutX="442.0" layoutY="373.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="100.0" text="Giáo viên" textFill="#3f4d67">
          <font>
             <Font size="16.0" />
          </font>
       </RadioButton>
+      <Button fx:id="signUpButton" layoutX="220.0" layoutY="432.0" mnemonicParsing="false" onAction="#handleSignUp" prefHeight="46.0" prefWidth="343.0" styleClass="btn_primary" text="Tạo tài khoản" textFill="WHITE">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

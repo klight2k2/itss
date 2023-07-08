@@ -94,7 +94,7 @@ public class HomeViewController implements Initializable {
 		}
 		else if (sourceButton == signUpBtn) {
 			System.out.print("signUpBtn");
-			loadView(Links.PAYBORROWVIEW);
+			loadView(Links.SIGN_UP_VIEW);
 			pageTitle.setText("");
 		}
 
