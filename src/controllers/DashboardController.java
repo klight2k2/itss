@@ -14,13 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Tooltip;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
@@ -111,7 +104,7 @@ public class DashboardController implements Initializable {
 
 			equipmentCountLabel.setText(String.valueOf(StatisticalService.getRepo().countEquipment()));
 			roomCountLabel.setText(String.valueOf(StatisticalService.getRepo().countRooms()));
-			// reportCountLabel.setText(String.valueOf(StatisticalService.getRepo().));
+			reportCountLabel.setText(String.valueOf(StatisticalService.getRepo().countReport()));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -122,17 +115,17 @@ public class DashboardController implements Initializable {
 	void changeStatisticTypeEquipment(ActionEvent event) {
 		String selectedType = typeStatisticComboBox.getSelectionModel().getSelectedItem().toString();
 		switch (selectedType) {
-			case StatisticContants.BORROW_CATEGORY:
-				equipmentBarChart.setVisible(false);
-				borrowEquipmentBarChart.setVisible(true);
+		case StatisticContants.BORROW_CATEGORY:
+			equipmentBarChart.setVisible(false);
+			borrowEquipmentBarChart.setVisible(true);
 
-				break;
-			case StatisticContants.STATUS_CATEGORY:
-				equipmentBarChart.setVisible(true);
-				borrowEquipmentBarChart.setVisible(false);
-				break;
-			default:
-				throw new IllegalArgumentException("Unexpected value: " + selectedType);
+			break;
+		case StatisticContants.STATUS_CATEGORY:
+			equipmentBarChart.setVisible(true);
+			borrowEquipmentBarChart.setVisible(false);
+			break;
+		default:
+			throw new IllegalArgumentException("Unexpected value: " + selectedType);
 		}
 	}
 
