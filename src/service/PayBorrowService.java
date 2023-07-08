@@ -13,7 +13,7 @@ import models.UserEntity;
 import models.db.DB;
 import utils.NotificationUtil;
 
-public class PayBorrowService {
+public class PayBorrowService extends BaseService<PayBorrowEntity>{
 	private static PayBorrowService repo;
 
 	public static PayBorrowService getRepo() {

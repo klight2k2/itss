@@ -7,12 +7,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.CategoryEquipmentEntity;
 import models.EquipmentEntity;
 import models.RoomEntity;
 import models.db.DB;
 import utils.NotificationUtil;
 
-public class EquipmentService {
+public class EquipmentService extends BaseService<EquipmentEntity>{
 	private static EquipmentService repo;
 
 	public static EquipmentService getRepo() {

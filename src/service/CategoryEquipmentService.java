@@ -11,7 +11,7 @@ import models.CategoryEquipmentEntity;
 import models.db.DB;
 import utils.NotificationUtil;
 
-public class CategoryEquipmentService {
+public class CategoryEquipmentService extends BaseService<CategoryEquipmentEntity>{
 	private static CategoryEquipmentService repo;
 
 	public static CategoryEquipmentService getRepo() {

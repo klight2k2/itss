@@ -9,11 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controllers.LoginController;
+import models.EquipmentEntity;
 import models.UserEntity;
 import models.db.DB;
 import utils.NotificationUtil;
 
-public class UserService {
+public class UserService extends BaseService<UserEntity>{
 
 	private static UserService repo;
 

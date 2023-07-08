@@ -7,13 +7,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.EquipmentEntity;
 import models.RoomScheduleEntity;
 import models.UserEntity;
 import models.db.DB;
 import utils.DateUtils;
 import utils.NotificationUtil;
 
-public class RoomScheduleService {
+public class RoomScheduleService extends BaseService<RoomScheduleEntity>{
 	private static RoomScheduleService repo;
 
 	public static RoomScheduleService getRepo() {
