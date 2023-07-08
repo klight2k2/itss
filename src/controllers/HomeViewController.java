@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import common.Role;
-import controllers.LoginController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -93,9 +92,8 @@ public class HomeViewController implements Initializable {
 			System.out.print("borrowBtn");
 			loadView(Links.PAYBORROWVIEW);
 			pageTitle.setText("Mượn trả thiết bị");
-		}
-		else if (sourceButton == signUpBtn) {
-			if(!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+		} else if (sourceButton == signUpBtn) {
+			if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
 				NotificationUtil.warning("Cảnh báo", "Bạn không có quyền thực hiện chức năng này!");
 				return;
 			}
@@ -140,9 +138,12 @@ public class HomeViewController implements Initializable {
 		this.selectedBtn = homeBtn;
 		this.loadView(Links.HOMECONTENTVIEW);
 		selectedBtn.getStyleClass().add("active");
-		
+
 		userName.setText(LoginController.currentUser.getName());
 
+		if (LoginController.currentUser.getRole() != Role.ADMIN) {
+			signUpBtn.setVisible(false);
+		}
 	}
 
 }

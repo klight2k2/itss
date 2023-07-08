@@ -9,26 +9,31 @@ import common.StatisticContants;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Tooltip;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import service.StatisticalService;
 
 public class DashboardController implements Initializable {
 
 	@FXML
 	private Pane pane;
+
+	@FXML
+	private Text equipmentCountLabel;
+
+	@FXML
+	private Text reportCountLabel;
+
+	@FXML
+	private Text roomCountLabel;
+
 	@FXML
 	private BarChart equipmentBarChart;
 
@@ -88,6 +93,10 @@ public class DashboardController implements Initializable {
 			roomPieChart.getData().setAll(valueList);
 			roomPieChart.setStartAngle(30);
 			roomPieChart.setLabelsVisible(false);
+
+			equipmentCountLabel.setText(String.valueOf(StatisticalService.getRepo().countEquipment()));
+			roomCountLabel.setText(String.valueOf(StatisticalService.getRepo().countRooms()));
+//			reportCountLabel.setText(String.valueOf(StatisticalService.getRepo().));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
