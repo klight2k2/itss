@@ -11,6 +11,7 @@ public class RoomReportEntity extends BaseEntity {
 	private java.sql.Date createdAt;
 	private int reporterId;
 	private int approverId;
+	private String note;
 
 	private List<EquipmentEntity> listEquipmentReport = new ArrayList<>();
 
@@ -49,14 +50,15 @@ public class RoomReportEntity extends BaseEntity {
 		this.listEquipmentReport = listEquipmentReport;
 	}
 
-	public RoomReportEntity(int id, int roomId, String status, java.sql.Date createdAt, int reporterId,
-			int approverId) {
+	public RoomReportEntity(int id, int roomId, String status, java.sql.Date createdAt, int reporterId, int approverId,
+			String note) {
 		this.id = id;
 		this.roomId = roomId;
 		this.status = status;
 		this.createdAt = createdAt;
 		this.reporterId = reporterId;
 		this.approverId = approverId;
+		this.note = note;
 	}
 
 	// Getters and setters
@@ -107,5 +109,13 @@ public class RoomReportEntity extends BaseEntity {
 
 	public void setApproverId(int approverId) {
 		this.approverId = approverId;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 }
