@@ -1,4 +1,4 @@
-package views.report;
+package controllers;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -30,6 +30,7 @@ import service.EquipmentService;
 import service.RoomReportService;
 import service.RoomService;
 import service.UserService;
+import views.report.Report;
 import views.room.Equipment;
 
 public class ReportViewController {

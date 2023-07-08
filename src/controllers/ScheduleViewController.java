@@ -1,4 +1,4 @@
-package views.schedule;
+package controllers;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -26,6 +26,8 @@ import models.UserEntity;
 import service.RoomScheduleService;
 import service.RoomService;
 import service.UserService;
+import views.schedule.DateTimePicker;
+import views.schedule.Schedule;
 
 public class ScheduleViewController {
 

@@ -1,4 +1,4 @@
-package views.room;
+package controllers;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -20,6 +20,8 @@ import models.RoomEntity;
 import service.EquipmentService;
 import service.RoomReportService;
 import service.RoomService;
+import views.room.Equipment;
+import views.room.Room;
 
 public class RoomViewController {
 

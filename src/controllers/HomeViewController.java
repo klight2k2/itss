@@ -1,4 +1,4 @@
-package views.home;
+package controllers;
 
 import java.io.IOException;
 import java.net.URL;

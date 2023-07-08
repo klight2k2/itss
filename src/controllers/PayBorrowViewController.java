@@ -1,4 +1,4 @@
-package views.payborrow;
+package controllers;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -31,6 +31,7 @@ import models.UserEntity;
 import service.EquipmentService;
 import service.PayBorrowService;
 import service.UserService;
+import views.payborrow.PayBorrow;
 
 public class PayBorrowViewController {
 

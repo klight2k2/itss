@@ -1,4 +1,4 @@
-package views.equipment;
+package controllers;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -26,6 +26,7 @@ import models.UserEntity;
 import service.CategoryEquipmentService;
 import service.EquipmentService;
 import service.RoomService;
+import views.equipment.Equipment;
 
 public class EquipmentViewController {
 
