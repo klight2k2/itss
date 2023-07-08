@@ -65,6 +65,9 @@ public class ReportViewController {
 	private Label detailTime;
 
 	@FXML
+	private Label detailNote;
+
+	@FXML
 	private Label reportTitle;
 
 	@FXML
@@ -255,7 +258,7 @@ public class ReportViewController {
 			inputReporter.setDisable(true);
 			inputStatus.setValue(rre.getStatus());
 			inputTime.setValue(rre.getCreatedAt().toLocalDate());
-			inputNote.setText("Sample note");
+			inputNote.setText(rre.getNote());
 			addModal.setVisible(true);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -271,6 +274,7 @@ public class ReportViewController {
 		rre.setCreatedAt(Date.valueOf(inputTime.getValue()));
 		rre.setStatus(inputStatus.getSelectionModel().getSelectedItem());
 		rre.setApproverId(1);
+		rre.setNote(inputNote.getText());
 		try {
 			if (curId > 0) {
 				rre.setId(curId);
@@ -393,6 +397,7 @@ public class ReportViewController {
 			detailUser.setText(UserService.getRepo().getUserById(rre.getReporterId()).getName());
 			detailStatus.setText(rre.getStatus());
 			detailTime.setText(rre.getCreatedAt().toString());
+			detailNote.setText(rre.getNote());
 			updateEquipTable();
 			detailModal.setVisible(true);
 		} catch (Exception e) {
@@ -420,7 +425,8 @@ public class ReportViewController {
 
 	@FXML
 	void reset(ActionEvent event) {
-		inputSearch.clear();
+		if (inputSearch != null)
+			inputSearch.clear();
 		updateTable();
 	}
 
@@ -449,7 +455,7 @@ public class ReportViewController {
 					newRp.setDisplayStatus(rp.getStatus());
 					newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
 					newRp.setDisplayTimestamp(rp.getCreatedAt());
-					newRp.setDisplayNote("Sample note");
+					newRp.setDisplayNote(rp.getNote());
 					reports.getItems().add(newRp);
 				}
 			}
@@ -475,7 +481,7 @@ public class ReportViewController {
 				newRp.setDisplayStatus(rp.getStatus());
 				newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
 				newRp.setDisplayTimestamp(rp.getCreatedAt());
-				newRp.setDisplayNote("Sample note");
+				newRp.setDisplayNote(rp.getNote());
 				reports.getItems().add(newRp);
 			}
 		} catch (SQLException e) {

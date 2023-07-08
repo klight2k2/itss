@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="784.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReportViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="784.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ReportViewController">
    <children>
       <Text layoutX="308.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Báo cáo" textAlignment="CENTER" wrappingWidth="167.9794921875">
          <font>
@@ -34,20 +34,20 @@
          </columnResizePolicy>
       </TableView>
       <Label layoutX="36.0" layoutY="70.0" prefHeight="19.0" prefWidth="82.0" text="Phòng học" />
-      <TextField fx:id="inputRoomName" layoutX="118.0" layoutY="66.0" prefHeight="27.0" prefWidth="122.0" />
-      <Button layoutX="328.0" layoutY="66.0" mnemonicParsing="false" onAction="#reset" text="Làm mới" />
-      <Button layoutX="250.0" layoutY="66.0" mnemonicParsing="false" onAction="#search" text="Tìm kiếm" />
-      <Button layoutX="648.0" layoutY="66.0" mnemonicParsing="false" onAction="#addOpenModal" text="Thêm báo cáo" />
+      <TextField fx:id="inputRoomName" layoutX="118.0" layoutY="66.0" prefHeight="27.0" prefWidth="122.0" styleClass="text-field" />
+      <Button layoutX="328.0" layoutY="66.0" mnemonicParsing="false" onAction="#reset" styleClass="btn" text="Làm mới" />
+      <Button layoutX="250.0" layoutY="66.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
+      <Button layoutX="648.0" layoutY="66.0" mnemonicParsing="false" onAction="#addOpenModal" styleClass="btn" text="Thêm báo cáo" />
       <AnchorPane fx:id="detailModal" layoutX="-1.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;">
          <children>
-            <AnchorPane layoutX="31.0" layoutY="67.0" prefHeight="494.0" prefWidth="722.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
+            <AnchorPane layoutX="31.0" layoutY="67.0" prefHeight="535.0" prefWidth="722.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
                <children>
                   <Label layoutX="37.0" layoutY="36.0" prefHeight="27.0" prefWidth="158.0" style="-fx-font-weight: bold; -fx-font-size: 16;" styleClass="title" text="Chi tiết báo cáo" />
                   <Label layoutX="26.0" layoutY="93.0" prefHeight="19.0" prefWidth="86.0" text="Tên phòng" />
                   <Label layoutX="26.0" layoutY="123.0" prefHeight="19.0" prefWidth="86.0" text="Người báo cáo" />
-                  <Label fx:id="detailRoom" layoutX="112.0" layoutY="93.0" prefHeight="19.0" prefWidth="86.0" text="Phòng A" />
-                  <Label fx:id="detailUser" layoutX="126.0" layoutY="123.0" prefHeight="19.0" prefWidth="86.0" text="User01" />
-                  <TableView fx:id="equipments" layoutX="26.0" layoutY="158.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#rowEquipmentClicked" prefHeight="308.0" prefWidth="670.0">
+                  <Label fx:id="detailRoom" layoutX="126.0" layoutY="93.0" prefHeight="19.0" prefWidth="86.0" text="Phòng A" />
+                  <Label fx:id="detailUser" alignment="TOP_LEFT" layoutX="126.0" layoutY="123.0" prefHeight="38.0" prefWidth="168.0" text="User01" />
+                  <TableView fx:id="equipments" layoutX="26.0" layoutY="201.0" nodeOrientation="LEFT_TO_RIGHT" onMouseClicked="#rowEquipmentClicked" prefHeight="308.0" prefWidth="670.0">
                      <columns>
                         <TableColumn fx:id="equipId" prefWidth="40.000030517578125" text="ID" />
                         <TableColumn fx:id="equipName" prefWidth="96.79995727539062" text="Tên thiết bị" />
@@ -65,14 +65,16 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Button layoutX="571.0" layoutY="79.0" mnemonicParsing="false" onAction="#editReport" text="Chỉnh sửa báo cáo" />
-                  <Button defaultButton="true" layoutX="626.0" layoutY="31.0" mnemonicParsing="false" onAction="#closeDetailModal" text="Hoàn tất" />
-                  <Button layoutX="527.0" layoutY="31.0" mnemonicParsing="false" onAction="#delete" text="Xoá báo cáo" textFill="#c42929" />
-                  <Button layoutX="600.0" layoutY="119.0" mnemonicParsing="false" onAction="#addEquipment" text="Thêm thiết bị" />
-                  <Label layoutX="195.0" layoutY="93.0" prefHeight="19.0" prefWidth="86.0" text="Trạng thái" />
-                  <Label layoutX="195.0" layoutY="123.0" prefHeight="19.0" prefWidth="86.0" text="Thời gian" />
-                  <Label fx:id="detailStatus" layoutX="274.0" layoutY="93.0" prefHeight="19.0" prefWidth="86.0" text="Status" />
-                  <Label fx:id="detailTime" layoutX="274.0" layoutY="123.0" prefHeight="19.0" prefWidth="86.0" text="Time" />
+                  <Button layoutX="571.0" layoutY="79.0" mnemonicParsing="false" onAction="#editReport" styleClass="btn" text="Chỉnh sửa báo cáo" />
+                  <Button defaultButton="true" layoutX="626.0" layoutY="31.0" mnemonicParsing="false" onAction="#closeDetailModal" styleClass="btn" text="Hoàn tất" />
+                  <Button layoutX="527.0" layoutY="31.0" mnemonicParsing="false" onAction="#delete" styleClass="btn" text="Xoá báo cáo" textFill="#c42929" />
+                  <Button layoutX="600.0" layoutY="119.0" mnemonicParsing="false" onAction="#addEquipment" styleClass="btn" text="Thêm thiết bị" />
+                  <Label layoutX="312.0" layoutY="94.0" prefHeight="19.0" prefWidth="86.0" text="Trạng thái" />
+                  <Label layoutX="312.0" layoutY="124.0" prefHeight="19.0" prefWidth="86.0" text="Thời gian" />
+                  <Label fx:id="detailStatus" layoutX="391.0" layoutY="94.0" prefHeight="19.0" prefWidth="86.0" text="Status" />
+                  <Label fx:id="detailTime" layoutX="391.0" layoutY="124.0" prefHeight="19.0" prefWidth="86.0" text="Time" />
+                  <Label layoutX="26.0" layoutY="156.0" prefHeight="19.0" prefWidth="86.0" text="Ghi chú" />
+                  <Label fx:id="detailNote" alignment="TOP_LEFT" layoutX="126.0" layoutY="156.0" prefHeight="38.0" prefWidth="352.0" text="Note" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -91,8 +93,8 @@
                   <Label layoutX="40.0" layoutY="52.0" text="Phòng" />
                   <Label layoutX="229.0" layoutY="52.0" text="Người báo cáo" />
                   <Label layoutX="40.0" layoutY="92.0" text="Trạng thái" />
-                  <Button layoutX="170.0" layoutY="216.0" mnemonicParsing="false" onAction="#addCancel" text="Hủy" />
-                  <Button layoutX="219.0" layoutY="216.0" mnemonicParsing="false" onAction="#addSubmit" text="Xác nhận" />
+                  <Button layoutX="170.0" layoutY="216.0" mnemonicParsing="false" onAction="#addCancel" styleClass="btn" text="Hủy" />
+                  <Button layoutX="219.0" layoutY="216.0" mnemonicParsing="false" onAction="#addSubmit" styleClass="btn_primary" text="Xác nhận" />
                   <ComboBox fx:id="inputRoom" layoutX="108.0" layoutY="48.0" prefHeight="27.0" prefWidth="98.0" />
                   <ComboBox fx:id="inputReporter" layoutX="331.0" layoutY="48.0" prefHeight="27.0" prefWidth="98.0" />
                   <ComboBox fx:id="inputStatus" layoutX="108.0" layoutY="88.0" prefHeight="27.0" prefWidth="98.0" />
@@ -116,7 +118,7 @@
                      </columns>
                   </TableView>
                   <TextField fx:id="searchEquipTextField" layoutX="31.0" layoutY="35.0" onMouseClicked="#onSearchEquip" promptText="Tìm kiếm theo tên" />
-                  <Button layoutX="576.0" layoutY="35.0" mnemonicParsing="false" onAction="#closeAddEquipModal" text="Hủy" />
+                  <Button layoutX="576.0" layoutY="35.0" mnemonicParsing="false" onAction="#closeAddEquipModal" styleClass="btn" text="Hủy" />
                </children>
             </AnchorPane>
          </children>
@@ -140,8 +142,8 @@
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Button layoutX="236.0" layoutY="437.0" mnemonicParsing="false" onAction="#submitEditEquip" prefHeight="27.0" prefWidth="72.0" styleClass="btn" text="Xác nhận" />
-                  <Button layoutX="126.0" layoutY="437.0" mnemonicParsing="false" onAction="#cancelEditEquip" prefHeight="25.0" prefWidth="72.0" styleClass="btn" text="Hủy" />
+                  <Button layoutX="245.0" layoutY="435.0" mnemonicParsing="false" onAction="#submitEditEquip" prefHeight="30.0" prefWidth="82.0" styleClass="btn_primary" text="Xác nhận" />
+                  <Button layoutX="140.0" layoutY="435.0" mnemonicParsing="false" onAction="#cancelEditEquip" prefHeight="27.0" prefWidth="72.0" styleClass="btn" text="Hủy" />
                   <Label layoutX="39.0" layoutY="133.0" prefHeight="19.0" prefWidth="100.0" text="Loại thiết bị">
                      <font>
                         <Font size="14.0" />
@@ -177,7 +179,7 @@
                      </font>
                   </Label>
                   <TextField fx:id="inputEquipName" layoutX="162.0" layoutY="89.0" prefHeight="27.0" prefWidth="147.0" />
-                  <Button layoutX="39.0" layoutY="438.0" mnemonicParsing="false" onAction="#deleteEquipment" prefHeight="25.0" prefWidth="50.0" styleClass="btn" text="Xóa" />
+                  <Button layoutX="40.0" layoutY="435.0" mnemonicParsing="false" onAction="#deleteEquipment" prefHeight="25.0" prefWidth="50.0" styleClass="btn" text="Xóa" />
                   <ComboBox fx:id="inputEquipRoom" layoutX="161.0" layoutY="51.0" prefWidth="150.0" />
                   <ComboBox fx:id="inputEquipCategory" layoutX="161.0" layoutY="130.0" prefWidth="150.0" />
                   <ComboBox fx:id="inputEquipStatus" layoutX="161.0" layoutY="168.0" prefWidth="150.0" />
