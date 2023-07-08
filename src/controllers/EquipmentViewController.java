@@ -28,6 +28,7 @@ import models.RoomEntity;
 import service.CategoryEquipmentService;
 import service.EquipmentService;
 import service.RoomService;
+import service.UserService;
 import views.equipment.Equipment;
 
 public class EquipmentViewController {
@@ -119,7 +120,7 @@ public class EquipmentViewController {
 
 	@FXML
 	void onRowClick(MouseEvent event) {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN))
+		if (!UserService.getRepo().isAdmin())
 			return;
 		Equipment clickedRow = equipments.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
@@ -310,7 +311,7 @@ public class EquipmentViewController {
 	public void initialize() {
 		addEquipmentModal.setVisible(false);
 
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+		if (!UserService.getRepo().isAdmin()) {
 
 			addEquipmentBtn.setVisible(false);
 			operationEquipColumn.setVisible(false);

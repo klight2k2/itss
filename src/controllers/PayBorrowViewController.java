@@ -3,7 +3,6 @@ package controllers;
 import java.sql.Date;
 import java.sql.SQLException;
 
-import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -215,7 +214,7 @@ public class PayBorrowViewController {
 
 	@FXML
 	void rowClicked(MouseEvent event) {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN))
+		if (!UserService.getRepo().isAdmin())
 			return;
 
 		PayBorrow clickedRow = pbEquipments.getSelectionModel().getSelectedItem();
@@ -286,8 +285,7 @@ public class PayBorrowViewController {
 			pbEquipments.getItems().clear();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
-				if (LoginController.currentUser.getRole() == Role.TEACHER
-						&& LoginController.currentUser.getId() != pb.getBorrowerId())
+				if (!UserService.getRepo().isAdmin() && UserService.currentUser.getId() != pb.getBorrowerId())
 					continue;
 				else {
 					String username = UserService.getRepo().getUserById(pb.getBorrowerId()).getName();
@@ -323,8 +321,7 @@ public class PayBorrowViewController {
 			pbEquipments.getItems().clear();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
-				if (LoginController.currentUser.getRole() == Role.TEACHER
-						&& LoginController.currentUser.getId() != pb.getBorrowerId())
+				if (!UserService.getRepo().isAdmin() && UserService.currentUser.getId() != pb.getBorrowerId())
 					continue;
 				else {
 					PayBorrow newPb = new PayBorrow();
@@ -354,7 +351,7 @@ public class PayBorrowViewController {
 		try {
 			pbDetailModal.setVisible(false);
 			addEquipModal.setVisible(false);
-			if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+			if (!UserService.getRepo().isAdmin()) {
 				operationPayBorrowColumn.setVisible(false);
 			}
 			status.getItems().addAll(statusValues);

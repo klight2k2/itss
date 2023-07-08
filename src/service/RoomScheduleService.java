@@ -86,9 +86,22 @@ public class RoomScheduleService extends BaseService<RoomScheduleEntity>{
 			ResultSet res = stm.executeQuery("SELECT * FROM room_schedule");
 			ArrayList<RoomScheduleEntity> schedules = new ArrayList<>();
 			while (res.next()) {
+				String sqlString = "SELECT (select count(*) from equipment where roomId = " + res.getInt("roomId") + " group by roomId) - count(e.status) as count "
+						+ "FROM equipment e "
+						+ "where e.status = 1 and e.roomId = " + res.getInt("roomId")
+						+ " GROUP BY e.roomId";
+				Statement stmStatement = DB.getConnection().createStatement();
+				ResultSet countResultSet = stmStatement.executeQuery(sqlString);
 				RoomScheduleEntity schedule = new RoomScheduleEntity(res.getInt("id"), res.getInt("teacherId"),
 						res.getInt("roomId"), DateUtils.LocalDateTime(res.getTimestamp("startTime").toString()),
 						DateUtils.LocalDateTime(res.getTimestamp("endTime").toString()), res.getString("reason"));
+				if (countResultSet.next()) {
+					schedule.setStatus(countResultSet.getInt("count") >= 3 ? "Không" : "Có");
+				}
+				else {
+					schedule.setStatus("Có");
+				}
+				System.out.println(schedule.getId() + "--" + schedule.getStatus());
 				schedules.add(schedule);
 			}
 			return schedules;
@@ -170,6 +183,15 @@ public class RoomScheduleService extends BaseService<RoomScheduleEntity>{
 			// TODO: handle exception
 			e.printStackTrace();
 			return null;
+		}
+	}
+	
+	public static void main(String[] args) {
+		try {
+			List<RoomScheduleEntity> listEntities = new RoomScheduleService().getAll();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

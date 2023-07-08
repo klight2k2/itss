@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -391,6 +390,7 @@ public class ReportViewController {
 
 	void openDetailModal() {
 		try {
+			UserService userRepo = UserService.getRepo();
 			if (curId < 0) {
 				// Get newest
 				curId = reports.getItems().get(reports.getItems().size() - 1).getDisplayId().intValue();
@@ -405,9 +405,9 @@ public class ReportViewController {
 			detailNote.setText(rre.getNote());
 			updateEquipTable();
 
-			if (LoginController.currentUser.getRole() != Role.ADMIN) {
+			if (!userRepo.isAdmin()) {
 				inputStatus.setDisable(true);
-				if (LoginController.currentUser.getId() != rre.getReporterId()) {
+				if (UserService.currentUser.getId() != rre.getReporterId()) {
 					deleteReportBtn.setVisible(false);
 				}
 			}
@@ -460,16 +460,20 @@ public class ReportViewController {
 			reports.getItems().clear();
 			for (RoomReportEntity rp : roomReportRepo.getAll()) {
 				if (roomRepo.getRoomById(rp.getRoomId()).getName().contains(filter)) {
-					Report newRp = new Report();
-					newRp.setDisplayId(Integer.valueOf(rp.getId()));
-					newRp.setDisplayRoom(roomRepo.getRoomById(rp.getRoomId()).getName());
-					newRp.setDisplayEquipment(
-							RoomReportService.getRepo().getEquipmentByRoomReportId(rp.getId()).size());
-					newRp.setDisplayStatus(rp.getStatus());
-					newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
-					newRp.setDisplayTimestamp(rp.getCreatedAt());
-					newRp.setDisplayNote(rp.getNote());
-					reports.getItems().add(newRp);
+					if (!UserService.getRepo().isAdmin() && UserService.currentUser.getId() != rp.getReporterId())
+						continue;
+					else {
+						Report newRp = new Report();
+						newRp.setDisplayId(Integer.valueOf(rp.getId()));
+						newRp.setDisplayRoom(roomRepo.getRoomById(rp.getRoomId()).getName());
+						newRp.setDisplayEquipment(
+								RoomReportService.getRepo().getEquipmentByRoomReportId(rp.getId()).size());
+						newRp.setDisplayStatus(rp.getStatus());
+						newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
+						newRp.setDisplayTimestamp(rp.getCreatedAt());
+						newRp.setDisplayNote(rp.getNote());
+						reports.getItems().add(newRp);
+					}
 				}
 			}
 		} catch (SQLException e) {
@@ -487,15 +491,20 @@ public class ReportViewController {
 
 			reports.getItems().clear();
 			for (RoomReportEntity rp : roomReportRepo.getAll()) {
-				Report newRp = new Report();
-				newRp.setDisplayId(Integer.valueOf(rp.getId()));
-				newRp.setDisplayRoom(roomRepo.getRoomById(rp.getRoomId()).getName());
-				newRp.setDisplayEquipment(RoomReportService.getRepo().getEquipmentByRoomReportId(rp.getId()).size());
-				newRp.setDisplayStatus(rp.getStatus());
-				newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
-				newRp.setDisplayTimestamp(rp.getCreatedAt());
-				newRp.setDisplayNote(rp.getNote());
-				reports.getItems().add(newRp);
+				if (!UserService.getRepo().isAdmin() && UserService.currentUser.getId() != rp.getReporterId())
+					continue;
+				else {
+					Report newRp = new Report();
+					newRp.setDisplayId(Integer.valueOf(rp.getId()));
+					newRp.setDisplayRoom(roomRepo.getRoomById(rp.getRoomId()).getName());
+					newRp.setDisplayEquipment(
+							RoomReportService.getRepo().getEquipmentByRoomReportId(rp.getId()).size());
+					newRp.setDisplayStatus(rp.getStatus());
+					newRp.setDisplayReporter(userRepo.getUserById(rp.getReporterId()).getName());
+					newRp.setDisplayTimestamp(rp.getCreatedAt());
+					newRp.setDisplayNote(rp.getNote());
+					reports.getItems().add(newRp);
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

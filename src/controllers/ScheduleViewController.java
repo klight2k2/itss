@@ -3,7 +3,6 @@ package controllers;
 import java.sql.Date;
 import java.sql.SQLException;
 
-import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import models.RoomEntity;
 import models.RoomScheduleEntity;
@@ -79,6 +79,9 @@ public class ScheduleViewController {
 
 	@FXML
 	private TableColumn<Schedule, String> scheduleUser;
+
+	@FXML
+	private TableColumn<Schedule, String> scheduleStatus;
 
 	// @FXML
 	// private Button deleteBtn;
@@ -157,7 +160,7 @@ public class ScheduleViewController {
 
 	@FXML
 	void onRowClick(MouseEvent event) {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN))
+		if (!UserService.getRepo().isAdmin())
 			return;
 		Schedule clickedRow = schedules.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
@@ -207,8 +210,7 @@ public class ScheduleViewController {
 			RoomScheduleService rss = RoomScheduleService.getRepo();
 			for (RoomScheduleEntity res : rss.getAll()) {
 				if (RoomService.getRepo().getRoomById(res.getRoomId()).getName().toLowerCase().contains(filter)) {
-					if (LoginController.currentUser.getRole() == Role.TEACHER
-							&& LoginController.currentUser.getId() != res.getTeacherId())
+					if (!UserService.getRepo().isAdmin() && UserService.currentUser.getId() != res.getTeacherId())
 						continue;
 					else {
 						Schedule ns = new Schedule();
@@ -221,6 +223,7 @@ public class ScheduleViewController {
 						ns.setDisplayStartTime(res.getStartTime());
 						ns.setDisplayEndTime(res.getEndTime());
 						ns.setDisplayReason(res.getReason());
+						ns.setDisplayStatus(res.getStatus());
 						schedules.getItems().add(ns);
 					}
 				}
@@ -236,8 +239,7 @@ public class ScheduleViewController {
 			schedules.getItems().clear();
 			RoomScheduleService rss = RoomScheduleService.getRepo();
 			for (RoomScheduleEntity res : rss.getAll()) {
-				if (LoginController.currentUser.getRole() == Role.TEACHER
-						&& LoginController.currentUser.getId() != res.getTeacherId())
+				if (!UserService.getRepo().isAdmin() && UserService.currentUser.getId() != res.getTeacherId())
 					continue;
 				else {
 					Schedule ns = new Schedule();
@@ -250,6 +252,7 @@ public class ScheduleViewController {
 					ns.setDisplayStartTime(res.getStartTime());
 					ns.setDisplayEndTime(res.getEndTime());
 					ns.setDisplayReason(res.getReason());
+					ns.setDisplayStatus(res.getStatus());
 					schedules.getItems().add(ns);
 				}
 			}
@@ -260,7 +263,7 @@ public class ScheduleViewController {
 	}
 
 	public void initialize() {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+		if (!UserService.getRepo().isAdmin()) {
 
 			addScheduleBtn.setVisible(false);
 			operationcolumn.setVisible(false);
@@ -274,6 +277,7 @@ public class ScheduleViewController {
 		scheduleStartTime.setCellValueFactory(new PropertyValueFactory<>("displayStartTime"));
 		scheduleEndTime.setCellValueFactory(new PropertyValueFactory<>("displayEndTime"));
 		scheduleReason.setCellValueFactory(new PropertyValueFactory<>("displayReason"));
+		scheduleStatus.setCellValueFactory(new PropertyValueFactory<>("displayStatus"));
 		updateOperation();
 		try {
 			listRoom.setAll(RoomService.getRepo().getAll());
@@ -322,9 +326,20 @@ public class ScheduleViewController {
 
 						});
 
-						HBox managebtn = new HBox(deleteIcon);
+						Button changeIcon = new Button("Đổi phòng");
+
+						changeIcon.getStyleClass().add("btn");
+
+						changeIcon.setOnMouseClicked((MouseEvent event) -> {
+							Schedule schedule = (Schedule) getTableRow().getItem();
+							updateTable();
+						});
+
+						Schedule schedule = (Schedule) getTableRow().getItem();
+						VBox managebtn = schedule.getDisplayStatus() == "Có" ? new VBox(deleteIcon)
+								: new VBox(changeIcon, deleteIcon);
 						managebtn.setStyle("-fx-alignment:center");
-						HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
+						VBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
 						setGraphic(managebtn);
 						setText(null);
 

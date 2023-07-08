@@ -9,7 +9,18 @@ public class RoomScheduleEntity extends BaseEntity {
 	private int roomId;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	private String reason;
+
+	private String status;
 
 	private UserEntity teacher = new UserEntity();
 
@@ -18,6 +29,20 @@ public class RoomScheduleEntity extends BaseEntity {
 	}
 
 	public void setTeacher(UserEntity teacher) {
+		this.teacher = teacher;
+	}
+	
+
+	public RoomScheduleEntity(int id, int teacherId, int roomId, LocalDateTime startTime, LocalDateTime endTime,
+			String reason, String status, UserEntity teacher) {
+		super();
+		this.id = id;
+		this.teacherId = teacherId;
+		this.roomId = roomId;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.reason = reason;
+		this.status = status;
 		this.teacher = teacher;
 	}
 

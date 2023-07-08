@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import service.UserService;
 import utils.NotificationUtil;
 import views.Links;
 
@@ -93,7 +94,7 @@ public class HomeViewController implements Initializable {
 			loadView(Links.PAYBORROWVIEW);
 			pageTitle.setText("Mượn trả thiết bị");
 		} else if (sourceButton == signUpBtn) {
-			if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+			if (!UserService.getRepo().isAdmin()) {
 				NotificationUtil.warning("Cảnh báo", "Bạn không có quyền thực hiện chức năng này!");
 				return;
 			}
@@ -136,14 +137,12 @@ public class HomeViewController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.selectedBtn = homeBtn;
+		UserService userRepo= UserService.getRepo();
 		this.loadView(Links.HOMECONTENTVIEW);
 		selectedBtn.getStyleClass().add("active");
 
-		userName.setText(LoginController.currentUser.getName());
+		userName.setText(userRepo.getCurrentUsername());
 
-		if (LoginController.currentUser.getRole() != Role.ADMIN) {
-			signUpBtn.setVisible(false);
-		}
 	}
 
 }
