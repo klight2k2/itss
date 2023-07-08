@@ -3,7 +3,6 @@ package controllers;
 import java.sql.Date;
 import java.sql.SQLException;
 
-import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -127,8 +126,13 @@ public class PayBorrowViewController {
 	@FXML
 	private TableView<EquipmentEntity> tableViewBorrowed;
 
+
+
+
 	@FXML
 	void addEquipment(ActionEvent event) {
+		tableViewBorrow.setItems(listBorrow);
+		searchEquipTextField.clear();
 		addEquipModal.setVisible(true);
 
 	}
@@ -212,6 +216,10 @@ public class PayBorrowViewController {
 			e.printStackTrace();
 		}
 	}
+	@FXML
+    void closeAddEquipModal(MouseEvent event) {
+		addEquipModal.setVisible(false);
+    }
 
 	@FXML
 	void rowClicked(MouseEvent event) {
@@ -261,23 +269,16 @@ public class PayBorrowViewController {
 
 	@FXML
 	private TextField searchEquipTextField;
-
-	public void onSearchEquip(InputMethodEvent event) {
-		FilteredList<EquipmentEntity> filteredData = new FilteredList<>(listBorrow, p -> true);
-		searchEquipTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-			filteredData.setPredicate(equip -> {
-				if (newValue == null || newValue.isEmpty()) {
-					return true;
+	@FXML
+	public void onSearchEquip(MouseEvent event) {
+		ObservableList<EquipmentEntity> list = FXCollections.observableArrayList();
+		String searchKey=searchEquipTextField.getText();
+		listBorrow.forEach(equip->{
+				if(equip.getName().contains(searchKey) ||searchKey.equals("")){
+					list.add(equip);
 				}
-				String lowerCaseFilter = newValue.toLowerCase();
-				if (equip.getName().toLowerCase().contains(lowerCaseFilter)) {
-					return true;
-				} else {
-					return false;
-				}
-			});
 		});
-
+		tableViewBorrow.setItems(list);
 	}
 
 	@FXML

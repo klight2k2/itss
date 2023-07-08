@@ -59,10 +59,7 @@ public class SignUpController {
 		}
 		try {
 			UserService.getRepo().save(new UserEntity(inputName,inputUsername,inputPassword,role));
-			NotificationUtil.success("Tạo tài khoản", "Bạn đã tạo tài khoản thành công");
-//			return;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

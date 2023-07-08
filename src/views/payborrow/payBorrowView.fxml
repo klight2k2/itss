@@ -19,6 +19,7 @@
       <Label layoutX="4.0" layoutY="82.0" text="* Nhấn để xem chi tiết" />
       <Button layoutX="672.0" layoutY="42.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm lịch mượn" />
       <TextField fx:id="inputSearch" layoutY="41.0" promptText="Tìm kiếm..." />
+      <Button layoutX="267.0" layoutY="42.0" mnemonicParsing="false" onAction="#clearSearch" styleClass="btn" text="Làm mới" />
       <Button layoutX="185.0" layoutY="42.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
       <TableView fx:id="pbEquipments" layoutY="115.0" onMouseClicked="#rowClicked" prefHeight="487.0" prefWidth="800.0">
         <columns>
@@ -72,18 +73,20 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="addEquipModal" layoutX="4.0" layoutY="6.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
+      <AnchorPane fx:id="addEquipModal" layoutX="4.0" layoutY="6.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;">
          <children>
-            <AnchorPane layoutX="61.0" layoutY="129.0" prefHeight="428.0" prefWidth="649.0" style="-fx-background-color: #fff; -fx-background-radius: 10;" stylesheets="@../styles/global.css">
+            <AnchorPane layoutX="66.0" layoutY="86.0" prefHeight="428.0" prefWidth="649.0" style="-fx-background-color: #fff; -fx-background-radius: 10;" stylesheets="@../styles/global.css">
                <children>
-                  <TableView fx:id="tableViewBorrow" layoutX="23.0" layoutY="83.0" prefHeight="316.0" prefWidth="586.0">
+                  <TableView fx:id="tableViewBorrow" layoutX="23.0" layoutY="83.0" prefHeight="294.0" prefWidth="586.0">
                     <columns>
                       <TableColumn fx:id="borrowIdColumn" prefWidth="106.0" text="ID" />
-                      <TableColumn fx:id="borrowEquipNameColumn" prefWidth="248.0" text="Tên thiết bị" />
-                        <TableColumn fx:id="borrowNoteColumn" prefWidth="231.0" text="Note" />
+                      <TableColumn fx:id="borrowEquipNameColumn" prefWidth="279.0" text="Tên thiết bị" />
+                        <TableColumn fx:id="borrowNoteColumn" prefWidth="200.0" text="Ghi chú" />
                     </columns>
                   </TableView>
-                  <TextField fx:id="searchEquipTextField" layoutX="31.0" layoutY="35.0" onMouseClicked="#onSearchEquip" promptText="Tìm kiếm theo tên" />
+                  <TextField fx:id="searchEquipTextField" layoutX="31.0" layoutY="35.0" promptText="Tìm kiếm theo tên" />
+                  <Button layoutX="566.0" layoutY="385.0" mnemonicParsing="false" onMouseClicked="#closeAddEquipModal" styleClass="btn" text="Hủy" />
+                  <Button layoutX="226.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#onSearchEquip" styleClass="btn" text="Tìm kiếm" />
                </children>
                <styleClass>
                   <String fx:value="popupBorrowEquip" />
@@ -92,6 +95,5 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <Button layoutX="267.0" layoutY="42.0" mnemonicParsing="false" onAction="#clearSearch" styleClass="btn" text="Làm mới" />
    </children>
 </AnchorPane>
