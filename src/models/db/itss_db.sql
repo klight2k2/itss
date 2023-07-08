@@ -720,20 +720,6 @@ VALUES
 (8,296,'Den',1,CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP(),0,'Note 0',1),
 (9,297,'KeSach',1,CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP(),0,'Note 0',1);
 
-INSERT INTO pay_borrow (id, fromDate, toDate, status, borrowReason, refuseReason, borrowerId) values
-(1,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'PENDING','Tao dieu kien cho cac hoat dong tuong tac',NULL,2),
-(2,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'REJECTED','Tang cuong viec tra cuu tai lieu','Dang bao tri va sua chua',28),
-(3,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'PENDING','Nang cao chat luong giang day',NULL,6),
-(4,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'PAID','Tang cuong viec tra cuu tai lieu',NULL,60),
-(5,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'BORROWING','Ho tro trinh bay va chia se thong tin',NULL,66),
-(6,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'PAID','Ho tro trinh bay va chia se thong tin',NULL,46),
-(7,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'APPROVED','Tang cuong viec tra cuu tai lieu',NULL,39),
-(8,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'REJECTED','Ho tro trinh bay va chia se thong tin','Thieu thong tin va giay to can thiet',24),
-(9,DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL FLOOR(RAND() * 30) DAY), INTERVAL 10 DAY),'APPROVED','Tao dieu kien cho cac hoat dong tuong tac',NULL,13);
-
-
-
-
 -- INSERT INTO pay_borrow_equipment (payBorrowId, equipmentId) 
 -- values 
 -- (1, 210),

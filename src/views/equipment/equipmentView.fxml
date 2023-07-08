@@ -42,7 +42,7 @@
       <Button fx:id="addEquipmentBtn" layoutX="689.0" layoutY="43.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm thiết bị" />
       <AnchorPane fx:id="addEquipmentModal" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" stylesheets="@../styles/global.css">
          <children>
-            <AnchorPane layoutX="210.0" layoutY="73.0" prefHeight="481.0" prefWidth="352.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
+            <AnchorPane layoutX="224.0" layoutY="59.0" prefHeight="481.0" prefWidth="352.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
                <children>
                   <Label fx:id="inputTitle" alignment="CENTER" layoutX="113.0" layoutY="14.0" prefHeight="27.0" prefWidth="147.0" styleClass="title" text="Thêm thiết bị">
                      <font>
@@ -91,8 +91,43 @@
                      </font></Label>
                   <TextField fx:id="inputEquipName" layoutX="162.0" layoutY="89.0" prefHeight="27.0" prefWidth="147.0" />
                   <ComboBox fx:id="inputEquipRoom" layoutX="161.0" layoutY="51.0" prefWidth="150.0" />
-                  <ComboBox fx:id="inputEquipCategory" layoutX="161.0" layoutY="130.0" prefWidth="150.0" />
+                  <ComboBox fx:id="inputEquipCategory" layoutX="161.0" layoutY="130.0" prefHeight="30.0" prefWidth="114.0" />
                   <ComboBox fx:id="inputEquipStatus" layoutX="161.0" layoutY="168.0" prefWidth="150.0" />
+                  <Button layoutX="281.0" layoutY="130.0" mnemonicParsing="false" onAction="#openCateModal" prefHeight="30.0" prefWidth="29.0" text="+" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="addCategoryModal" layoutX="-4.0" layoutY="-2.0" prefHeight="608.0" prefWidth="806.0" style="-fx-background-color: #f2f2f2dd;" stylesheets="@../styles/global.css" visible="false">
+         <children>
+            <AnchorPane layoutX="227.0" layoutY="201.0" prefHeight="206.0" prefWidth="352.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
+               <children>
+                  <Label fx:id="inputTitle1" alignment="CENTER" layoutX="72.0" layoutY="14.0" prefHeight="30.0" prefWidth="208.0" styleClass="title" text="Thêm loại thiết bị">
+                     <font>
+                        <Font name="System Bold Italic" size="20.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="241.0" layoutY="156.0" mnemonicParsing="false" onAction="#submitAddCate" prefHeight="29.0" prefWidth="73.0" styleClass="btn_primary" text="Xác nhận">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="157.0" layoutY="156.0" mnemonicParsing="false" onAction="#cancelAddCate" prefHeight="25.0" prefWidth="72.0" styleClass="btn" text="Hủy" />
+                  <Label layoutX="23.0" layoutY="68.0" prefHeight="20.0" prefWidth="70.0" text="Tên">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="20.0" layoutY="108.0" prefHeight="19.0" prefWidth="74.0" text="Mã thiết bị">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="inputCateName" layoutX="107.0" layoutY="63.0" prefHeight="30.0" prefWidth="208.0" />
+                  <TextField fx:id="inputCateCode" layoutX="107.0" layoutY="103.0" prefHeight="30.0" prefWidth="208.0" />
                </children>
                <opaqueInsets>
                   <Insets />

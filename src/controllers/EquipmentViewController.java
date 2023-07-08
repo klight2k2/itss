@@ -39,6 +39,15 @@ public class EquipmentViewController {
 	private AnchorPane addEquipmentModal;
 
 	@FXML
+	private AnchorPane addCategoryModal;
+
+	@FXML
+	private TextField inputCateCode;
+
+	@FXML
+	private TextField inputCateName;
+
+	@FXML
 	private TableView<Equipment> equipments;
 
 	@FXML
@@ -115,6 +124,34 @@ public class EquipmentViewController {
 
 	public int convertStatus(String status) {
 		return status == "Hỏng" ? 0 : status == "Tốt" ? 1 : status == "Đang sửa" ? 2 : -1;
+	}
+
+	@FXML
+	void openCateModal(ActionEvent event) {
+		inputCateName.clear();
+		inputCateCode.clear();
+		addCategoryModal.setVisible(true);
+	}
+
+	@FXML
+	void cancelAddCate(ActionEvent event) {
+		addCategoryModal.setVisible(false);
+	}
+
+	@FXML
+	void submitAddCate(ActionEvent event) {
+		try {
+			CategoryEquipmentEntity newCate = new CategoryEquipmentEntity();
+			newCate.setName(inputCateName.getText());
+			newCate.setCode(inputCateCode.getText());
+			CategoryEquipmentService.getRepo().save(newCate);
+			listCategory.setAll(CategoryEquipmentService.getRepo().getAll());
+			inputEquipCategory.setItems(listCategory);
+			addCategoryModal.setVisible(false);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@FXML
@@ -310,6 +347,7 @@ public class EquipmentViewController {
 
 	public void initialize() {
 		addEquipmentModal.setVisible(false);
+		addCategoryModal.setVisible(false);
 
 		if (!UserService.getRepo().isAdmin()) {
 
