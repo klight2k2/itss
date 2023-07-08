@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -18,6 +19,7 @@ public class HelloApp extends Application {
 		
 		Parent parent = FXMLLoader.load(getClass().getResource(Links.HOMEVIEW));
 		Scene scene = new Scene(parent);
+		        stage.getIcons().add(new Image(HelloApp.class.getResourceAsStream(Links.ICON)));
 		stage.setScene(scene);
 		stage.show();
 	}

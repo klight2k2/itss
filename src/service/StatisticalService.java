@@ -9,6 +9,16 @@ import java.util.Map;
 import models.db.DB;
 
 public class StatisticalService {
+	 private static StatisticalService repo;
+
+	    public static StatisticalService getRepo() {
+	        if (repo != null) {
+	            return repo;
+	        } else {
+	            return new StatisticalService();
+	        }
+	    };
+
 	public Map<String, Integer> countBorrowedEquipmentByCategory() throws SQLException {
 	    Map<String, Integer> equipmentCounts = new HashMap<>();
 
@@ -31,15 +41,15 @@ public class StatisticalService {
 	        System.err.println("Got an exception!");
 	        System.err.println(e.getMessage());
 	    }
-//	    print
-//	    for (Map.Entry<String, Integer> entry : equipmentCounts.entrySet()) {
-//	        String category = entry.getKey();
-//	        int count = entry.getValue();
-//
-//	        System.out.println("Loại thiết bị: " + category);
-//	        System.out.println("Số lượng thiết bị được mượn: " + count);
-//	        System.out.println("--------------------");
-//	    }
+	    // print
+	    for (Map.Entry<String, Integer> entry : equipmentCounts.entrySet()) {
+	        String category = entry.getKey();
+	        int count = entry.getValue();
+
+	        System.out.println("Loại thiết bị: " + category);
+	        System.out.println("Số lượng thiết bị được mượn: " + count);
+	        System.out.println("--------------------");
+	    }
 	    return equipmentCounts;
 	}
 	
@@ -98,9 +108,9 @@ public class StatisticalService {
 	            int count = resultSet.getInt("count");
 
 	            if (status == 0) {
-	                roomStatusCounts.put("notUse", count);
+	                roomStatusCounts.put("Không sử dụng", count);
 	            } else if (status == 1) {
-	                roomStatusCounts.put("use", count);
+	                roomStatusCounts.put("Đang sử dụng", count);
 	            }
 	        }
 	    } catch (SQLException e) {
