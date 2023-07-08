@@ -319,10 +319,10 @@ VALUES
 -- Thêm 100 bộ dữ liệu vào bảng user
 INSERT INTO user (name, username, password, role)
 values 
-('Dao Xuan Minh', 'daoxuanminh', 'admin', 'Teacher'),
-('Pham Duc Thang', 'phamducthang', 'admin', 'Teacher'),
-('Pham Minh Quang', 'phamminhquang', 'admin', 'Teacher'),
-('Vu Anh Quan', 'vuanhquan', 'admin', 'Teacher'),
+('Dao Xuan Minh', 'daoxuanminh', 'admin', 'admin'),
+('Pham Duc Thang', 'phamducthang', 'admin', 'admin'),
+('Pham Minh Quang', 'phamminhquang', 'admin', 'admin'),
+('Vu Anh Quan', 'vuanhquan', 'admin', 'admin'),
 ('Pham Quang Nhat', 'phamquangnhat', 'admin', 'Teacher'),
 ('Tran Thi Bao', 'tranthibao', 'admin', 'Teacher'),
 ('Nguyen Van Tung', 'nguyenvantung', 'admin', 'Teacher'),

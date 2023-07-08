@@ -12,7 +12,7 @@ import models.RoomReportEntity;
 import models.db.DB;
 import utils.NotificationUtil;
 
-public class RoomReportService {
+public class RoomReportService extends BaseService<RoomReportEntity>{
 	private static RoomReportService repo;
 
 	public static RoomReportService getRepo() {

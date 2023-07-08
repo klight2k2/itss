@@ -13,7 +13,7 @@ import models.RoomScheduleEntity;
 import models.db.DB;
 import utils.NotificationUtil;
 
-public class RoomService {
+public class RoomService extends BaseService<RoomEntity>{
 	private static RoomService repo;
 
 	public static RoomService getRepo() {
