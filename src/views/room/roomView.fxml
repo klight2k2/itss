@@ -19,7 +19,8 @@
           <TableColumn id="roomName" fx:id="roomName" prefWidth="116.0" text="Tên phòng" />
             <TableColumn id="roomStatus" fx:id="roomStatus" prefWidth="183.99993896484375" text="Trạng thái" />
             <TableColumn id="roomStatus" fx:id="roomEquipments" prefWidth="100.79998779296875" text="Số thiết bị" />
-            <TableColumn id="roomStatus" fx:id="roomReports" prefWidth="93.60003662109375" text="Số báo cáo" />
+            <TableColumn id="roomStatus" fx:id="roomReports" prefWidth="192.0" text="Số báo cáo" />
+            <TableColumn fx:id="operationRoomColumn" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" text="Thao tác" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -63,17 +64,16 @@
                               <TableColumn fx:id="equipMfg" prefWidth="91.20001220703125" text="Xuất xưởng" />
                            </columns>
                         </TableColumn>
-                        <TableColumn fx:id="equipRepairTime" prefWidth="82.4000244140625" text="  Số lần&#10;sửa chữa" />
-                        <TableColumn fx:id="equipNote" prefWidth="116.7999267578125" text="Note" />
+                        <TableColumn fx:id="equipRepairTime" prefWidth="145.0" text="  Số lần&#10;sửa chữa" />
+                        <TableColumn fx:id="equipNote" prefWidth="71.0" text="Note" />
+                        <TableColumn fx:id="operationEquipColumn" prefWidth="54.0" text="Thao tác" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <Button layoutX="535.0" layoutY="79.0" mnemonicParsing="false" onAction="#editRoom" styleClass="btn" text="Chỉnh sửa phòng học" />
-                  <Button defaultButton="true" layoutX="609.0" layoutY="32.0" mnemonicParsing="false" onAction="#closeDetailModal" styleClass="btn" text="Hoàn tất" />
-                  <Button layoutX="495.0" layoutY="32.0" mnemonicParsing="false" onAction="#deleteRoom" styleClass="btn" text="Xoá phòng" textFill="#c42929" />
-                  <Button fx:id="deleteEquipmentBtn" layoutX="593.0" layoutY="119.0" mnemonicParsing="false" onAction="#deleteEquipment" styleClass="btn" text="Xoá thiết bị" textFill="#c42929" />
+                  <Button layoutX="473.0" layoutY="32.0" mnemonicParsing="false" onAction="#editRoom" styleClass="btn" text="Chỉnh sửa phòng học" />
+                  <Button defaultButton="true" layoutX="626.0" layoutY="32.0" mnemonicParsing="false" onAction="#closeDetailModal" styleClass="btn" text="Hoàn tất" />
                </children>
                <opaqueInsets>
                   <Insets />

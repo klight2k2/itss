@@ -6,22 +6,29 @@ import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 import models.EquipmentEntity;
 import models.RoomEntity;
 import service.EquipmentService;
 import service.RoomReportService;
+import service.RoomScheduleService;
 import service.RoomService;
+import views.payborrow.PayBorrow;
 import views.room.Equipment;
 import views.room.Room;
+import views.schedule.Schedule;
 
 public class RoomViewController {
 
@@ -34,8 +41,8 @@ public class RoomViewController {
 	@FXML
 	private AnchorPane confirmDeleteModal;
 
-	@FXML
-	private Button deleteEquipmentBtn;
+	// @FXML
+	// private Button deleteEquipmentBtn;
 
 	@FXML
 	private Label modalTitle;
@@ -66,6 +73,12 @@ public class RoomViewController {
 
 	@FXML
 	private ChoiceBox<Boolean> inputRoomStatus;
+
+		@FXML
+	private TableColumn<Room, String> operationRoomColumn;
+
+	@FXML
+	private TableColumn<EquipmentEntity, String> operationEquipColumn;
 
 	private Integer inputId;
 
@@ -246,6 +259,8 @@ public class RoomViewController {
 			equipments.getItems().clear();
 			for (EquipmentEntity equip : equipmentsEntity) {
 				Equipment newEquip = new Equipment();
+				System.out.println("equip: " + equip.getId());
+				newEquip.setId(equip.getId());
 				newEquip.setDisplayId(equip.getId());
 				newEquip.setDisplayName(equip.getName());
 				newEquip.setDisplayStatus(convertStatus(equip.getStatus()));
@@ -296,24 +311,24 @@ public class RoomViewController {
 		confirmDeleteModal.setVisible(true);
 	}
 
-	@FXML
-	void deleteEquipment(ActionEvent event) {
-		try {
-			EquipmentService equipService = EquipmentService.getRepo();
-			for (EquipmentEntity e : equipService.getAll()) {
-				if (e.getId().equals(inputEquipId)) {
-					equipService.delete(e);
-					break;
-				}
-			}
-			deleteEquipmentBtn.setVisible(false);
-			updateEquipTable();
-			updateTable();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	// @FXML
+	// void deleteEquipment(ActionEvent event) {
+	// 	try {
+	// 		EquipmentService equipService = EquipmentService.getRepo();
+	// 		for (EquipmentEntity e : equipService.getAll()) {
+	// 			if (e.getId().equals(inputEquipId)) {
+	// 				equipService.delete(e);
+	// 				break;
+	// 			}
+	// 		}
+	// 		deleteEquipmentBtn.setVisible(false);
+	// 		updateEquipTable();
+	// 		updateTable();
+	// 	} catch (SQLException e) {
+	// 		// TODO Auto-generated catch block
+	// 		e.printStackTrace();
+	// 	}
+	// }
 
 	@FXML
 	void rowEquipmentClicked(MouseEvent event) {
@@ -323,7 +338,7 @@ public class RoomViewController {
 
 		inputEquipId = String.valueOf(clickedEquip.getDisplayId());
 
-		deleteEquipmentBtn.setVisible(true);
+		// deleteEquipmentBtn.setVisible(true);
 	}
 
 	@FXML
@@ -353,6 +368,7 @@ public class RoomViewController {
 
 			for (RoomEntity roomEntity : roomRepo.getAll()) {
 				Room newRoom = new Room();
+				newRoom.setId(roomEntity.getId());
 				newRoom.setDisplayId(roomEntity.getId());
 				newRoom.setDisplayName(roomEntity.getName());
 				newRoom.setStatus(roomEntity.getStatus());
@@ -373,14 +389,113 @@ public class RoomViewController {
 		addModal.setVisible(false);
 		detailModal.setVisible(false);
 		confirmDeleteModal.setVisible(false);
-		deleteEquipmentBtn.setVisible(false);
+		// deleteEquipmentBtn.setVisible(false);
 
 		roomId.setCellValueFactory(new PropertyValueFactory<Room, Integer>("displayId"));
 		roomName.setCellValueFactory(new PropertyValueFactory<Room, String>("displayName"));
 		roomStatus.setCellValueFactory(new PropertyValueFactory<Room, String>("displayStatus"));
 		roomEquipments.setCellValueFactory(new PropertyValueFactory<Room, Integer>("numsOfEquipments"));
 		roomReports.setCellValueFactory(new PropertyValueFactory<Room, Integer>("numsOfReports"));
+		updateOperationRoom();
+		updateOperationEquip();
 		initEquipTable();
 		updateTable();
+	}
+	void updateOperationRoom() {
+		Callback<TableColumn<Room, String>, TableCell<Room, String>> cellFoctory = (
+				TableColumn<Room, String> param) -> {
+			// make cell containing buttons
+			final TableCell<Room, String> cell = new TableCell<Room, String>() {
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					// that cell created only on non-empty rows
+					if (empty) {
+						setGraphic(null);
+						setText(null);
+
+					} else {
+
+						Button deleteIcon = new Button("Xóa");
+
+						deleteIcon.getStyleClass().add("danger");
+
+						deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+							Room room = (Room) getTableRow().getItem();
+							System.out.println("delete now" + room.getId());
+							System.out.println(room.toString());
+							RoomService rss = RoomService.getRepo();
+							try {
+								rss.delete(room);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							updateTable();
+
+						});
+
+						HBox managebtn = new HBox(deleteIcon);
+						managebtn.setStyle("-fx-alignment:center");
+						HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
+						setGraphic(managebtn);
+						setText(null);
+
+					}
+				}
+
+			};
+
+			return cell;
+		};
+		operationRoomColumn.setCellFactory(cellFoctory);
+	}
+	void updateOperationEquip() {
+		Callback<TableColumn<EquipmentEntity, String>, TableCell<EquipmentEntity, String>> cellFoctory = (
+				TableColumn<EquipmentEntity, String> param) -> {
+			// make cell containing buttons
+			final TableCell<EquipmentEntity, String> cell = new TableCell<EquipmentEntity, String>() {
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					// that cell created only on non-empty rows
+					if (empty) {
+						setGraphic(null);
+						setText(null);
+
+					} else {
+
+						Button deleteIcon = new Button("Xóa");
+
+						deleteIcon.getStyleClass().add("danger");
+
+						deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+							EquipmentEntity room = (EquipmentEntity) getTableRow().getItem();
+							System.out.println("delete now" + room.getId());
+							System.out.println(room.toString());
+							EquipmentService rss = EquipmentService.getRepo();
+							try {
+								rss.delete(room);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							updateEquipTable();
+
+						});
+
+						HBox managebtn = new HBox(deleteIcon);
+						managebtn.setStyle("-fx-alignment:center");
+						setGraphic(managebtn);
+						setText(null);
+
+					}
+				}
+
+			};
+
+			return cell;
+		};
+		operationEquipColumn.setCellFactory(cellFoctory);
 	}
 }

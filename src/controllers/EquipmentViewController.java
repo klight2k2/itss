@@ -12,6 +12,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -19,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.util.Callback;
 import models.CategoryEquipmentEntity;
 import models.EquipmentEntity;
 import models.RoomEntity;
@@ -62,6 +65,9 @@ public class EquipmentViewController {
 
 	@FXML
 	private TableColumn<Equipment, Date> equipTimeUse;
+
+	@FXML
+	private TableColumn<Equipment, String> operationEquipColumn;
 
 	@FXML
 	private DatePicker inputEquipMfg;
@@ -289,6 +295,7 @@ public class EquipmentViewController {
 					}
 
 				}
+				newEq.setId(eq.getId());
 				newEq.setDisplayName(eq.getName());
 				newEq.setDisplayStatus(convertStatus(eq.getStatus()));
 				newEq.setDisplayTimeUse(eq.getYearOfUse());
@@ -330,5 +337,56 @@ public class EquipmentViewController {
 		equipNote.setCellValueFactory(new PropertyValueFactory<>("displayNote"));
 
 		updateTable();
+		updateOperationEquip();
 	}
+
+	void updateOperationEquip() {
+		Callback<TableColumn<Equipment, String>, TableCell<Equipment, String>> cellFoctory = (
+				TableColumn<Equipment, String> param) -> {
+			// make cell containing buttons
+			final TableCell<Equipment, String> cell = new TableCell<Equipment, String>() {
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					// that cell created only on non-empty rows
+					if (empty) {
+						setGraphic(null);
+						setText(null);
+
+					} else {
+
+						Button deleteIcon = new Button("Xóa");
+
+						deleteIcon.getStyleClass().add("danger");
+
+						deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+							Equipment room = (Equipment) getTableRow().getItem();
+							System.out.println("delete now" + room.getId());
+							System.out.println(room.toString());
+							EquipmentService rss = EquipmentService.getRepo();
+							try {
+								rss.delete(room);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							updateTable();
+
+						});
+
+						HBox managebtn = new HBox(deleteIcon);
+						managebtn.setStyle("-fx-alignment:center");
+						setGraphic(managebtn);
+						setText(null);
+
+					}
+				}
+
+			};
+
+			return cell;
+		};
+		operationEquipColumn.setCellFactory(cellFoctory);
+	}
+
 }

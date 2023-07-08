@@ -75,6 +75,9 @@ public class PayBorrowViewController {
 	@FXML
 	private TableColumn<PayBorrow, String> pbBorrowUser;
 
+	@FXML
+	private TableColumn<PayBorrow, String> operationBorrowcolumn;
+
 	// @FXML
 	// private TableColumn<PayBorrow, ?> pbEquipId;
 
@@ -90,11 +93,13 @@ public class PayBorrowViewController {
 	@FXML
 	private TableColumn<PayBorrow, String> pbStatus;
 
+		@FXML
+	private TableColumn<PayBorrow, String> operationPayBorrowColumn;
+
 	@FXML
 	private ChoiceBox<String> status;
 
-	@FXML
-	private Button deleteBtn;
+
 
 	private String[] statusValues = { "PENDING", "BORROWING", "PAID" };
 
@@ -151,7 +156,6 @@ public class PayBorrowViewController {
 	void openModal(ActionEvent event) {
 		pbCurId = -1;
 		listBorrowed.removeAll();
-		deleteBtn.setVisible(false);
 		status.setValue(null);
 		borrowDate.setValue(null);
 		payDate.setValue(null);
@@ -222,7 +226,6 @@ public class PayBorrowViewController {
 			return;
 
 		pbCurId = clickedRow.getDisplayId().intValue();
-		deleteBtn.setVisible(true);
 		for (UserEntity item : listBorrower) {
 			if (item.getId() == clickedRow.getBorrowerId()) {
 				// borrowerCombobox.setV
@@ -286,6 +289,7 @@ public class PayBorrowViewController {
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
 				PayBorrow newPb = new PayBorrow();
+				newPb.setId(pb.getId());
 				newPb.setDisplayId(Integer.valueOf(pb.getId()));
 				newPb.setDisplayStatus(pb.getStatus());
 				newPb.setDisplayFromDate(pb.getFromDate());
@@ -348,9 +352,9 @@ public class PayBorrowViewController {
 				return row;
 			});
 			tableViewBorrowed.setItems(listBorrowed);
-
 			tableViewBorrow.setItems(listBorrow);
 			updateTableBorrow();
+			updateOperationEquip();
 			updateTable();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -358,7 +362,7 @@ public class PayBorrowViewController {
 		}
 	}
 
-	void updateTableBorrow() {
+	void updateOperationEquip() {
 		Callback<TableColumn<EquipmentEntity, String>, TableCell<EquipmentEntity, String>> cellFoctory = (
 				TableColumn<EquipmentEntity, String> param) -> {
 			// make cell containing buttons
@@ -378,16 +382,13 @@ public class PayBorrowViewController {
 						deleteIcon.getStyleClass().add("danger");
 
 						deleteIcon.setOnMouseClicked((MouseEvent event) -> {
-
-							// EquipmentEntity eqip = tableViewBorrowed.getSelectionModel().getSelectedItem();
 							EquipmentEntity test = (EquipmentEntity) getTableRow().getItem();
-							System.out.println("delete now"+test);
+							System.out.println("delete now" + test);
 							System.out.println(test.toString());
-						listBorrowed.remove(test);
-						listBorrow.add(test);
+							listBorrowed.remove(test);
+							listBorrow.add(test);
 
 						});
-
 						HBox managebtn = new HBox(deleteIcon);
 						managebtn.setStyle("-fx-alignment:center");
 						HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
@@ -398,9 +399,57 @@ public class PayBorrowViewController {
 				}
 
 			};
-
 			return cell;
 		};
 		operationcolumn.setCellFactory(cellFoctory);
 	}
+	void updateTableBorrow() {
+		Callback<TableColumn<PayBorrow, String>, TableCell<PayBorrow, String>> cellFoctory = (
+				TableColumn<PayBorrow, String> param) -> {
+			// make cell containing buttons
+			final TableCell<PayBorrow, String> cell = new TableCell<PayBorrow, String>() {
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					// that cell created only on non-empty rows
+					if (empty) {
+						setGraphic(null);
+						setText(null);
+
+					} else {
+
+						Button deleteIcon = new Button("Xóa");
+
+						deleteIcon.getStyleClass().add("danger");
+
+						deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+							PayBorrow payBorrow = (PayBorrow) getTableRow().getItem();
+							System.out.println("delete now" + payBorrow);
+							PayBorrowService rss = PayBorrowService.getRepo();
+							try {
+								rss.delete(payBorrow);
+								updateTable();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+					
+
+						});
+						HBox managebtn = new HBox(deleteIcon);
+						managebtn.setStyle("-fx-alignment:center");
+						HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
+						setGraphic(managebtn);
+						setText(null);
+
+					}
+				}
+
+			};
+			return cell;
+		};
+		operationPayBorrowColumn.setCellFactory(cellFoctory);
+	}
+
+
 }

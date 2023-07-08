@@ -9,9 +9,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -20,6 +22,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.util.Callback;
+import models.EquipmentEntity;
 import models.RoomEntity;
 import models.RoomScheduleEntity;
 import models.UserEntity;
@@ -68,6 +72,9 @@ public class ScheduleViewController {
 	private TableColumn<Schedule, String> scheduleRoom;
 
 	@FXML
+	private TableColumn<Schedule, String> operationcolumn;
+
+	@FXML
 	private TableColumn<Schedule, Date> scheduleStartTime;
 
 	@FXML
@@ -106,7 +113,7 @@ public class ScheduleViewController {
 	@FXML
 	void submit(ActionEvent event) {
 		try {
-			System.out.println(this.inputStartTime.getDateTimeValue());
+			// System.out.println(this.inputStartTime.getDateTimeValue());
 			RoomScheduleEntity rse = new RoomScheduleEntity();
 			rse.setRoomId(inputRoom.getSelectionModel().getSelectedItem().getId());
 			rse.setTeacherId(inputUser.getSelectionModel().getSelectedItem().getId());
@@ -176,8 +183,6 @@ public class ScheduleViewController {
 		inputStartTime.setDateTimeValue(clickedRow.getDisplayStartTime());
 		inputEndTime.setDateTimeValue(clickedRow.getDisplayEndTime());
 		inputReason.setText(clickedRow.getDisplayReason());
-		System.out.println("date time"+clickedRow.getDisplayStartTime().toLocalDate());
-
 		scheduleModal.setVisible(true);
 	}
 
@@ -248,6 +253,7 @@ public class ScheduleViewController {
 					}
 
 				}
+				ns.setId(res.getId());
 				ns.setRoomId(res.getRoomId());
 				ns.setTeacherId(res.getTeacherId());
 				ns.setDisplayStartTime(res.getStartTime());
@@ -271,7 +277,7 @@ public class ScheduleViewController {
 		scheduleStartTime.setCellValueFactory(new PropertyValueFactory<>("displayStartTime"));
 		scheduleEndTime.setCellValueFactory(new PropertyValueFactory<>("displayEndTime"));
 		scheduleReason.setCellValueFactory(new PropertyValueFactory<>("displayReason"));
-
+		updateOperation();
 		try {
 			listRoom.setAll(RoomService.getRepo().getAll());
 			inputRoom.setItems(listRoom);
@@ -283,5 +289,55 @@ public class ScheduleViewController {
 		}
 		updateTable();
 
+	}
+
+	void updateOperation() {
+		Callback<TableColumn<Schedule, String>, TableCell<Schedule, String>> cellFoctory = (
+				TableColumn<Schedule, String> param) -> {
+			// make cell containing buttons
+			final TableCell<Schedule, String> cell = new TableCell<Schedule, String>() {
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					// that cell created only on non-empty rows
+					if (empty) {
+						setGraphic(null);
+						setText(null);
+
+					} else {
+
+						Button deleteIcon = new Button("Xóa");
+
+						deleteIcon.getStyleClass().add("danger");
+
+						deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+							Schedule schedule = (Schedule) getTableRow().getItem();
+							System.out.println("delete now" + schedule.getId());
+							System.out.println(schedule.toString());
+							RoomScheduleService rss = RoomScheduleService.getRepo();
+							try {
+								rss.delete(schedule);
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							updateTable();
+
+						});
+
+						HBox managebtn = new HBox(deleteIcon);
+						managebtn.setStyle("-fx-alignment:center");
+						HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
+						setGraphic(managebtn);
+						setText(null);
+
+					}
+				}
+
+			};
+
+			return cell;
+		};
+		operationcolumn.setCellFactory(cellFoctory);
 	}
 }

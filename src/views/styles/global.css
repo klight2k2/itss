@@ -25,6 +25,13 @@
 
 }
 
+.danger{
+    -fx-text-fill: red;
+    -fx-border-color: red;
+    -fx-background-color: #fff;
+    -fx-border-radius: 4px;
+}
+
 .btn_primary{
     -fx-background-color: #0ea5e9;
     -fx-text-fill: #fff;
@@ -111,6 +118,33 @@
 
 /* The main scrollbar **thumb** CSS class which we drag every time (movable) */
 .table-view .scroll-bar:vertical .thumb{
+    -fx-background-color:#bae6fd;
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+    -fx-pref-width: 2px;
+
+
+
+}
+
+.table-view .increment-button ,.table-view .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 2em;
+    -fx-padding:1;
+    
+}
+
+/* The main scrollbar **track** CSS class  */
+.table-view .scroll-bar:horizontal .track{
+    -fx-background-color: transparent;
+    -fx-border-color:#bae6fd;
+    -fx-padding:1;
+    -fx-background-radius: 2em;
+    -fx-border-radius:2em;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.table-view .scroll-bar:horizontal .thumb{
     -fx-background-color:#bae6fd;
     -fx-background-insets: 2, 0, 0;
     -fx-background-radius: 2em;

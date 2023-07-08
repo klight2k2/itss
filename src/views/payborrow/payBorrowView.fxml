@@ -18,6 +18,8 @@
    <children>
       <Label layoutX="4.0" layoutY="82.0" text="* Nhấn để xem chi tiết" />
       <Button layoutX="672.0" layoutY="42.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm lịch mượn" />
+      <TextField layoutY="41.0" />
+      <Button layoutX="185.0" layoutY="42.0" mnemonicParsing="false" styleClass="btn" text="Tìm kiếm" />
       <TableView fx:id="pbEquipments" layoutY="115.0" onMouseClicked="#rowClicked" prefHeight="487.0" prefWidth="800.0">
         <columns>
           <TableColumn fx:id="pbId" prefWidth="54.0" text="ID" />
@@ -28,20 +30,21 @@
             <TableColumn fx:id="pbPayDate" prefWidth="79.0" text="Ngày trả " />
             <TableColumn fx:id="pbBorrowReason" prefWidth="135.0" text="Lý do mượn" />
             <TableColumn fx:id="pbRefuseReason" prefWidth="137.0" text="Lý do từ chối" />
+            <TableColumn fx:id="operationPayBorrowColumn" prefWidth="75.0" text="Thao tác" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;">
+      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
          <children>
-            <AnchorPane layoutX="62.0" layoutY="86.0" prefHeight="481.0" prefWidth="671.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
+            <AnchorPane layoutX="65.0" layoutY="60.0" prefHeight="506.0" prefWidth="673.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
                <children>
                   <Label fx:id="modalTitle" alignment="CENTER" layoutX="242.0" layoutY="14.0" prefHeight="27.0" prefWidth="176.0" style="-fx-font-weight: bold; -fx-font-size: 16;" styleClass="title" text="Thông tin mượn trả" />
                   <Label layoutX="48.0" layoutY="130.0" prefHeight="19.0" prefWidth="86.0" text="Trạng thái" />
                   <ChoiceBox fx:id="status" layoutX="158.0" layoutY="126.0" prefHeight="27.0" prefWidth="147.0" />
-                  <Button layoutX="514.0" layoutY="453.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="86.0" text="Xác nhận" />
-                  <Button layoutX="440.0" layoutY="454.0" mnemonicParsing="false" onAction="#closeModal" text="Hủy" />
+                  <Button layoutX="514.0" layoutY="462.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="86.0" styleClass="btn" text="Xác nhận" />
+                  <Button layoutX="458.0" layoutY="462.0" mnemonicParsing="false" onAction="#closeModal" styleClass="btn" text="Hủy" />
                   <Label layoutX="48.0" layoutY="212.0" prefHeight="19.0" prefWidth="86.0" text="Lý do mượn" />
                   <DatePicker fx:id="borrowDate" layoutX="158.0" layoutY="169.0" prefHeight="27.0" prefWidth="147.0" />
                   <TextArea fx:id="borrowReason" layoutX="158.0" layoutY="212.0" prefHeight="60.0" prefWidth="147.0" />
@@ -51,9 +54,8 @@
                   <Label layoutX="330.0" layoutY="212.0" prefHeight="19.0" prefWidth="86.0" text="Lý do từ chối" />
                   <TextArea fx:id="refuseReason" layoutX="440.0" layoutY="212.0" prefHeight="60.0" prefWidth="147.0" />
                   <Label layoutX="48.0" layoutY="89.0" prefHeight="19.0" prefWidth="86.0" text="Người mượn" />
-                  <Button layoutX="606.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c11c1c" />
                   <Text layoutX="40.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Danh sách các thiết bị mượn" wrappingWidth="101.673828125" />
-                  <Button layoutX="153.0" layoutY="421.0" mnemonicParsing="false" onAction="#addEquipment" text="Thêm thiết bị" />
+                  <Button layoutX="153.0" layoutY="421.0" mnemonicParsing="false" onAction="#addEquipment" styleClass="btn" text="Thêm thiết bị" />
                   <TableView fx:id="tableViewBorrowed" layoutX="153.0" layoutY="295.0" prefHeight="115.0" prefWidth="434.0">
                     <columns>
                       <TableColumn fx:id="borrowedIdColumn" prefWidth="51.0" text="ID" />
@@ -62,7 +64,6 @@
                         <TableColumn fx:id="operationcolumn" prefWidth="111.0" text="Thao tác" />
                     </columns>
                   </TableView>
-                  <Button fx:id="deleteBtn" layoutX="606.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c11c1c" />
                   <ComboBox fx:id="borrowerCombobox" layoutX="157.0" layoutY="86.0" prefWidth="150.0" />
                </children>
                <opaqueInsets>
@@ -91,7 +92,5 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <TextField layoutY="41.0" />
-      <Button layoutX="185.0" layoutY="42.0" mnemonicParsing="false" styleClass="btn" text="Tìm kiếm" />
    </children>
 </AnchorPane>
