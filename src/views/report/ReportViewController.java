@@ -275,6 +275,7 @@ public class ReportViewController {
 			List<Integer> addEquips = new ArrayList<>();
 			addEquips.add(Integer.valueOf(clickedRow.getDisplayId()));
 			System.out.println("Add equips: " + addEquips);
+			System.out.println(curId);
 			RoomReportService.getRepo().saveListEquipmentInRoomReport(curId, addEquips);
 			updateEquipTable();
 			addEquipModal.setVisible(false);
