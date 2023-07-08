@@ -68,7 +68,6 @@
                   <Button layoutX="571.0" layoutY="79.0" mnemonicParsing="false" onAction="#editReport" text="Chỉnh sửa báo cáo" />
                   <Button defaultButton="true" layoutX="626.0" layoutY="31.0" mnemonicParsing="false" onAction="#closeDetailModal" text="Hoàn tất" />
                   <Button layoutX="527.0" layoutY="31.0" mnemonicParsing="false" onAction="#delete" text="Xoá báo cáo" textFill="#c42929" />
-                  <Button fx:id="deleteEquipmentBtn" layoutX="506.0" layoutY="119.0" mnemonicParsing="false" onAction="#deleteEquipment" text="Xoá thiết bị" textFill="#c42929" />
                   <Button layoutX="600.0" layoutY="119.0" mnemonicParsing="false" onAction="#addEquipment" text="Thêm thiết bị" />
                   <Label layoutX="195.0" layoutY="93.0" prefHeight="19.0" prefWidth="86.0" text="Trạng thái" />
                   <Label layoutX="195.0" layoutY="123.0" prefHeight="19.0" prefWidth="86.0" text="Thời gian" />
@@ -81,7 +80,7 @@
             </AnchorPane>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="addModal" layoutX="-3.0" layoutY="-3.0" prefHeight="636.0" prefWidth="792.0" style="-fx-background-color: #f2f2f2dd;">
+      <AnchorPane fx:id="addModal" layoutX="-3.0" layoutY="-3.0" prefHeight="636.0" prefWidth="792.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
          <children>
             <AnchorPane layoutX="163.0" layoutY="219.0" prefHeight="260.0" prefWidth="458.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;">
                <opaqueInsets>
@@ -119,6 +118,73 @@
                   <TextField fx:id="searchEquipTextField" layoutX="31.0" layoutY="35.0" onMouseClicked="#onSearchEquip" promptText="Tìm kiếm theo tên" />
                   <Button layoutX="576.0" layoutY="35.0" mnemonicParsing="false" onAction="#closeAddEquipModal" text="Hủy" />
                </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="detailEquipmentModal" layoutX="1.0" layoutY="1.0" prefHeight="628.0" prefWidth="784.0" style="-fx-background-color: #f2f2f2dd;" stylesheets="@../styles/global.css" visible="false">
+         <children>
+            <AnchorPane layoutX="210.0" layoutY="73.0" prefHeight="481.0" prefWidth="352.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
+               <children>
+                  <Label alignment="CENTER" layoutX="65.0" layoutY="14.0" prefHeight="30.0" prefWidth="221.0" styleClass="title" text="Chỉnh sửa thiết bị">
+                     <font>
+                        <Font name="System Bold Italic" size="20.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="39.0" layoutY="54.0" prefHeight="20.0" prefWidth="100.0" text="Tên phòng">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="39.0" layoutY="171.0" prefHeight="19.0" prefWidth="100.0" text="Trạng thái">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Button layoutX="236.0" layoutY="437.0" mnemonicParsing="false" onAction="#submitEditEquip" prefHeight="27.0" prefWidth="72.0" styleClass="btn" text="Xác nhận" />
+                  <Button layoutX="126.0" layoutY="437.0" mnemonicParsing="false" onAction="#cancelEditEquip" prefHeight="25.0" prefWidth="72.0" styleClass="btn" text="Hủy" />
+                  <Label layoutX="39.0" layoutY="133.0" prefHeight="19.0" prefWidth="100.0" text="Loại thiết bị">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="39.0" layoutY="202.0" prefHeight="38.0" prefWidth="123.0" text="Ngày xuất xưởng">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="39.0" layoutY="247.0" prefHeight="38.0" prefWidth="100.0" text="Số năm&#10;sử dụng">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="39.0" layoutY="300.0" prefHeight="38.0" prefWidth="100.0" text="Số lần&#10;sửa chữa">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="39.0" layoutY="350.0" prefHeight="19.0" prefWidth="100.0" text="Ghi chú">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <DatePicker fx:id="inputEquipMfg" layoutX="162.0" layoutY="213.0" prefHeight="27.0" prefWidth="147.0" />
+                  <TextField fx:id="inputEquipRepairTime" layoutX="162.0" layoutY="311.0" prefHeight="27.0" prefWidth="147.0" />
+                  <TextArea fx:id="inputEquipNote" layoutX="162.0" layoutY="356.0" prefHeight="60.0" prefWidth="147.0" />
+                  <DatePicker fx:id="inputEquipYearUse" layoutX="162.0" layoutY="258.0" prefHeight="27.0" prefWidth="147.0" />
+                  <Label layoutX="39.0" layoutY="94.0" prefHeight="19.0" prefWidth="100.0" text="Tên thiết bị">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="inputEquipName" layoutX="162.0" layoutY="89.0" prefHeight="27.0" prefWidth="147.0" />
+                  <Button layoutX="39.0" layoutY="438.0" mnemonicParsing="false" onAction="#deleteEquipment" prefHeight="25.0" prefWidth="50.0" styleClass="btn" text="Xóa" />
+                  <ComboBox fx:id="inputEquipRoom" layoutX="161.0" layoutY="51.0" prefWidth="150.0" />
+                  <ComboBox fx:id="inputEquipCategory" layoutX="161.0" layoutY="130.0" prefWidth="150.0" />
+                  <ComboBox fx:id="inputEquipStatus" layoutX="161.0" layoutY="168.0" prefWidth="150.0" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
             </AnchorPane>
          </children>
       </AnchorPane>
