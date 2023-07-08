@@ -50,6 +50,9 @@ public class HomeViewController implements Initializable {
 	private Button reportBtn;
 
 	@FXML
+	private Button signUpBtn;
+
+	@FXML
 	private Text userName;
 
 	private Button selectedBtn;
@@ -88,6 +91,11 @@ public class HomeViewController implements Initializable {
 			System.out.print("borrowBtn");
 			loadView(Links.PAYBORROWVIEW);
 			pageTitle.setText("Mượn trả thiết bị");
+		}
+		else if (sourceButton == signUpBtn) {
+			System.out.print("signUpBtn");
+			loadView(Links.PAYBORROWVIEW);
+			pageTitle.setText("");
 		}
 
 		else if (sourceButton == reportBtn) {

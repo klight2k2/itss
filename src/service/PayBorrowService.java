@@ -106,6 +106,8 @@ public class PayBorrowService {
             preparedStmt.setString(5, pay_borrow.getRefuseReason());
             preparedStmt.setInt(6, pay_borrow.getBorrowerId());
             preparedStmt.execute();
+            ResultSet queryPayBorrow = DB.getConnection().createStatement().executeQuery("Select max(id) as id from pay_borrow ");
+            if(queryPayBorrow.next()) System.out.print(queryPayBorrow.getInt("id"));
             int equipLenght = pay_borrow.getListEquipment().size();
 
             if (equipLenght > 0) {
@@ -114,7 +116,7 @@ public class PayBorrowService {
                         "INSERT IGNORE INTO pay_borrow_equipment (payBorrowId,equipmentId) VALUES ");
                 int cnt = 0;
                 for (EquipmentEntity equip : pay_borrow.getListEquipment()) {
-                    sql.append("(" + pay_borrow.getId() + ",'" + equip.getId() + "')");
+                    sql.append("(" + queryPayBorrow.getInt("id") + ",'" + equip.getId() + "')");
                     cnt += 1;
                     if (cnt < equipLenght) {
                         sql.append(",");

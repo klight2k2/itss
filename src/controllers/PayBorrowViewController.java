@@ -145,6 +145,7 @@ public class PayBorrowViewController {
 		payDate.setValue(null);
 		borrowReason.clear();
 		refuseReason.clear();
+		listBorrowed.clear();
 try {
 			listBorrow.setAll(EquipmentService.getRepo().getAllEquipmentNoUse());
 		} catch (SQLException e) {
@@ -168,6 +169,7 @@ try {
 			pb.setRefuseReason(refuseReason.getText());
 			pb.setBorrowerId(borrowerCombobox.getSelectionModel().getSelectedItem().getId());
 			pb.setListEquipment(listBorrowed);
+			System.out.println("submit  borrow"+listBorrowed.size());
 			if (pbCurId > 0) {
 				pb.setId(pbCurId);
 				payBorrowRepo.update(pb);
