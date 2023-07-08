@@ -1,14 +1,18 @@
 package service;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.Attributes.Name;
 
 import models.EquipmentEntity;
 import models.RoomEntity;
+import models.RoomScheduleEntity;
 import models.db.DB;
 
 public class RoomService {
@@ -141,4 +145,33 @@ public class RoomService {
             return null;
         }
     }
+    public List<RoomEntity> getAllRoomNotConflict(String startTime, String endTime) {
+    	System.out.println(startTime + "--" + endTime);
+		List<RoomEntity> listGuestRoomEntities = new ArrayList<RoomEntity>();
+		try {
+			String sqlString = "select r.* from room r where r.id in (select roomId from room_schedule where startTime >= '"+endTime+"' or endTime <= '"+startTime+"') or status = 0 and id != 1";
+			Statement aStatement = DB.getConnection().createStatement();
+			ResultSet resultSet = aStatement.executeQuery(sqlString);
+			while (resultSet.next()) {
+				System.out.println(resultSet.getString("name"));
+			}
+			return listGuestRoomEntities;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return listGuestRoomEntities;
+		}
+	}
+    public static void main(String[] args) {
+    	try {
+			RoomScheduleEntity aEntity = new RoomScheduleService().getAll().get(0);
+//			System.out.println(aEntity.getStartTime() + "--" + aEntity.getEndTime());
+//			List<RoomEntity> roomService = new RoomService().getAllRoomNotConflict("2023-08-04 15:20:30", "2023-08-04 17:20:30");
+			List<RoomEntity> roomService = new RoomService().getAllRoomNotConflict(aEntity.getStartTime().toString(), aEntity.getEndTime().toString());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
