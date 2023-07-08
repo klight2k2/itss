@@ -14,8 +14,10 @@ public class StatisticalService {
 
 	    String sql = "SELECT c.name AS category, COUNT(*) AS count " +
 	                 "FROM pay_borrow_equipment pbe " +
+	                 "JOIN pay_borrow pb ON pbe.payBorrowId = pb.id " +
 	                 "JOIN equipment e ON pbe.equipmentId = e.id " +
 	                 "JOIN equipment_category c ON e.equipmentCategoryId = c.id " +
+	                 "WHERE pb.status = 'BORROWING'"+
 	                 "GROUP BY c.name";
 
 	    try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
@@ -32,14 +34,14 @@ public class StatisticalService {
 	        System.err.println(e.getMessage());
 	    }
 //	    print
-//	    for (Map.Entry<String, Integer> entry : equipmentCounts.entrySet()) {
-//	        String category = entry.getKey();
-//	        int count = entry.getValue();
-//
-//	        System.out.println("Loại thiết bị: " + category);
-//	        System.out.println("Số lượng thiết bị được mượn: " + count);
-//	        System.out.println("--------------------");
-//	    }
+	    for (Map.Entry<String, Integer> entry : equipmentCounts.entrySet()) {
+	        String category = entry.getKey();
+	        int count = entry.getValue();
+
+	        System.out.println("Loại thiết bị: " + category);
+	        System.out.println("Số lượng thiết bị được mượn: " + count);
+	        System.out.println("--------------------");
+	    }
 	    return equipmentCounts;
 	}
 	
