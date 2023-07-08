@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
+import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -40,6 +41,7 @@ import models.UserEntity;
 import service.EquipmentService;
 import service.PayBorrowService;
 import service.UserService;
+import utils.Utils;
 import views.payborrow.PayBorrow;
 import javafx.util.Callback;
 
@@ -93,15 +95,13 @@ public class PayBorrowViewController {
 	@FXML
 	private TableColumn<PayBorrow, String> pbStatus;
 
-		@FXML
+	@FXML
 	private TableColumn<PayBorrow, String> operationPayBorrowColumn;
 
 	@FXML
 	private ChoiceBox<String> status;
 
-
-
-	private String[] statusValues = { "PENDING", "BORROWING", "PAID" };
+	private String[] statusValues = { "Đang chờ", "Chấp nhận","Từ chối", "Đang mượn", "Đã trả" };
 
 	@FXML
 	private TextArea refuseReason;
@@ -177,7 +177,8 @@ public class PayBorrowViewController {
 
 			PayBorrowEntity pb = new PayBorrowEntity();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
-			pb.setStatus(status.getValue());
+			pb.setStatus(Utils.convertBorrowStatus(
+					status.getValue()));
 			pb.setFromDate(Date.valueOf(borrowDate.getValue()));
 			pb.setToDate(Date.valueOf(payDate.getValue()));
 			pb.setBorrowReason(borrowReason.getText());
@@ -221,6 +222,8 @@ public class PayBorrowViewController {
 
 	@FXML
 	void rowClicked(MouseEvent event) {
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) return;
+
 		PayBorrow clickedRow = pbEquipments.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
 			return;
@@ -291,7 +294,7 @@ public class PayBorrowViewController {
 				PayBorrow newPb = new PayBorrow();
 				newPb.setId(pb.getId());
 				newPb.setDisplayId(Integer.valueOf(pb.getId()));
-				newPb.setDisplayStatus(pb.getStatus());
+				newPb.setDisplayStatus( Utils.convertReverseBorrowStatus(pb.getStatus()));
 				newPb.setDisplayFromDate(pb.getFromDate());
 				newPb.setDisplayToDate(pb.getToDate());
 				newPb.setDisplayBorrowReason(pb.getBorrowReason());
@@ -319,6 +322,9 @@ public class PayBorrowViewController {
 		try {
 			pbDetailModal.setVisible(false);
 			addEquipModal.setVisible(false);
+				if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+			operationPayBorrowColumn.setVisible(false);
+		}
 			status.getItems().addAll(statusValues);
 			listBorrower.setAll(UserService.getRepo().getAll());
 			borrowerCombobox.setItems(listBorrower);
@@ -403,6 +409,7 @@ public class PayBorrowViewController {
 		};
 		operationcolumn.setCellFactory(cellFoctory);
 	}
+
 	void updateTableBorrow() {
 		Callback<TableColumn<PayBorrow, String>, TableCell<PayBorrow, String>> cellFoctory = (
 				TableColumn<PayBorrow, String> param) -> {
@@ -433,7 +440,6 @@ public class PayBorrowViewController {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-					
 
 						});
 						HBox managebtn = new HBox(deleteIcon);
@@ -450,6 +456,5 @@ public class PayBorrowViewController {
 		};
 		operationPayBorrowColumn.setCellFactory(cellFoctory);
 	}
-
 
 }

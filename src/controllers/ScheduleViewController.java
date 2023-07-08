@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -34,6 +35,8 @@ import views.schedule.DateTimePicker;
 import views.schedule.Schedule;
 
 public class ScheduleViewController {
+	@FXML
+    private Button addScheduleBtn;
 
 	@FXML
 	private HBox endTimeBox, startTimeBox;
@@ -80,8 +83,8 @@ public class ScheduleViewController {
 	@FXML
 	private TableColumn<Schedule, String> scheduleUser;
 
-	@FXML
-	private Button deleteBtn;
+	// @FXML
+	// private Button deleteBtn;
 
 	@FXML
 	private AnchorPane scheduleModal;
@@ -98,7 +101,7 @@ public class ScheduleViewController {
 
 	@FXML
 	void openModal(ActionEvent event) {
-		deleteBtn.setVisible(false);
+		// deleteBtn.setVisible(false);
 		curId = null;
 		inputTitle.setText("Thêm lịch mới");
 		inputRoom.setValue(null);
@@ -157,12 +160,13 @@ public class ScheduleViewController {
 
 	@FXML
 	void onRowClick(MouseEvent event) {
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) return;
 		Schedule clickedRow = schedules.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
 			return;
 		curId = clickedRow.getDisplayId();
 
-		deleteBtn.setVisible(true);
+		// deleteBtn.setVisible(true);
 		inputTitle.setText("Chi tiết");
 		for (RoomEntity item : listRoom) {
 			if (item.getId() == clickedRow.getRoomId()) {
@@ -268,6 +272,11 @@ public class ScheduleViewController {
 	}
 
 	public void initialize() {
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+
+			addScheduleBtn.setVisible(false);
+			operationcolumn.setVisible(false);
+		}
 		startTimeBox.getChildren().add(inputStartTime);
 		endTimeBox.getChildren().add(inputEndTime);
 		this.closeModal(null);

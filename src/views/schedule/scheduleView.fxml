@@ -34,7 +34,7 @@
       <TextField fx:id="inputRoomName" layoutX="6.0" layoutY="36.0" prefHeight="30.0" prefWidth="225.0" promptText="Nhập tên phòng học để tìm kiếm" />
       <Button layoutX="325.0" layoutY="36.0" mnemonicParsing="false" onAction="#reset" styleClass="btn" text="Làm mới" />
       <Button layoutX="241.0" layoutY="37.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
-      <Button layoutX="726.0" layoutY="36.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm lịch" />
+      <Button fx:id="addScheduleBtn" layoutX="726.0" layoutY="36.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm lịch" />
       <AnchorPane fx:id="scheduleModal" layoutX="4.0" layoutY="6.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
          <children>
             <AnchorPane layoutX="62.0" layoutY="178.0" prefHeight="272.0" prefWidth="660.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">

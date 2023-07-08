@@ -39,7 +39,7 @@
       <TextField fx:id="inputSearch" layoutY="42.0" />
       <Button layoutX="189.0" layoutY="42.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
       <Button layoutX="293.0" layoutY="43.0" mnemonicParsing="false" onAction="#reset" styleClass="btn" text="Làm mới" />
-      <Button layoutX="689.0" layoutY="43.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm thiết bị" />
+      <Button fx:id="addEquipmentBtn" layoutX="689.0" layoutY="43.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm thiết bị" />
       <AnchorPane fx:id="addEquipmentModal" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" stylesheets="@../styles/global.css" visible="false">
          <children>
             <AnchorPane layoutX="210.0" layoutY="73.0" prefHeight="481.0" prefWidth="352.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">

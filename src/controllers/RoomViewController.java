@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
+import common.Role;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -31,7 +32,8 @@ import views.room.Room;
 import views.schedule.Schedule;
 
 public class RoomViewController {
-
+	@FXML
+	private Button addRoomBtn;
 	@FXML
 	private AnchorPane addModal;
 
@@ -74,7 +76,7 @@ public class RoomViewController {
 	@FXML
 	private ChoiceBox<Boolean> inputRoomStatus;
 
-		@FXML
+	@FXML
 	private TableColumn<Room, String> operationRoomColumn;
 
 	@FXML
@@ -185,7 +187,7 @@ public class RoomViewController {
 			newRoom.setStatus(status);
 			newRoom.setDisplayStatus();
 			newRoom.setNumsOfEquipments(10);
-//			newRoom.setNumsOfReports(5);
+			// newRoom.setNumsOfReports(5);
 
 			try {
 				roomRepo.save(newRoom);
@@ -313,21 +315,21 @@ public class RoomViewController {
 
 	// @FXML
 	// void deleteEquipment(ActionEvent event) {
-	// 	try {
-	// 		EquipmentService equipService = EquipmentService.getRepo();
-	// 		for (EquipmentEntity e : equipService.getAll()) {
-	// 			if (e.getId().equals(inputEquipId)) {
-	// 				equipService.delete(e);
-	// 				break;
-	// 			}
-	// 		}
-	// 		deleteEquipmentBtn.setVisible(false);
-	// 		updateEquipTable();
-	// 		updateTable();
-	// 	} catch (SQLException e) {
-	// 		// TODO Auto-generated catch block
-	// 		e.printStackTrace();
-	// 	}
+	// try {
+	// EquipmentService equipService = EquipmentService.getRepo();
+	// for (EquipmentEntity e : equipService.getAll()) {
+	// if (e.getId().equals(inputEquipId)) {
+	// equipService.delete(e);
+	// break;
+	// }
+	// }
+	// deleteEquipmentBtn.setVisible(false);
+	// updateEquipTable();
+	// updateTable();
+	// } catch (SQLException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
 	// }
 
 	@FXML
@@ -343,6 +345,7 @@ public class RoomViewController {
 
 	@FXML
 	void rowClicked(MouseEvent event) {
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) return;
 		Room clickedRoom = rooms.getSelectionModel().getSelectedItem();
 		if (clickedRoom == null)
 			return;
@@ -387,6 +390,12 @@ public class RoomViewController {
 	public void initialize() {
 		inputRoomStatus.getItems().addAll(status);
 		addModal.setVisible(false);
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+
+			addRoomBtn.setVisible(false);
+			operationRoomColumn.setVisible(false);
+		}
+
 		detailModal.setVisible(false);
 		confirmDeleteModal.setVisible(false);
 		// deleteEquipmentBtn.setVisible(false);
@@ -401,6 +410,7 @@ public class RoomViewController {
 		initEquipTable();
 		updateTable();
 	}
+
 	void updateOperationRoom() {
 		Callback<TableColumn<Room, String>, TableCell<Room, String>> cellFoctory = (
 				TableColumn<Room, String> param) -> {
@@ -450,6 +460,7 @@ public class RoomViewController {
 		};
 		operationRoomColumn.setCellFactory(cellFoctory);
 	}
+
 	void updateOperationEquip() {
 		Callback<TableColumn<EquipmentEntity, String>, TableCell<EquipmentEntity, String>> cellFoctory = (
 				TableColumn<EquipmentEntity, String> param) -> {

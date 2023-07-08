@@ -3,12 +3,12 @@ package controllers;
 import java.sql.Date;
 import java.sql.SQLException;
 
+import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -32,6 +32,9 @@ import service.RoomService;
 import views.equipment.Equipment;
 
 public class EquipmentViewController {
+	
+    @FXML
+    private Button addEquipmentBtn;
 
 	@FXML
 	private AnchorPane addEquipmentModal;
@@ -117,7 +120,7 @@ public class EquipmentViewController {
 
 	@FXML
 	void onRowClick(MouseEvent event) {
-		
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) return;
 		Equipment clickedRow = equipments.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
 			return;
@@ -314,6 +317,12 @@ public class EquipmentViewController {
 
 	public void initialize() {
 		addEquipmentModal.setVisible(false);
+		
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+
+			addEquipmentBtn.setVisible(false);
+			operationEquipColumn.setVisible(false);
+		}
 		CategoryEquipmentService categoryEquipmentRepo = CategoryEquipmentService.getRepo();
 		RoomService roomRepo = RoomService.getRepo();
 		try {

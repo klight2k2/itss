@@ -128,6 +128,7 @@ public class UserService {
 				if (rs.getString("password") == null ? password == null : rs.getString("password").equals(password)) {
 					LoginController.currentUser.setId(rs.getInt("id"));
 					LoginController.currentUser.setName(rs.getString("name"));
+					LoginController.currentUser.setRole(rs.getString("role"));
 					return true;
 				}
 			}

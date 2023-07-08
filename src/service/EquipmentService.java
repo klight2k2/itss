@@ -161,7 +161,7 @@ public class EquipmentService {
 	public List<EquipmentEntity> getAllEquipmentNoUse() throws SQLException {
 		try {
 			Statement stm = DB.getConnection().createStatement();
-			String insert_sqlString = "select * from equipment where equipment.id not in (select equipmentId from pay_borrow_equipment where payBorrowId in (select id from pay_borrow where status!=\"paid\")) and equipment.roomId=1";
+			String insert_sqlString = "select * from equipment where equipment.id not in (select equipmentId from pay_borrow_equipment where payBorrowId in (select id from pay_borrow where status!=\"PAID\")) and equipment.roomId=1";
 			ResultSet res = stm.executeQuery(insert_sqlString);
 			ArrayList<EquipmentEntity> medium = new ArrayList<>();
 			while (res.next()) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import common.Role;
 import controllers.LoginController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import utils.NotificationUtil;
 import views.Links;
 
 public class HomeViewController implements Initializable {
@@ -93,6 +95,10 @@ public class HomeViewController implements Initializable {
 			pageTitle.setText("Mượn trả thiết bị");
 		}
 		else if (sourceButton == signUpBtn) {
+			if(!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+				NotificationUtil.warning("Cảnh báo", "Bạn không có quyền thực hiện chức năng này!");
+				return;
+			}
 			System.out.print("signUpBtn");
 			loadView(Links.SIGN_UP_VIEW);
 			pageTitle.setText("");

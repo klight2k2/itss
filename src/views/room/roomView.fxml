@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RoomViewController">
    <children>
-      <Button layoutX="692.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleOpenModal" styleClass="btn" text="Thêm phòng" />
+      <Button fx:id="addRoomBtn" layoutX="692.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleOpenModal" styleClass="btn" text="Thêm phòng" />
       <TableView fx:id="rooms" layoutY="88.0" onMouseClicked="#rowClicked" prefHeight="512.0" prefWidth="800.0">
         <columns>
           <TableColumn id="roomId" fx:id="roomId" prefWidth="44.800052642822266" text="ID" />
@@ -29,7 +29,7 @@
       <TextField fx:id="inputSearch" layoutY="32.0" prefHeight="30.0" prefWidth="216.0" promptText="Nhập tên phòng học để tìm kiếm" />
       <Button layoutX="236.0" layoutY="33.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
       <Button layoutX="330.0" layoutY="33.0" mnemonicParsing="false" onAction="#clearSearch" styleClass="btn" text="Làm mới" />
-      <AnchorPane fx:id="detailModal" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;">
+      <AnchorPane fx:id="detailModal" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
          <children>
             <AnchorPane layoutX="42.0" layoutY="58.0" prefHeight="494.0" prefWidth="722.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
                <children>

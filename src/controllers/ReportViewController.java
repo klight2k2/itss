@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -376,6 +377,7 @@ public class ReportViewController {
 
 	@FXML
 	void onRowClicked(MouseEvent event) {
+		
 		Report clickedRow = reports.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
 			return;
