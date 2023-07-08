@@ -3,7 +3,6 @@ package controllers;
 import java.sql.Date;
 import java.sql.SQLException;
 
-import common.Role;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -257,7 +256,8 @@ public class EquipmentViewController {
 		EquipmentEntity eqs = new EquipmentEntity();
 		try {
 			for (EquipmentEntity eq : equipmentRepo.getAll()) {
-				if (eq.getName().toLowerCase().contains(filter)) {
+				if (eq.getName().toLowerCase().contains(filter)
+						|| RoomService.getRepo().getRoomById(eq.getRoomId()).getName().toLowerCase().contains(filter)) {
 					Equipment newEq = new Equipment();
 					newEq.setDisplayId(eq.getId());
 					newEq.setDisplayCategory(

@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import models.RoomScheduleEntity;
 import models.db.DB;
 import utils.NotificationUtil;
 
-public class RoomService extends BaseService<RoomEntity>{
+public class RoomService extends BaseService<RoomEntity> {
 	private static RoomService repo;
 
 	public static RoomService getRepo() {
@@ -159,9 +160,8 @@ public class RoomService extends BaseService<RoomEntity>{
 			ResultSet resultSet = aStatement.executeQuery(sqlString);
 			while (resultSet.next()) {
 				System.out.println(resultSet.getString("name"));
-				listGuestRoomEntities.add(new RoomEntity(resultSet.getInt("id"), 
-														resultSet.getBoolean("status"),
-														resultSet.getString("name")));
+				listGuestRoomEntities.add(new RoomEntity(resultSet.getInt("id"), resultSet.getBoolean("status"),
+						resultSet.getString("name")));
 			}
 			return listGuestRoomEntities;
 		} catch (SQLException e) {
@@ -170,8 +170,8 @@ public class RoomService extends BaseService<RoomEntity>{
 			return listGuestRoomEntities;
 		}
 	}
-	
-	public boolean autoChangeRoom(int roomReportId,String startTime, String endTime) {
+
+	public boolean autoChangeRoom(int scheduleId, LocalDateTime startTime, LocalDateTime endTime) {
 //		System.out.println(startTime + "--" + endTime);
 //		List<RoomEntity> listGuestRoomEntities = new ArrayList<RoomEntity>();
 		try {
@@ -180,12 +180,13 @@ public class RoomService extends BaseService<RoomEntity>{
 			Statement aStatement = DB.getConnection().createStatement();
 			ResultSet resultSet = aStatement.executeQuery(sqlString);
 			if (resultSet.next()) {
-				String sql = "update from room_schedule set room_id = " + resultSet.getInt("id") + " where roomReportId = " + roomReportId;
+				String sql = "update room_schedule set roomId = " + resultSet.getInt("id") + " where id = "
+						+ scheduleId;
 				Statement stmStatement = DB.getConnection().createStatement();
+				System.out.println(sql);
 				stmStatement.execute(sql);
 				return true;
-			}
-			else {
+			} else {
 				return false;
 			}
 		} catch (SQLException e) {
@@ -200,8 +201,6 @@ public class RoomService extends BaseService<RoomEntity>{
 			RoomScheduleEntity aEntity = new RoomScheduleService().getAll().get(0);
 //			System.out.println(aEntity.getStartTime() + "--" + aEntity.getEndTime());
 //			List<RoomEntity> roomService = new RoomService().getAllRoomNotConflict("2023-08-04 15:20:30", "2023-08-04 17:20:30");
-			List<RoomEntity> roomService = new RoomService().getAllRoomNotConflict(aEntity.getStartTime().toString(),
-					aEntity.getEndTime().toString());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -332,6 +332,9 @@ public class ScheduleViewController {
 
 						changeIcon.setOnMouseClicked((MouseEvent event) -> {
 							Schedule schedule = (Schedule) getTableRow().getItem();
+							Boolean res = RoomService.getRepo().autoChangeRoom(schedule.getId(),
+									schedule.getDisplayStartTime(), schedule.getDisplayEndTime());
+							System.out.println(res);
 							updateTable();
 						});
 
