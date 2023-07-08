@@ -4,6 +4,7 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +14,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
    <children>
-      <BarChart fx:id="equipmentBarChart" layoutY="354.0" prefHeight="246.0" prefWidth="400.0" title="Thống kê tình trạng thiết bị ">
+      <BarChart fx:id="equipmentBarChart" layoutY="269.0" prefHeight="331.0" prefWidth="542.0" title="Thống kê tình trạng thiết bị ">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -21,71 +22,76 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <Pane layoutX="14.0" layoutY="51.0" prefHeight="128.0" prefWidth="220.0">
+      <PieChart fx:id="roomPieChart" layoutX="522.0" layoutY="290.0" prefHeight="289.0" prefWidth="279.0" />
+      <Pane layoutX="-10.0" layoutY="317.0" prefHeight="289.0" prefWidth="522.0" visible="false">
+         <children>
+            <BarChart fx:id="borrowEquipmentBarChart" layoutY="-8.0" legendVisible="false" prefHeight="289.0" prefWidth="515.0" title="Thống kê thiết bị mượn theo loại">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </BarChart>
+         </children>
+      </Pane>
+      <Pane layoutX="599.0" layoutY="6.0" prefHeight="119.0" prefWidth="201.0" style="-fx-background-radius: 10px;" styleClass="tag">
+         <children>
+            <ImageView fitHeight="76.0" fitWidth="94.0" layoutX="14.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/report.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="99.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Báo cáo" textAlignment="CENTER" wrappingWidth="100.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Text layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="302.0" layoutY="6.0" prefHeight="126.0" prefWidth="220.0" style="-fx-background-radius: 10px;" styleClass="tag">
+         <children>
+            <ImageView fitHeight="76.0" fitWidth="94.0" layoutX="14.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/device.png" />
+               </image>
+            </ImageView>
+            <Text layoutX="86.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thiết bị" textAlignment="CENTER" wrappingWidth="127.0">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Text>
+            <Text layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="6.0" layoutY="6.0" prefHeight="126.0" prefWidth="220.0" style="-fx-background-radius: 10px;" styleClass="tag">
          <children>
             <ImageView fitHeight="76.0" fitWidth="94.0" layoutX="14.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/google-classroom.png" />
                </image>
             </ImageView>
-            <Text layoutX="99.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phòng học">
+            <Text layoutX="86.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phòng học" textAlignment="CENTER" wrappingWidth="127.0">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text layoutX="131.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" wrappingWidth="76.0">
+            <Text layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
          </children>
       </Pane>
-      <PieChart fx:id="roomPieChart" layoutY="179.0" prefHeight="177.0" prefWidth="220.0" />
-      <Pane layoutX="250.0" layoutY="44.0" prefHeight="128.0" prefWidth="220.0">
-         <children>
-            <ImageView fitHeight="76.0" fitWidth="94.0" layoutX="14.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/equipment.png" />
-               </image>
-            </ImageView>
-            <Text layoutX="99.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thiết bị">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
-            <Text layoutX="131.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" wrappingWidth="76.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-         </children>
-      </Pane>
-      <Pane layoutX="489.0" layoutY="64.0" prefHeight="128.0" prefWidth="220.0">
-         <children>
-            <ImageView fitHeight="76.0" fitWidth="94.0" layoutX="14.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../images/equipment.png" />
-               </image>
-            </ImageView>
-            <Text layoutX="99.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thiết bị">
-               <font>
-                  <Font size="24.0" />
-               </font>
-            </Text>
-            <Text layoutX="131.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" wrappingWidth="76.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Text>
-         </children>
-      </Pane>
-      <BarChart fx:id="borrowEquipmentBarChart" layoutX="400.0" layoutY="354.0" prefHeight="246.0" prefWidth="400.0" title="Thống kê thiết bị mượn theo loại">
-         <xAxis>
-            <CategoryAxis side="BOTTOM" />
-         </xAxis>
-         <yAxis>
-            <NumberAxis side="LEFT" />
-         </yAxis>
-      </BarChart>
+      <ComboBox fx:id="typeStatisticComboBox" layoutX="27.0" layoutY="224.0" prefHeight="25.0" prefWidth="220.0" />
    </children>
 </AnchorPane>

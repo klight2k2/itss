@@ -126,3 +126,8 @@
 .default-color0.chart-bar { -fx-bar-fill: #22c55e; }
 .default-color1.chart-bar { -fx-bar-fill: #ffa500; }
 .default-color2.chart-bar { -fx-bar-fill: #ef4444; }
+
+.tag{
+    -fx-background-color: #fff;
+    -fx-border-radius: 20px;
+}

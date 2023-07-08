@@ -17,6 +17,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import service.StatisticalService;
 
@@ -26,53 +28,62 @@ public class DashboardController implements Initializable {
 	private Pane pane;
 	@FXML
 	private BarChart equipmentBarChart;
-	
-	   @FXML
-	    private PieChart roomPieChart;
-		@FXML
-		private BarChart borrowEquipmentBarChart;
+
+	@FXML
+	private PieChart roomPieChart;
+	@FXML
+	private BarChart borrowEquipmentBarChart;
+	@FXML
+	private ComboBox<String> typeStatisticComboBox;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		XYChart.Series<String, Number> seriesEquipmentFixing= new XYChart.Series<>();
+		XYChart.Series<String, Number> seriesEquipmentFixing = new XYChart.Series<>();
 
 		XYChart.Series<String, Number> seriesEquipmentGood = new XYChart.Series<>();
 		XYChart.Series<String, Number> seriesEquipmentBad = new XYChart.Series<>();
 		XYChart.Series<String, Number> BorrowEquipment = new XYChart.Series<>();
-		StatisticalService statisticRepo= StatisticalService.getRepo();
-		 try {
-			for (Map.Entry<String,Integer[]> category:statisticRepo.getEquipmentStatsByCategory().entrySet()) {
-				seriesEquipmentBad.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[0] ));
-				seriesEquipmentGood.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[1] ));
-				seriesEquipmentFixing.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[2] ));
+		ObservableList<String> typeStatistic= FXCollections.observableArrayList();
+		typeStatistic.add("Thống kê theo tình trạng thiết bị");
+		typeStatistic.add("Thống kê thiết bị mượn theo loại");
+		
+		typeStatisticComboBox.setItems(typeStatistic);
+		StatisticalService statisticRepo = StatisticalService.getRepo();
+		try {
+			for (Map.Entry<String, Integer[]> category : statisticRepo.getEquipmentStatsByCategory().entrySet()) {
+				seriesEquipmentBad.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[0]));
+				seriesEquipmentGood.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[1]));
+				seriesEquipmentFixing.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[2]));
 			}
-			for (Map.Entry<String,Integer> category:statisticRepo.countBorrowedEquipmentByCategory().entrySet()) {
-				BorrowEquipment.getData().add(new XYChart.Data<>(category.getKey(), category.getValue() ));
+			for (Map.Entry<String, Integer> category : statisticRepo.countBorrowedEquipmentByCategory().entrySet()) {
+				BorrowEquipment.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()));
 			}
-			
+
 			borrowEquipmentBarChart.getData().addAll(BorrowEquipment);
+			borrowEquipmentBarChart.setLegendVisible(false);
 			seriesEquipmentBad.setName("Đang hỏng");
 			seriesEquipmentFixing.setName("Đang sửa");
 			seriesEquipmentGood.setName("Tốt");
-			 ObservableList<PieChart.Data> valueList = FXCollections.observableArrayList();
-			 for (Map.Entry<String,Integer> roomStatus:statisticRepo.getStatsRoomStatus().entrySet()) {
-				 
-				 PieChart.Data data = new PieChart.Data(roomStatus.getKey(), roomStatus.getValue());
-				 
-				 valueList.add(data);
-			 }
-			 
-			 PieChart pieChart = new PieChart(valueList);
-					 pieChart.getData().forEach(data -> {
-					 String percentage =  String.valueOf((int)data.getPieValue())+" phòng";
-					 Tooltip toolTip = new Tooltip(percentage);
-					 Tooltip.install(data.getNode(), toolTip);
-					});
-					 roomPieChart.setTitle("Tình trạng phòng học");
+			ObservableList<PieChart.Data> valueList = FXCollections.observableArrayList();
+			for (Map.Entry<String, Integer> roomStatus : statisticRepo.getStatsRoomStatus().entrySet()) {
+
+				PieChart.Data data = new PieChart.Data(roomStatus.getKey(), roomStatus.getValue());
+
+				valueList.add(data);
+			}
+
+			PieChart pieChart = new PieChart(valueList);
+			pieChart.getData().forEach(data -> {
+				String percentage = String.valueOf((int) data.getPieValue()) + " phòng";
+				Tooltip toolTip = new Tooltip(percentage);
+				Tooltip.install(data.getNode(), toolTip);
+			});
+			roomPieChart.setTitle("Tình trạng phòng học");
 			roomPieChart.getData().setAll(valueList);
 			roomPieChart.setStartAngle(30);
 			roomPieChart.setLabelsVisible(false);
-			equipmentBarChart.getData().addAll(seriesEquipmentGood,seriesEquipmentFixing,seriesEquipmentBad);
+			equipmentBarChart.getData().addAll(seriesEquipmentGood, seriesEquipmentFixing, seriesEquipmentBad);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
