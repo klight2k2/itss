@@ -166,16 +166,17 @@ public class ScheduleViewController {
 
 		}
 		for (UserEntity item : listUser) {
-			if (item.getId() == clickedRow.getRoomId()) {
+			if (item.getId() == clickedRow.getTeacherId()) {
 				// borrowerCombobox.setV
 				inputUser.setValue(item);
 				System.out.println("success");
 			}
 
 		}
-		inputStartTime.setValue(clickedRow.getDisplayStartTime().toLocalDate());
-		inputEndTime.setValue(clickedRow.getDisplayEndTime().toLocalDate());
+		inputStartTime.setDateTimeValue(clickedRow.getDisplayStartTime());
+		inputEndTime.setDateTimeValue(clickedRow.getDisplayEndTime());
 		inputReason.setText(clickedRow.getDisplayReason());
+		System.out.println("date time"+clickedRow.getDisplayStartTime().toLocalDate());
 
 		scheduleModal.setVisible(true);
 	}
