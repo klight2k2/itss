@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -13,7 +14,7 @@
 
 <HBox prefHeight="700.0" prefWidth="1061.0" styleClass="container" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.home.HomeViewController">
    <children>
-      <VBox fillWidth="false" prefHeight="700.0" prefWidth="253.0" styleClass="sidebar">
+      <VBox fillWidth="false" prefHeight="700.0" prefWidth="253.0">
          <children>
             <ImageView fitHeight="67.0" fitWidth="205.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -62,6 +63,10 @@
          <padding>
             <Insets left="10.0" right="10.0" />
          </padding>
+         <styleClass>
+            <String fx:value="sidebar" />
+            <String fx:value="overlay" />
+         </styleClass>
       </VBox>
       <AnchorPane prefHeight="659.0" prefWidth="809.0">
          <children>

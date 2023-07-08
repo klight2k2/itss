@@ -34,7 +34,7 @@
       <Button layoutX="325.0" layoutY="36.0" mnemonicParsing="false" onAction="#reset" styleClass="btn" text="Làm mới" />
       <Button layoutX="241.0" layoutY="37.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
       <Button layoutX="726.0" layoutY="36.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm lịch" />
-      <AnchorPane fx:id="scheduleModal" layoutX="4.0" layoutY="6.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
+      <AnchorPane fx:id="scheduleModal" layoutX="4.0" layoutY="6.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;">
          <children>
             <AnchorPane layoutX="62.0" layoutY="178.0" prefHeight="272.0" prefWidth="660.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
                <children>
@@ -48,8 +48,8 @@
                   <Label layoutX="330.0" layoutY="109.0" prefHeight="19.0" prefWidth="86.0" text="Kết thúc" />
                   <Label layoutX="330.0" layoutY="65.0" prefHeight="19.0" prefWidth="86.0" text="Người sử dụng" />
                   <Button fx:id="deleteBtn" layoutX="606.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c11c1c" />
-                  <HBox fx:id="startTimeBox" layoutX="154.0" layoutY="102.0" prefHeight="34.0" prefWidth="156.0" />
-                  <HBox fx:id="endTimeBox" layoutX="435.0" layoutY="102.0" prefHeight="34.0" prefWidth="156.0" />
+                  <HBox fx:id="startTimeBox" layoutX="112.0" layoutY="102.0" prefHeight="34.0" prefWidth="150.0" />
+                  <HBox fx:id="endTimeBox" layoutX="428.0" layoutY="102.0" prefHeight="34.0" prefWidth="150.0" />
                   <ComboBox fx:id="inputRoom" layoutX="112.0" layoutY="62.0" prefWidth="150.0" />
                   <ComboBox fx:id="inputUser" layoutX="428.0" layoutY="62.0" prefWidth="150.0" />
                </children>

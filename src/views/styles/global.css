@@ -131,3 +131,11 @@
     -fx-background-color: #fff;
     -fx-border-radius: 20px;
 }
+
+.borrow .default-color0.chart-bar { -fx-bar-fill: #38bdf8; }
+
+ .combo-box, .choice-box{
+    -fx-background-color: #fff;
+    -fx-border-color: #d5d5d5;
+
+}

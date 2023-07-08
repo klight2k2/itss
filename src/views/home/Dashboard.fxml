@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
@@ -14,28 +15,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../styles/global.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.DashboardController">
    <children>
-      <BarChart fx:id="equipmentBarChart" layoutY="269.0" prefHeight="331.0" prefWidth="542.0" title="Thống kê tình trạng thiết bị ">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </BarChart>
-      <PieChart fx:id="roomPieChart" layoutX="522.0" layoutY="290.0" prefHeight="289.0" prefWidth="279.0" />
-      <Pane layoutX="-10.0" layoutY="317.0" prefHeight="289.0" prefWidth="522.0" visible="false">
-         <children>
-            <BarChart fx:id="borrowEquipmentBarChart" layoutY="-8.0" legendVisible="false" prefHeight="289.0" prefWidth="515.0" title="Thống kê thiết bị mượn theo loại">
-               <xAxis>
-                  <CategoryAxis side="BOTTOM" />
-               </xAxis>
-               <yAxis>
-                  <NumberAxis side="LEFT" />
-               </yAxis>
-            </BarChart>
-         </children>
-      </Pane>
-      <Pane layoutX="599.0" layoutY="6.0" prefHeight="119.0" prefWidth="201.0" style="-fx-background-radius: 10px;" styleClass="tag">
+      <PieChart fx:id="roomPieChart" layoutX="522.0" layoutY="257.0" prefHeight="322.0" prefWidth="281.0" title="Tình trạng phòng học" />
+      <Pane layoutX="599.0" layoutY="6.0" prefHeight="119.0" prefWidth="201.0" style="-fx-background-radius: 10px;">
          <children>
             <ImageView fitHeight="76.0" fitWidth="94.0" layoutX="14.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -47,14 +28,18 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
+            <Text fx:id="reportCountLabel" layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
          </children>
+         <styleClass>
+            <String fx:value="tag" />
+            <String fx:value="overlay" />
+         </styleClass>
       </Pane>
-      <Pane layoutX="302.0" layoutY="6.0" prefHeight="126.0" prefWidth="220.0" style="-fx-background-radius: 10px;" styleClass="tag">
+      <Pane layoutX="302.0" layoutY="6.0" prefHeight="126.0" prefWidth="220.0" style="-fx-background-radius: 10px;">
          <children>
             <ImageView fitHeight="76.0" fitWidth="94.0" layoutX="14.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -66,14 +51,18 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
+            <Text fx:id="equipmentCountLabel" layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
          </children>
+         <styleClass>
+            <String fx:value="tag" />
+            <String fx:value="overlay" />
+         </styleClass>
       </Pane>
-      <Pane layoutX="6.0" layoutY="6.0" prefHeight="126.0" prefWidth="220.0" style="-fx-background-radius: 10px;" styleClass="tag">
+      <Pane layoutX="6.0" layoutY="6.0" prefHeight="126.0" prefWidth="220.0" style="-fx-background-radius: 10px;">
          <children>
             <ImageView fitHeight="76.0" fitWidth="94.0" layoutX="14.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -85,13 +74,33 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
+            <Text fx:id="roomCountLabel" layoutX="99.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10000" textAlignment="CENTER" wrappingWidth="100.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
          </children>
+         <styleClass>
+            <String fx:value="tag" />
+            <String fx:value="overlay" />
+         </styleClass>
       </Pane>
-      <ComboBox fx:id="typeStatisticComboBox" layoutX="27.0" layoutY="224.0" prefHeight="25.0" prefWidth="220.0" />
+      <ComboBox fx:id="typeStatisticComboBox" layoutX="6.0" layoutY="199.0" onAction="#changeStatisticTypeEquipment" prefHeight="25.0" prefWidth="220.0" />
+      <BarChart fx:id="equipmentBarChart" layoutX="-3.0" layoutY="259.0" prefHeight="340.0" prefWidth="500.0" title="Thống kê tình trạng thiết bị ">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <BarChart fx:id="borrowEquipmentBarChart" layoutY="259.0" legendVisible="false" prefHeight="340.0" prefWidth="500.0" styleClass="borrow" title="Thống kê thiết bị mượn theo loại" visible="false">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis side="LEFT" />
+         </yAxis>
+      </BarChart>
    </children>
 </AnchorPane>

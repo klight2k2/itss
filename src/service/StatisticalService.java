@@ -9,23 +9,24 @@ import java.util.Map;
 import models.db.DB;
 
 public class StatisticalService {
-	 private static StatisticalService repo;
+	private static StatisticalService repo;
 
-	    public static StatisticalService getRepo() {
-	        if (repo != null) {
-	            return repo;
-	        } else {
-	            return new StatisticalService();
-	        }
-	    };
-
+    public static StatisticalService getRepo() {
+        if (repo != null) {
+            return repo;
+        } else {
+            return new StatisticalService();
+        }
+    };
 	public Map<String, Integer> countBorrowedEquipmentByCategory() throws SQLException {
 	    Map<String, Integer> equipmentCounts = new HashMap<>();
 
 	    String sql = "SELECT c.name AS category, COUNT(*) AS count " +
 	                 "FROM pay_borrow_equipment pbe " +
+	                 "JOIN pay_borrow pb ON pbe.payBorrowId = pb.id " +
 	                 "JOIN equipment e ON pbe.equipmentId = e.id " +
 	                 "JOIN equipment_category c ON e.equipmentCategoryId = c.id " +
+	                 "WHERE pb.status = 'BORROWING'"+
 	                 "GROUP BY c.name";
 
 	    try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
@@ -41,7 +42,7 @@ public class StatisticalService {
 	        System.err.println("Got an exception!");
 	        System.err.println(e.getMessage());
 	    }
-	    // print
+//	    print
 	    for (Map.Entry<String, Integer> entry : equipmentCounts.entrySet()) {
 	        String category = entry.getKey();
 	        int count = entry.getValue();
