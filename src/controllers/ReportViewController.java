@@ -42,6 +42,9 @@ public class ReportViewController {
 	private Button deleteEquipmentBtn;
 
 	@FXML
+	private Button deleteReportBtn;
+
+	@FXML
 	private AnchorPane detailModal;
 
 	@FXML
@@ -377,7 +380,7 @@ public class ReportViewController {
 
 	@FXML
 	void onRowClicked(MouseEvent event) {
-		
+
 		Report clickedRow = reports.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
 			return;
@@ -401,6 +404,14 @@ public class ReportViewController {
 			detailTime.setText(rre.getCreatedAt().toString());
 			detailNote.setText(rre.getNote());
 			updateEquipTable();
+
+			if (LoginController.currentUser.getRole() != Role.ADMIN) {
+				inputStatus.setDisable(true);
+				if (LoginController.currentUser.getId() != rre.getReporterId()) {
+					deleteReportBtn.setVisible(false);
+				}
+			}
+
 			detailModal.setVisible(true);
 		} catch (Exception e) {
 			// TODO: handle exception

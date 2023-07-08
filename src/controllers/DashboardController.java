@@ -24,6 +24,7 @@ public class DashboardController implements Initializable {
 
 	@FXML
 	private Pane pane;
+
 	@FXML
 	private BarChart equipmentBarChart;
 
@@ -34,19 +35,18 @@ public class DashboardController implements Initializable {
 	@FXML
 	private ComboBox<String> typeStatisticComboBox;
 	@FXML
-    private Text equipmentCountLabel;
+	private Text equipmentCountLabel;
 
-    @FXML
-    private Text reportCountLabel;
+	@FXML
+	private Text reportCountLabel;
 
-    @FXML
-    private Text roomCountLabel;
-
+	@FXML
+	private Text roomCountLabel;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		StatisticalService statisticRepo = StatisticalService.getRepo();
-		
+
 		try {
 			roomCountLabel.setText(String.valueOf(statisticRepo.countRooms()));
 			reportCountLabel.setText(String.valueOf(statisticRepo.countReport()));
@@ -55,7 +55,6 @@ public class DashboardController implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 		ObservableList<String> typeStatistic = FXCollections.observableArrayList();
 		typeStatistic.add(StatisticContants.STATUS_CATEGORY);
@@ -102,6 +101,10 @@ public class DashboardController implements Initializable {
 			roomPieChart.getData().setAll(valueList);
 			roomPieChart.setStartAngle(30);
 			roomPieChart.setLabelsVisible(false);
+
+			equipmentCountLabel.setText(String.valueOf(StatisticalService.getRepo().countEquipment()));
+			roomCountLabel.setText(String.valueOf(StatisticalService.getRepo().countRooms()));
+			reportCountLabel.setText(String.valueOf(StatisticalService.getRepo().countReport()));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

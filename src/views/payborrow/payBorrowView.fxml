@@ -18,8 +18,8 @@
    <children>
       <Label layoutX="4.0" layoutY="82.0" text="* Nhấn để xem chi tiết" />
       <Button layoutX="672.0" layoutY="42.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm lịch mượn" />
-      <TextField layoutY="41.0" />
-      <Button layoutX="185.0" layoutY="42.0" mnemonicParsing="false" styleClass="btn" text="Tìm kiếm" />
+      <TextField fx:id="inputSearch" layoutY="41.0" promptText="Tìm kiếm..." />
+      <Button layoutX="185.0" layoutY="42.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
       <TableView fx:id="pbEquipments" layoutY="115.0" onMouseClicked="#rowClicked" prefHeight="487.0" prefWidth="800.0">
         <columns>
           <TableColumn fx:id="pbId" prefWidth="54.0" text="ID" />
@@ -92,5 +92,6 @@
             </AnchorPane>
          </children>
       </AnchorPane>
+      <Button layoutX="267.0" layoutY="42.0" mnemonicParsing="false" onAction="#clearSearch" styleClass="btn" text="Làm mới" />
    </children>
 </AnchorPane>
