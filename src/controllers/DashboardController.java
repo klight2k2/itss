@@ -14,6 +14,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
@@ -26,15 +33,6 @@ public class DashboardController implements Initializable {
 	private Pane pane;
 
 	@FXML
-	private Text equipmentCountLabel;
-
-	@FXML
-	private Text reportCountLabel;
-
-	@FXML
-	private Text roomCountLabel;
-
-	@FXML
 	private BarChart equipmentBarChart;
 
 	@FXML
@@ -43,10 +41,28 @@ public class DashboardController implements Initializable {
 	private BarChart borrowEquipmentBarChart;
 	@FXML
 	private ComboBox<String> typeStatisticComboBox;
+	@FXML
+	private Text equipmentCountLabel;
+
+	@FXML
+	private Text reportCountLabel;
+
+	@FXML
+	private Text roomCountLabel;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		StatisticalService statisticRepo = StatisticalService.getRepo();
+
+		try {
+			roomCountLabel.setText(String.valueOf(statisticRepo.countRooms()));
+			reportCountLabel.setText(String.valueOf(statisticRepo.countReport()));
+			equipmentCountLabel.setText(String.valueOf(statisticRepo.countEquipment()));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		ObservableList<String> typeStatistic = FXCollections.observableArrayList();
 		typeStatistic.add(StatisticContants.STATUS_CATEGORY);
 		typeStatistic.add(StatisticContants.BORROW_CATEGORY);
@@ -57,7 +73,6 @@ public class DashboardController implements Initializable {
 		XYChart.Series<String, Number> seriesEquipmentGood = new XYChart.Series<>();
 		XYChart.Series<String, Number> seriesEquipmentBad = new XYChart.Series<>();
 		XYChart.Series<String, Number> BorrowEquipment = new XYChart.Series<>();
-		StatisticalService statisticRepo = StatisticalService.getRepo();
 		try {
 			for (Map.Entry<String, Integer> category : statisticRepo.countBorrowedEquipmentByCategory().entrySet()) {
 				BorrowEquipment.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()));
@@ -66,7 +81,7 @@ public class DashboardController implements Initializable {
 			borrowEquipmentBarChart.setLegendVisible(false);
 			borrowEquipmentBarChart.setVisible(false);
 
-			for (Map.Entry<String, Integer[]> category : statisticRepo.getEquipmentStatsByCategory().entrySet()) {
+			for (Map.Entry<String, Integer[]> category : statisticRepo.getEquipmentStatusByCategory().entrySet()) {
 				seriesEquipmentBad.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[0]));
 				seriesEquipmentGood.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[1]));
 				seriesEquipmentFixing.getData().add(new XYChart.Data<>(category.getKey(), category.getValue()[2]));
@@ -77,7 +92,7 @@ public class DashboardController implements Initializable {
 			equipmentBarChart.getData().addAll(seriesEquipmentGood, seriesEquipmentFixing, seriesEquipmentBad);
 
 			ObservableList<PieChart.Data> valueList = FXCollections.observableArrayList();
-			for (Map.Entry<String, Integer> roomStatus : statisticRepo.getStatsRoomStatus().entrySet()) {
+			for (Map.Entry<String, Integer> roomStatus : statisticRepo.countRoomByStatus().entrySet()) {
 
 				PieChart.Data data = new PieChart.Data(roomStatus.getKey(), roomStatus.getValue());
 
@@ -96,7 +111,7 @@ public class DashboardController implements Initializable {
 
 			equipmentCountLabel.setText(String.valueOf(StatisticalService.getRepo().countEquipment()));
 			roomCountLabel.setText(String.valueOf(StatisticalService.getRepo().countRooms()));
-//			reportCountLabel.setText(String.valueOf(StatisticalService.getRepo().));
+			// reportCountLabel.setText(String.valueOf(StatisticalService.getRepo().));
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,17 +122,17 @@ public class DashboardController implements Initializable {
 	void changeStatisticTypeEquipment(ActionEvent event) {
 		String selectedType = typeStatisticComboBox.getSelectionModel().getSelectedItem().toString();
 		switch (selectedType) {
-		case StatisticContants.BORROW_CATEGORY:
-			equipmentBarChart.setVisible(false);
-			borrowEquipmentBarChart.setVisible(true);
+			case StatisticContants.BORROW_CATEGORY:
+				equipmentBarChart.setVisible(false);
+				borrowEquipmentBarChart.setVisible(true);
 
-			break;
-		case StatisticContants.STATUS_CATEGORY:
-			equipmentBarChart.setVisible(true);
-			borrowEquipmentBarChart.setVisible(false);
-			break;
-		default:
-			throw new IllegalArgumentException("Unexpected value: " + selectedType);
+				break;
+			case StatisticContants.STATUS_CATEGORY:
+				equipmentBarChart.setVisible(true);
+				borrowEquipmentBarChart.setVisible(false);
+				break;
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + selectedType);
 		}
 	}
 
