@@ -255,4 +255,21 @@ public class RoomReportService extends BaseService<RoomReportEntity>{
 		}
 		return true;
 	}
+	
+	public int getCountReport() {
+		try {
+			String sqlString = "select count(*) as count from room_report";
+			ResultSet resultSet = DB.getConnection().createStatement().executeQuery(sqlString);
+			if (resultSet.next()) {
+				return resultSet.getInt("count");
+			}
+			else {
+				return 0;
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }
