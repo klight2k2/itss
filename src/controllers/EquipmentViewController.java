@@ -25,16 +25,15 @@ import javafx.util.Callback;
 import models.CategoryEquipmentEntity;
 import models.EquipmentEntity;
 import models.RoomEntity;
-import models.UserEntity;
 import service.CategoryEquipmentService;
 import service.EquipmentService;
 import service.RoomService;
 import views.equipment.Equipment;
 
 public class EquipmentViewController {
-	
-    @FXML
-    private Button addEquipmentBtn;
+
+	@FXML
+	private Button addEquipmentBtn;
 
 	@FXML
 	private AnchorPane addEquipmentModal;
@@ -120,12 +119,13 @@ public class EquipmentViewController {
 
 	@FXML
 	void onRowClick(MouseEvent event) {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) return;
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN))
+			return;
 		Equipment clickedRow = equipments.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
 			return;
 		curId = clickedRow.getDisplayId();
-		System.out.println("clicked id"+clickedRow.getDisplayId());
+		System.out.println("clicked id" + clickedRow.getDisplayId());
 		deleteBtn.setVisible(true);
 		inputTitle.setText("Chỉnh sửa");
 		for (CategoryEquipmentEntity item : listCategory) {
@@ -218,7 +218,7 @@ public class EquipmentViewController {
 			newEq.setNote(inputEquipNote.getText());
 			newEq.setEquipmentCategoryId(inputEquipCategory.getSelectionModel().getSelectedItem().getId());
 			newEq.setRoomId(inputEquipRoom.getSelectionModel().getSelectedItem().getId());
-			System.out.println("id"+curId);
+			System.out.println("id" + curId);
 			if (curId == null || curId.isEmpty()) {
 				newEq.setId("Unknown" + equipmentRepo.getAll().size());
 				equipmentRepo.save(newEq);
@@ -259,8 +259,10 @@ public class EquipmentViewController {
 				if (eq.getName().toLowerCase().contains(filter)) {
 					Equipment newEq = new Equipment();
 					newEq.setDisplayId(eq.getId());
-					newEq.setDisplayRoom("NAH");
-					
+					newEq.setDisplayCategory(
+							CategoryEquipmentService.getRepo().getCategoryById(eq.getEquipmentCategoryId()).getName());
+					newEq.setDisplayRoom(RoomService.getRepo().getRoomById(eq.getRoomId()).getName());
+					newEq.setId(eq.getId());
 					newEq.setDisplayName(eq.getName());
 					newEq.setDisplayStatus(convertStatus(eq.getStatus()));
 					newEq.setDisplayTimeUse(eq.getYearOfUse());
@@ -268,8 +270,7 @@ public class EquipmentViewController {
 					newEq.setDisplayTimeRepair(eq.getNumberOfRepairs());
 					newEq.setDisplayNote(eq.getNote());
 					newEq.setRoomId(eq.getRoomId());
-					newEq.setRoomId(eq.getEquipmentCategoryId());
-
+					newEq.setEquipmentCategoryId(eq.getEquipmentCategoryId());
 					equipments.getItems().add(newEq);
 				}
 			}
@@ -286,18 +287,9 @@ public class EquipmentViewController {
 			for (EquipmentEntity eq : equipmentRepo.getAll()) {
 				Equipment newEq = new Equipment();
 				newEq.setDisplayId(eq.getId());
-					for (CategoryEquipmentEntity item : listCategory) {
-					if (item.getId() == eq.getEquipmentCategoryId()) {
-						newEq.setDisplayCategory(item.getName());
-					}
-
-				}
-				for (RoomEntity item : listRoom) {
-					if (item.getId() == eq.getRoomId()) {
-						newEq.setDisplayRoom(item.getName());
-					}
-
-				}
+				newEq.setDisplayCategory(
+						CategoryEquipmentService.getRepo().getCategoryById(eq.getEquipmentCategoryId()).getName());
+				newEq.setDisplayRoom(RoomService.getRepo().getRoomById(eq.getRoomId()).getName());
 				newEq.setId(eq.getId());
 				newEq.setDisplayName(eq.getName());
 				newEq.setDisplayStatus(convertStatus(eq.getStatus()));
@@ -317,7 +309,7 @@ public class EquipmentViewController {
 
 	public void initialize() {
 		addEquipmentModal.setVisible(false);
-		
+
 		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
 
 			addEquipmentBtn.setVisible(false);
