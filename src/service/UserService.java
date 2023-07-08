@@ -11,6 +11,7 @@ import java.util.List;
 import controllers.LoginController;
 import models.UserEntity;
 import models.db.DB;
+import utils.NotificationUtil;
 
 public class UserService {
 
@@ -71,9 +72,11 @@ public class UserService {
 			preparedStmt.setString(3, user.getPassword());
 			preparedStmt.setString(4, user.getRole());
 			preparedStmt.execute();
+			NotificationUtil.success("Thành công", "Thêm người dùng thành công");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			NotificationUtil.error("Thất bại", "Thêm người dùng thất bại");
 			return false;
 		}
 	}
@@ -84,9 +87,11 @@ public class UserService {
 			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(deleteSql);
 			preparedStmt.setInt(1, user.getId());
 			preparedStmt.execute();
+			NotificationUtil.success("Thành công", "Xóa người dùng thành công");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			NotificationUtil.error("Thất bại", "Xóa người dùng thất bại");
 			return false;
 		}
 	}
@@ -101,9 +106,11 @@ public class UserService {
 			preparedStmt.setString(4, user.getRole());
 			preparedStmt.setInt(5, user.getId());
 			preparedStmt.execute();
+			NotificationUtil.success("Thành công", "Chỉnh sửa người dùng thành công");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			NotificationUtil.error("Thất bại", "Chỉnh sửa người dùng thất bại");
 			return false;
 		}
 	}

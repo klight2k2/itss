@@ -10,6 +10,7 @@ import java.util.List;
 import models.EquipmentEntity;
 import models.RoomReportEntity;
 import models.db.DB;
+import utils.NotificationUtil;
 
 public class RoomReportService {
 	private static RoomReportService repo;
@@ -155,9 +156,11 @@ public class RoomReportService {
 				String sqlCmd = sql.toString();
 				equipQuery.execute(sqlCmd);
 			}
+			NotificationUtil.success("Thành công", "Tạo báo cáo thành công");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			NotificationUtil.error("Thất bại", "Tạo báo cáo thất bại");
 			return false;
 		}
 	}
@@ -168,9 +171,11 @@ public class RoomReportService {
 			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(deleteSql);
 			preparedStmt.setInt(1, room_report.getId());
 			preparedStmt.execute();
+			NotificationUtil.success("Thành công", "Xóa báo cáo thành công");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			NotificationUtil.error("Thất bại", "Xóa báo cáo thất bại");
 			return false;
 		}
 	}
@@ -188,9 +193,11 @@ public class RoomReportService {
 			preparedStmt.setString(6, room_report.getNote());
 			preparedStmt.setInt(7, room_report.getId());
 			preparedStmt.execute();
+			NotificationUtil.success("Thành công", "Chỉnh sửa báo cáo thành công");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			NotificationUtil.error("Thất bại", "Chỉnh sửa báo cáo thất bại");
 			return false;
 		}
 	}

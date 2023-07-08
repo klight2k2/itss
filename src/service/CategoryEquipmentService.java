@@ -9,6 +9,7 @@ import java.util.List;
 
 import models.CategoryEquipmentEntity;
 import models.db.DB;
+import utils.NotificationUtil;
 
 public class CategoryEquipmentService {
 	private static CategoryEquipmentService repo;
@@ -46,9 +47,11 @@ public class CategoryEquipmentService {
 			preparedStmt.setString(1, categoryEquipment.getName());
 			preparedStmt.setString(2, categoryEquipment.getCode());
 			preparedStmt.execute();
+			NotificationUtil.success("Thành công", "Thêm loại thiết bị thành công");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			NotificationUtil.error("Thất bại", "Thêm loại thiết bị thất bại");
 			return false;
 		}
 	}
@@ -59,9 +62,11 @@ public class CategoryEquipmentService {
 			PreparedStatement preparedStmt = DB.getConnection().prepareStatement(deleteSql);
 			preparedStmt.setInt(1, categoryEquipment.getId());
 			preparedStmt.execute();
+			NotificationUtil.success("Thành công", "Xóa loại thiết bị thành công");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			NotificationUtil.error("Thất bại", "Xóa loại thiết bị thất bại");
 			return false;
 		}
 	}
@@ -73,10 +78,12 @@ public class CategoryEquipmentService {
 			statement.setString(2, categoryEquipment.getCode());
 			statement.setInt(3, categoryEquipment.getId());
 			int rowsAffected = statement.executeUpdate();
+			NotificationUtil.success("Thành công", "Chỉnh sửa loại thiết bị thành công");
 			return rowsAffected > 0;
 		} catch (SQLException e) {
 			System.err.println("Got an exception!");
 			System.err.println(e.getMessage());
+			NotificationUtil.error("Thất bại", "Chỉnh sửa loại thiết bị thất bại");
 			return false;
 		}
 	}
