@@ -120,7 +120,7 @@ public class UserService {
 			while (rs.next()) {
 				if (rs.getString("password") == null ? password == null : rs.getString("password").equals(password)) {
 					LoginController.currentUser.setId(rs.getInt("id"));
-					LoginController.currentUser.setName(rs.getString("userName"));
+					LoginController.currentUser.setName(rs.getString("name"));
 					return true;
 				}
 			}

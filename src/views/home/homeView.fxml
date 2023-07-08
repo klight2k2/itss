@@ -76,14 +76,14 @@
                      <children>
                         <AnchorPane prefHeight="40.0" prefWidth="807.0">
                            <children>
-                              <ImageView fx:id="avatar" fitHeight="38.0" fitWidth="50.0" layoutX="766.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="avatar" fitHeight="32.0" fitWidth="32.0" layoutX="766.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/user.png" />
                                  </image>
                               </ImageView>
-                              <Text fx:id="userName" layoutX="683.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minh quang">
+                              <Text fx:id="userName" layoutX="587.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minh quang" textAlignment="RIGHT" wrappingWidth="168.099609375">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold Italic" size="14.0" />
                                  </font>
                               </Text>
                               <Text fx:id="pageTitle" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Trang chủ" wrappingWidth="298.703125">
