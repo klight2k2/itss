@@ -166,7 +166,7 @@ public class ScheduleViewController {
 
 		}
 		for (UserEntity item : listUser) {
-			if (item.getId() == clickedRow.getRoomId()) {
+			if (item.getId() == clickedRow.getTeacherId()) {
 				// borrowerCombobox.setV
 				inputUser.setValue(item);
 				System.out.println("success");
