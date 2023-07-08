@@ -14,6 +14,13 @@ public class RoomEntity extends BaseEntity {
 	public List<RoomScheduleEntity> listRoomSchedule;
 	public List<RoomReportEntity> listRoomReport;
 
+	public RoomEntity(int id, boolean status, String name) {
+		super();
+		this.id = id;
+		this.status = status;
+		this.name = name;
+	}
+
 	public List<RoomReportEntity> getListRoomReport() {
 		return listRoomReport;
 	}
@@ -40,12 +47,7 @@ public class RoomEntity extends BaseEntity {
 		this.listRoomReport = listRoomReport;
 	}
 
-	public RoomEntity(int id, boolean status, String name) {
-		this.id = id;
-		this.name = name;
-		this.status = status;
-	}
-
+	
 	public RoomEntity() {
 		// TODO Auto-generated constructor stub
 	}

@@ -159,12 +159,39 @@ public class RoomService extends BaseService<RoomEntity>{
 			ResultSet resultSet = aStatement.executeQuery(sqlString);
 			while (resultSet.next()) {
 				System.out.println(resultSet.getString("name"));
+				listGuestRoomEntities.add(new RoomEntity(resultSet.getInt("id"), 
+														resultSet.getBoolean("status"),
+														resultSet.getString("name")));
 			}
 			return listGuestRoomEntities;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return listGuestRoomEntities;
+		}
+	}
+	
+	public boolean autoChangeRoom(int roomReportId,String startTime, String endTime) {
+//		System.out.println(startTime + "--" + endTime);
+//		List<RoomEntity> listGuestRoomEntities = new ArrayList<RoomEntity>();
+		try {
+			String sqlString = "select r.* from room r where r.id in (select roomId from room_schedule where startTime >= '"
+					+ endTime + "' or endTime <= '" + startTime + "') or status = 0 and id != 1";
+			Statement aStatement = DB.getConnection().createStatement();
+			ResultSet resultSet = aStatement.executeQuery(sqlString);
+			if (resultSet.next()) {
+				String sql = "update from room_schedule set room_id = " + resultSet.getInt("id") + " where roomReportId = " + roomReportId;
+				Statement stmStatement = DB.getConnection().createStatement();
+				stmStatement.execute(sql);
+				return true;
+			}
+			else {
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
 		}
 	}
 
