@@ -75,12 +75,12 @@
 }
 
 .table-row-cell:hover {
-    -fx-background-color: bae6fd !important;
+    -fx-background-color: #bae6fd !important;
     
 }
 
 .table-row-cell:selected {
-    /* -fx-background-color: #efe9ff !important; */
+    -fx-background-color: #bae6fd !important;
 }
 
 .table-row-cell:selected .cell{

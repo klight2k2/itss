@@ -17,7 +17,7 @@ public class HelloApp extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		Parent parent = FXMLLoader.load(getClass().getResource(Links.HOMEVIEW));
+		Parent parent = FXMLLoader.load(getClass().getResource(Links.LOGIN_VIEW));
 		Scene scene = new Scene(parent);
 		        stage.getIcons().add(new Image(HelloApp.class.getResourceAsStream(Links.ICON)));
 		stage.setScene(scene);
