@@ -33,7 +33,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" visible="false">
+      <AnchorPane fx:id="pbDetailModal" layoutX="-6.0" layoutY="-4.0" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;">
          <children>
             <AnchorPane layoutX="62.0" layoutY="86.0" prefHeight="481.0" prefWidth="671.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
                <children>
@@ -57,8 +57,9 @@
                   <TableView fx:id="tableViewBorrowed" layoutX="153.0" layoutY="295.0" prefHeight="115.0" prefWidth="434.0">
                     <columns>
                       <TableColumn fx:id="borrowedIdColumn" prefWidth="51.0" text="ID" />
-                      <TableColumn fx:id="borrowedEquipNameColumn" prefWidth="212.0" text="Tên thiết bị" />
-                        <TableColumn fx:id="borrowedNoteColumn" prefWidth="170.0" text="Note" />
+                      <TableColumn fx:id="borrowedEquipNameColumn" prefWidth="158.0" text="Tên thiết bị" />
+                        <TableColumn fx:id="borrowedNoteColumn" prefWidth="113.0" text="Note" />
+                        <TableColumn fx:id="operationcolumn" prefWidth="111.0" text="Thao tác" />
                     </columns>
                   </TableView>
                   <Button fx:id="deleteBtn" layoutX="606.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#c11c1c" />
@@ -77,8 +78,8 @@
                   <TableView fx:id="tableViewBorrow" layoutX="23.0" layoutY="83.0" prefHeight="316.0" prefWidth="586.0">
                     <columns>
                       <TableColumn fx:id="borrowIdColumn" prefWidth="106.0" text="ID" />
-                      <TableColumn fx:id="borrowEquipNameColumn" prefWidth="218.0" text="Tên thiết bị" />
-                        <TableColumn fx:id="borrowNoteColumn" prefWidth="261.0" text="Note" />
+                      <TableColumn fx:id="borrowEquipNameColumn" prefWidth="248.0" text="Tên thiết bị" />
+                        <TableColumn fx:id="borrowNoteColumn" prefWidth="231.0" text="Note" />
                     </columns>
                   </TableView>
                   <TextField fx:id="searchEquipTextField" layoutX="31.0" layoutY="35.0" onMouseClicked="#onSearchEquip" promptText="Tìm kiếm theo tên" />

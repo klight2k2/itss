@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
@@ -9,6 +10,10 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -17,14 +22,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import models.EquipmentEntity;
 import models.PayBorrowEntity;
 import models.UserEntity;
@@ -32,6 +41,7 @@ import service.EquipmentService;
 import service.PayBorrowService;
 import service.UserService;
 import views.payborrow.PayBorrow;
+import javafx.util.Callback;
 
 public class PayBorrowViewController {
 
@@ -43,7 +53,6 @@ public class PayBorrowViewController {
 
 	@FXML
 	private ComboBox<UserEntity> borrowerCombobox;
-
 
 	@FXML
 	private DatePicker payDate;
@@ -102,6 +111,9 @@ public class PayBorrowViewController {
 	private TableColumn<EquipmentEntity, String> borrowEquipNameColumn;
 
 	@FXML
+	private TableColumn<EquipmentEntity, String> operationcolumn;
+
+	@FXML
 	private TableColumn<EquipmentEntity, String> borrowIdColumn;
 
 	@FXML
@@ -146,7 +158,7 @@ public class PayBorrowViewController {
 		borrowReason.clear();
 		refuseReason.clear();
 		listBorrowed.clear();
-try {
+		try {
 			listBorrow.setAll(EquipmentService.getRepo().getAllEquipmentNoUse());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -159,7 +171,6 @@ try {
 	void submit(ActionEvent event) {
 		try {
 
-
 			PayBorrowEntity pb = new PayBorrowEntity();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			pb.setStatus(status.getValue());
@@ -169,7 +180,7 @@ try {
 			pb.setRefuseReason(refuseReason.getText());
 			pb.setBorrowerId(borrowerCombobox.getSelectionModel().getSelectedItem().getId());
 			pb.setListEquipment(listBorrowed);
-			System.out.println("submit  borrow"+listBorrowed.size());
+			System.out.println("submit  borrow" + listBorrowed.size());
 			if (pbCurId > 0) {
 				pb.setId(pbCurId);
 				payBorrowRepo.update(pb);
@@ -212,8 +223,8 @@ try {
 
 		pbCurId = clickedRow.getDisplayId().intValue();
 		deleteBtn.setVisible(true);
-		for(UserEntity item :listBorrower){
-			if(item.getId()==clickedRow.getBorrowerId()){
+		for (UserEntity item : listBorrower) {
+			if (item.getId() == clickedRow.getBorrowerId()) {
 				// borrowerCombobox.setV
 				borrowerCombobox.setValue(item);
 				System.out.println("success");
@@ -247,25 +258,28 @@ try {
 
 		pbDetailModal.setVisible(true);
 	}
+
 	@FXML
 	private TextField searchEquipTextField;
-    public void onSearchEquip(InputMethodEvent event) {
-           FilteredList<EquipmentEntity> filteredData = new FilteredList<>(listBorrow, p -> true);
-        searchEquipTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-        filteredData.setPredicate(equip -> {
-            if (newValue == null || newValue.isEmpty()) {
-                return true;
-            }
-            String lowerCaseFilter = newValue.toLowerCase();
-            if (equip.getName().toLowerCase().contains(lowerCaseFilter)) {
-                return true;
-            } else {
-                return false;
-            }
-        });
-        });
 
-    }
+	public void onSearchEquip(InputMethodEvent event) {
+		FilteredList<EquipmentEntity> filteredData = new FilteredList<>(listBorrow, p -> true);
+		searchEquipTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+			filteredData.setPredicate(equip -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				String lowerCaseFilter = newValue.toLowerCase();
+				if (equip.getName().toLowerCase().contains(lowerCaseFilter)) {
+					return true;
+				} else {
+					return false;
+				}
+			});
+		});
+
+	}
+
 	public void updateTable() {
 		try {
 			pbEquipments.getItems().clear();
@@ -302,8 +316,8 @@ try {
 			pbDetailModal.setVisible(false);
 			addEquipModal.setVisible(false);
 			status.getItems().addAll(statusValues);
-		listBorrower.setAll(UserService.getRepo().getAll());
-		borrowerCombobox.setItems(listBorrower);
+			listBorrower.setAll(UserService.getRepo().getAll());
+			borrowerCombobox.setItems(listBorrower);
 
 			pbId.setCellValueFactory(new PropertyValueFactory<PayBorrow, Integer>("displayId"));
 			pbBorrowUser.setCellValueFactory(new PropertyValueFactory<PayBorrow, String>("displayUsername"));
@@ -320,7 +334,6 @@ try {
 			borrowIdColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("id"));
 			borrowEquipNameColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("name"));
 			borrowNoteColumn.setCellValueFactory(new PropertyValueFactory<EquipmentEntity, String>("note"));
-
 			tableViewBorrow.setRowFactory(tv -> {
 				TableRow<EquipmentEntity> row = new TableRow<>();
 				row.setOnMouseClicked(event -> {
@@ -334,14 +347,60 @@ try {
 				});
 				return row;
 			});
-		tableViewBorrowed.setItems(listBorrowed);
+			tableViewBorrowed.setItems(listBorrowed);
 
-		tableViewBorrow.setItems(listBorrow);
-
+			tableViewBorrow.setItems(listBorrow);
+			updateTableBorrow();
 			updateTable();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	void updateTableBorrow() {
+		Callback<TableColumn<EquipmentEntity, String>, TableCell<EquipmentEntity, String>> cellFoctory = (
+				TableColumn<EquipmentEntity, String> param) -> {
+			// make cell containing buttons
+			final TableCell<EquipmentEntity, String> cell = new TableCell<EquipmentEntity, String>() {
+				@Override
+				public void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					// that cell created only on non-empty rows
+					if (empty) {
+						setGraphic(null);
+						setText(null);
+
+					} else {
+
+						Button deleteIcon = new Button("Xóa");
+
+						deleteIcon.getStyleClass().add("danger");
+
+						deleteIcon.setOnMouseClicked((MouseEvent event) -> {
+
+							// EquipmentEntity eqip = tableViewBorrowed.getSelectionModel().getSelectedItem();
+							EquipmentEntity test = (EquipmentEntity) getTableRow().getItem();
+							System.out.println("delete now"+test);
+							System.out.println(test.toString());
+						listBorrowed.remove(test);
+						listBorrow.add(test);
+
+						});
+
+						HBox managebtn = new HBox(deleteIcon);
+						managebtn.setStyle("-fx-alignment:center");
+						HBox.setMargin(deleteIcon, new Insets(2, 2, 0, 3));
+						setGraphic(managebtn);
+						setText(null);
+
+					}
+				}
+
+			};
+
+			return cell;
+		};
+		operationcolumn.setCellFactory(cellFoctory);
 	}
 }

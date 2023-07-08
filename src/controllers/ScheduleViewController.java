@@ -173,9 +173,10 @@ public class ScheduleViewController {
 			}
 
 		}
-		inputStartTime.setValue(clickedRow.getDisplayStartTime().toLocalDate());
-		inputEndTime.setValue(clickedRow.getDisplayEndTime().toLocalDate());
+		inputStartTime.setDateTimeValue(clickedRow.getDisplayStartTime());
+		inputEndTime.setDateTimeValue(clickedRow.getDisplayEndTime());
 		inputReason.setText(clickedRow.getDisplayReason());
+		System.out.println("date time"+clickedRow.getDisplayStartTime().toLocalDate());
 
 		scheduleModal.setVisible(true);
 	}

@@ -169,6 +169,10 @@ public class PayBorrowService {
             statement.setInt(7, pay_borrow.getId());
 
             statement.executeUpdate();
+             String deleteSql = "DELETE FROM pay_borrow_equipment WHERE payBorrowId = ?";
+            PreparedStatement preparedStmt = DB.getConnection().prepareStatement(deleteSql);
+            preparedStmt.setInt(1, pay_borrow.getId());
+            preparedStmt.execute();
             int equipLenght = pay_borrow.getListEquipment().size();
             if (equipLenght > 0) {
 
