@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.Role;
 import controllers.LoginController;
 import models.EquipmentEntity;
 import models.UserEntity;
@@ -127,9 +128,10 @@ public class UserService extends BaseService<UserEntity>{
 			}
 			while (rs.next()) {
 				if (rs.getString("password") == null ? password == null : rs.getString("password").equals(password)) {
-					LoginController.currentUser.setId(rs.getInt("id"));
-					LoginController.currentUser.setName(rs.getString("name"));
-					LoginController.currentUser.setRole(rs.getString("role"));
+					currentUser.setId(rs.getInt("id"));
+					currentUser.setName(rs.getString("name"));
+					currentUser.setRole(rs.getString("role"));
+					currentUser.setUsername(rs.getString("username"));
 					return true;
 				}
 			}
@@ -139,4 +141,15 @@ public class UserService extends BaseService<UserEntity>{
 		}
 		return false;
 	}
+	public boolean isAdmin(){
+		return currentUser.getRole().equals(Role.ADMIN);
+	}
+	public String getCurrentUsername(){
+		return currentUser.getName();
+	}
+		public String getRole(){
+		return currentUser.getName();
+	}
+	public static UserEntity currentUser = new UserEntity();
+
 }

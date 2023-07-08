@@ -26,6 +26,7 @@ import service.EquipmentService;
 import service.RoomReportService;
 import service.RoomScheduleService;
 import service.RoomService;
+import service.UserService;
 import views.payborrow.PayBorrow;
 import views.room.Equipment;
 import views.room.Room;
@@ -345,7 +346,7 @@ public class RoomViewController {
 
 	@FXML
 	void rowClicked(MouseEvent event) {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) return;
+		if (!UserService.getRepo().isAdmin()) return;
 		Room clickedRoom = rooms.getSelectionModel().getSelectedItem();
 		if (clickedRoom == null)
 			return;
@@ -390,7 +391,7 @@ public class RoomViewController {
 	public void initialize() {
 		inputRoomStatus.getItems().addAll(status);
 		addModal.setVisible(false);
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+		if (!UserService.getRepo().isAdmin()) {
 
 			addRoomBtn.setVisible(false);
 			operationRoomColumn.setVisible(false);

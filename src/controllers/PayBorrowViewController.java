@@ -215,7 +215,7 @@ public class PayBorrowViewController {
 
 	@FXML
 	void rowClicked(MouseEvent event) {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN))
+		if (!UserService.getRepo().isAdmin())
 			return;
 
 		PayBorrow clickedRow = pbEquipments.getSelectionModel().getSelectedItem();
@@ -349,7 +349,7 @@ public class PayBorrowViewController {
 		try {
 			pbDetailModal.setVisible(false);
 			addEquipModal.setVisible(false);
-			if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+			if (!UserService.getRepo().isAdmin()) {
 				operationPayBorrowColumn.setVisible(false);
 			}
 			status.getItems().addAll(statusValues);

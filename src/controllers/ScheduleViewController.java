@@ -160,7 +160,7 @@ public class ScheduleViewController {
 
 	@FXML
 	void onRowClick(MouseEvent event) {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) return;
+		if (!UserService.getRepo().isAdmin()) return;
 		Schedule clickedRow = schedules.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
 			return;
@@ -272,7 +272,7 @@ public class ScheduleViewController {
 	}
 
 	public void initialize() {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) {
+		if (!UserService.getRepo().isAdmin()) {
 
 			addScheduleBtn.setVisible(false);
 			operationcolumn.setVisible(false);

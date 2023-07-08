@@ -58,7 +58,6 @@ public class LoginController {
 				loader.setLocation(getClass().getResource(Links.HOMEVIEW));
 				Scene scene = new Scene(loader.load());
 				stage.setScene(scene);
-				System.out.println("USER" + currentUser.getName());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -68,6 +67,5 @@ public class LoginController {
 		}
 	}
 
-	public static UserEntity currentUser = new UserEntity();
 
 }

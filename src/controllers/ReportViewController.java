@@ -391,6 +391,7 @@ public class ReportViewController {
 
 	void openDetailModal() {
 		try {
+			UserService userRepo=UserService.getRepo();
 			if (curId < 0) {
 				// Get newest
 				curId = reports.getItems().get(reports.getItems().size() - 1).getDisplayId().intValue();
@@ -405,11 +406,8 @@ public class ReportViewController {
 			detailNote.setText(rre.getNote());
 			updateEquipTable();
 
-			if (LoginController.currentUser.getRole() != Role.ADMIN) {
+			if (!userRepo.isAdmin()) {
 				inputStatus.setDisable(true);
-				if (LoginController.currentUser.getId() != rre.getReporterId()) {
-					deleteReportBtn.setVisible(false);
-				}
 			}
 
 			detailModal.setVisible(true);
