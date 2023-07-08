@@ -54,7 +54,7 @@ public class StatisticalService {
 	    return equipmentCounts;
 	}
 	
-	public Map<String, Integer[]> getEquipmentStatsByCategory() throws SQLException {
+	public Map<String, Integer[]> getEquipmentStatusByCategory() throws SQLException {
 	    Map<String, Integer[]> equipmentStats = new HashMap<>();
 
 	    String sql = "SELECT c.name AS category, " +
@@ -96,7 +96,7 @@ public class StatisticalService {
 //	    }
 	    return equipmentStats;
 	}
-	public Map<String, Integer> getStatsRoomStatus() throws SQLException {
+	public Map<String, Integer> countRoomByStatus() throws SQLException {
 	    Map<String, Integer> roomStatusCounts = new HashMap<>();
 
 	    String sql = "SELECT status, COUNT(*) AS count FROM room GROUP BY status";
@@ -147,6 +147,24 @@ public class StatisticalService {
 
 	public int countEquipment() throws SQLException {
 	    String sql = "SELECT COUNT(*) AS count FROM equipment";
+
+	    try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
+	        ResultSet resultSet = statement.executeQuery();
+
+	        if (resultSet.next()) {
+	            int count = resultSet.getInt("count");
+	            return count;
+	        }
+	    } catch (SQLException e) {
+	        System.err.println("Got an exception!");
+	        System.err.println(e.getMessage());
+	    }
+
+	    return 0;
+	}
+
+	public int countReport() throws SQLException {
+	    String sql = "SELECT COUNT(*) AS count FROM room_report";
 
 	    try (PreparedStatement statement = DB.getConnection().prepareStatement(sql)) {
 	        ResultSet resultSet = statement.executeQuery();

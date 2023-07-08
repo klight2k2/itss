@@ -99,8 +99,8 @@ public class EquipmentViewController {
 	@FXML
 	private Label inputTitle;
 
-	@FXML
-	private Button deleteBtn;
+	// @FXML
+	// private Button deleteBtn;
 
 	@FXML
 	private ComboBox<RoomEntity> inputEquipRoom;
@@ -126,7 +126,7 @@ public class EquipmentViewController {
 			return;
 		curId = clickedRow.getDisplayId();
 		System.out.println("clicked id"+clickedRow.getDisplayId());
-		deleteBtn.setVisible(true);
+		// deleteBtn.setVisible(true);
 		inputTitle.setText("Chỉnh sửa");
 		for (CategoryEquipmentEntity item : listCategory) {
 			if (item.getId() == clickedRow.getEquipmentCategoryId()) {
@@ -179,7 +179,7 @@ public class EquipmentViewController {
 
 	@FXML
 	void openModal(ActionEvent event) {
-		deleteBtn.setVisible(false);
+		// deleteBtn.setVisible(false);
 		inputTitle.setText("Thêm thiết bị");
 		inputEquipName.clear();
 		inputEquipCategory.setValue(null);

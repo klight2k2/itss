@@ -40,7 +40,7 @@
       <Button layoutX="189.0" layoutY="42.0" mnemonicParsing="false" onAction="#search" styleClass="btn" text="Tìm kiếm" />
       <Button layoutX="293.0" layoutY="43.0" mnemonicParsing="false" onAction="#reset" styleClass="btn" text="Làm mới" />
       <Button fx:id="addEquipmentBtn" layoutX="689.0" layoutY="43.0" mnemonicParsing="false" onAction="#openModal" styleClass="btn" text="Thêm thiết bị" />
-      <AnchorPane fx:id="addEquipmentModal" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" stylesheets="@../styles/global.css" visible="false">
+      <AnchorPane fx:id="addEquipmentModal" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f2f2f2dd;" stylesheets="@../styles/global.css">
          <children>
             <AnchorPane layoutX="210.0" layoutY="73.0" prefHeight="481.0" prefWidth="352.0" style="-fx-background-color: #fff; -fx-background-radius: 12px;" styleClass="overlay">
                <children>
@@ -56,8 +56,11 @@
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <Button layoutX="236.0" layoutY="437.0" mnemonicParsing="false" onAction="#submit" prefHeight="27.0" prefWidth="72.0" styleClass="btn" text="Xác nhận" />
-                  <Button layoutX="126.0" layoutY="437.0" mnemonicParsing="false" onAction="#closeModal" prefHeight="25.0" prefWidth="72.0" styleClass="btn" text="Hủy" />
+                  <Button layoutX="235.0" layoutY="437.0" mnemonicParsing="false" onAction="#submit" prefHeight="29.0" prefWidth="73.0" styleClass="btn_primary" text="Xác nhận">
+                     <font>
+                        <Font size="13.0" />
+                     </font></Button>
+                  <Button layoutX="151.0" layoutY="437.0" mnemonicParsing="false" onAction="#closeModal" prefHeight="25.0" prefWidth="72.0" styleClass="btn" text="Hủy" />
                   <Label layoutX="39.0" layoutY="133.0" prefHeight="19.0" prefWidth="100.0" text="Loại thiết bị">
                      <font>
                         <Font size="14.0" />
@@ -87,7 +90,6 @@
                         <Font size="14.0" />
                      </font></Label>
                   <TextField fx:id="inputEquipName" layoutX="162.0" layoutY="89.0" prefHeight="27.0" prefWidth="147.0" />
-                  <Button fx:id="deleteBtn" layoutX="39.0" layoutY="438.0" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="50.0" styleClass="btn" text="Xóa" />
                   <ComboBox fx:id="inputEquipRoom" layoutX="161.0" layoutY="51.0" prefWidth="150.0" />
                   <ComboBox fx:id="inputEquipCategory" layoutX="161.0" layoutY="130.0" prefWidth="150.0" />
                   <ComboBox fx:id="inputEquipStatus" layoutX="161.0" layoutY="168.0" prefWidth="150.0" />
