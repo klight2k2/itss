@@ -34,22 +34,7 @@ public class DateUtils {
 		return LocalDate.parse(dateString, formatter);
 	}
 
-	public static String hashPassword(String password) {
-		String generatedPassword = null;
-		try {
-			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-			messageDigest.update(password.getBytes());
-			byte[] resultByteArray = messageDigest.digest();
-			StringBuilder sb = new StringBuilder();
-			for (byte b : resultByteArray) {
-				sb.append(Integer.toString((b & 0xff) + 0x100, 16));
-			}
-			generatedPassword = sb.toString();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
-		return generatedPassword;
-	}
+
 
 	public static void createDialog(Alert.AlertType type, String title, String headerText, String contentText) {
 		Alert warning = new Alert(type);
@@ -94,26 +79,6 @@ public class DateUtils {
 			return true;
 		else
 			return false;
-	}
-
-	public static boolean isCccd(String cccd) {
-		String regex = "^\\d{12}$";
-		Pattern p = Pattern.compile(regex);
-		Matcher m = p.matcher(cccd);
-		return !m.matches();
-	}
-
-	public static String toUpperFirstLetter(String text) {
-		return text.substring(0, 1).toUpperCase() + text.substring(1);
-	}
-
-	public static String generateRandomNumber(int num_length) {
-		Random r = new Random();
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < num_length; i++) {
-			sb.append(r.nextInt(10));
-		}
-		return sb.toString();
 	}
 
 	public static String convertDateWhenAddLichHD(String dateString) throws ParseException {
