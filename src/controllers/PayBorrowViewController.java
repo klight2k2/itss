@@ -286,19 +286,24 @@ public class PayBorrowViewController {
 			pbEquipments.getItems().clear();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
-				String username = UserService.getRepo().getUserById(pb.getBorrowerId()).getName();
-				if (username.toLowerCase().contains(inputSearch.getText().toLowerCase())) {
-					PayBorrow newPb = new PayBorrow();
-					newPb.setId(pb.getId());
-					newPb.setDisplayId(Integer.valueOf(pb.getId()));
-					newPb.setDisplayStatus(Utils.convertReverseBorrowStatus(pb.getStatus()));
-					newPb.setDisplayFromDate(pb.getFromDate());
-					newPb.setDisplayToDate(pb.getToDate());
-					newPb.setDisplayBorrowReason(pb.getBorrowReason());
-					newPb.setDisplayRefuseReason(pb.getRefuseReason());
-					newPb.setBorrowerId(pb.getBorrowerId());
-					newPb.setDisplayUsername(username);
-					pbEquipments.getItems().add(newPb);
+				if (LoginController.currentUser.getRole() == Role.TEACHER
+						&& LoginController.currentUser.getId() != pb.getBorrowerId())
+					continue;
+				else {
+					String username = UserService.getRepo().getUserById(pb.getBorrowerId()).getName();
+					if (username.toLowerCase().contains(inputSearch.getText().toLowerCase())) {
+						PayBorrow newPb = new PayBorrow();
+						newPb.setId(pb.getId());
+						newPb.setDisplayId(Integer.valueOf(pb.getId()));
+						newPb.setDisplayStatus(Utils.convertReverseBorrowStatus(pb.getStatus()));
+						newPb.setDisplayFromDate(pb.getFromDate());
+						newPb.setDisplayToDate(pb.getToDate());
+						newPb.setDisplayBorrowReason(pb.getBorrowReason());
+						newPb.setDisplayRefuseReason(pb.getRefuseReason());
+						newPb.setBorrowerId(pb.getBorrowerId());
+						newPb.setDisplayUsername(username);
+						pbEquipments.getItems().add(newPb);
+					}
 				}
 			}
 		} catch (SQLException e) {
@@ -318,22 +323,22 @@ public class PayBorrowViewController {
 			pbEquipments.getItems().clear();
 			PayBorrowService payBorrowRepo = PayBorrowService.getRepo();
 			for (PayBorrowEntity pb : payBorrowRepo.getAll()) {
-				PayBorrow newPb = new PayBorrow();
-				newPb.setId(pb.getId());
-				newPb.setDisplayId(Integer.valueOf(pb.getId()));
-				newPb.setDisplayStatus(Utils.convertReverseBorrowStatus(pb.getStatus()));
-				newPb.setDisplayFromDate(pb.getFromDate());
-				newPb.setDisplayToDate(pb.getToDate());
-				newPb.setDisplayBorrowReason(pb.getBorrowReason());
-				newPb.setDisplayRefuseReason(pb.getRefuseReason());
-				newPb.setBorrowerId(pb.getBorrowerId());
-				for (UserEntity curUser : listBorrower) {
-					if (curUser.getId() == pb.getBorrowerId()) {
-						newPb.setDisplayUsername(curUser.getName());
-						break;
-					}
+				if (LoginController.currentUser.getRole() == Role.TEACHER
+						&& LoginController.currentUser.getId() != pb.getBorrowerId())
+					continue;
+				else {
+					PayBorrow newPb = new PayBorrow();
+					newPb.setId(pb.getId());
+					newPb.setDisplayId(Integer.valueOf(pb.getId()));
+					newPb.setDisplayStatus(Utils.convertReverseBorrowStatus(pb.getStatus()));
+					newPb.setDisplayFromDate(pb.getFromDate());
+					newPb.setDisplayToDate(pb.getToDate());
+					newPb.setDisplayBorrowReason(pb.getBorrowReason());
+					newPb.setDisplayRefuseReason(pb.getRefuseReason());
+					newPb.setBorrowerId(pb.getBorrowerId());
+					newPb.setDisplayUsername(UserService.getRepo().getUserById(pb.getBorrowerId()).getName());
+					pbEquipments.getItems().add(newPb);
 				}
-				pbEquipments.getItems().add(newPb);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

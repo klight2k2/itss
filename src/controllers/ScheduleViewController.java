@@ -2,8 +2,6 @@ package controllers;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import common.Role;
 import javafx.collections.FXCollections;
@@ -24,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-import models.EquipmentEntity;
 import models.RoomEntity;
 import models.RoomScheduleEntity;
 import models.UserEntity;
@@ -36,7 +33,7 @@ import views.schedule.Schedule;
 
 public class ScheduleViewController {
 	@FXML
-    private Button addScheduleBtn;
+	private Button addScheduleBtn;
 
 	@FXML
 	private HBox endTimeBox, startTimeBox;
@@ -160,7 +157,8 @@ public class ScheduleViewController {
 
 	@FXML
 	void onRowClick(MouseEvent event) {
-		if (!LoginController.currentUser.getRole().equals(Role.ADMIN)) return;
+		if (!LoginController.currentUser.getRole().equals(Role.ADMIN))
+			return;
 		Schedule clickedRow = schedules.getSelectionModel().getSelectedItem();
 		if (clickedRow == null)
 			return;
@@ -209,27 +207,22 @@ public class ScheduleViewController {
 			RoomScheduleService rss = RoomScheduleService.getRepo();
 			for (RoomScheduleEntity res : rss.getAll()) {
 				if (RoomService.getRepo().getRoomById(res.getRoomId()).getName().toLowerCase().contains(filter)) {
-					Schedule ns = new Schedule();
-					ns.setDisplayId(Integer.valueOf(res.getId()));
-					for (RoomEntity item : listRoom) {
-						if (item.getId() == res.getRoomId()) {
-							ns.setDisplayRoom(item.getName());
-						}
-
+					if (LoginController.currentUser.getRole() == Role.TEACHER
+							&& LoginController.currentUser.getId() != res.getTeacherId())
+						continue;
+					else {
+						Schedule ns = new Schedule();
+						ns.setDisplayId(Integer.valueOf(res.getId()));
+						ns.setDisplayRoom(RoomService.getRepo().getRoomById(res.getRoomId()).getName());
+						ns.setDisplayUser(UserService.getRepo().getUserById(res.getTeacherId()).getName());
+						ns.setId(res.getId());
+						ns.setRoomId(res.getRoomId());
+						ns.setTeacherId(res.getTeacherId());
+						ns.setDisplayStartTime(res.getStartTime());
+						ns.setDisplayEndTime(res.getEndTime());
+						ns.setDisplayReason(res.getReason());
+						schedules.getItems().add(ns);
 					}
-					for (UserEntity item : listUser) {
-						if (item.getId() == res.getTeacherId()) {
-							System.out.println("user id" + res.getTeacherId());
-							ns.setDisplayUser(item.getName());
-						}
-
-					}
-					ns.setRoomId(res.getRoomId());
-					ns.setTeacherId(res.getTeacherId());
-					ns.setDisplayStartTime(res.getStartTime());
-					ns.setDisplayEndTime(res.getEndTime());
-					ns.setDisplayReason(res.getReason());
-					schedules.getItems().add(ns);
 				}
 			}
 		} catch (Exception e) {
@@ -243,27 +236,22 @@ public class ScheduleViewController {
 			schedules.getItems().clear();
 			RoomScheduleService rss = RoomScheduleService.getRepo();
 			for (RoomScheduleEntity res : rss.getAll()) {
-				Schedule ns = new Schedule();
-				ns.setDisplayId(Integer.valueOf(res.getId()));
-				for (RoomEntity item : listRoom) {
-					if (item.getId() == res.getRoomId()) {
-						ns.setDisplayRoom(item.getName());
-					}
-
+				if (LoginController.currentUser.getRole() == Role.TEACHER
+						&& LoginController.currentUser.getId() != res.getTeacherId())
+					continue;
+				else {
+					Schedule ns = new Schedule();
+					ns.setDisplayId(Integer.valueOf(res.getId()));
+					ns.setDisplayRoom(RoomService.getRepo().getRoomById(res.getRoomId()).getName());
+					ns.setDisplayUser(UserService.getRepo().getUserById(res.getTeacherId()).getName());
+					ns.setId(res.getId());
+					ns.setRoomId(res.getRoomId());
+					ns.setTeacherId(res.getTeacherId());
+					ns.setDisplayStartTime(res.getStartTime());
+					ns.setDisplayEndTime(res.getEndTime());
+					ns.setDisplayReason(res.getReason());
+					schedules.getItems().add(ns);
 				}
-				for (UserEntity item : listUser) {
-					if (item.getId() == res.getTeacherId()) {
-						ns.setDisplayUser(item.getName());
-					}
-
-				}
-				ns.setId(res.getId());
-				ns.setRoomId(res.getRoomId());
-				ns.setTeacherId(res.getTeacherId());
-				ns.setDisplayStartTime(res.getStartTime());
-				ns.setDisplayEndTime(res.getEndTime());
-				ns.setDisplayReason(res.getReason());
-				schedules.getItems().add(ns);
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
